@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Server.Service" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Server.Service" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="ServerData">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Video" />
+      <xs:enumeration value="Book" />
+      <xs:enumeration value="User" />
+      <xs:enumeration value="Role" />
+      <xs:enumeration value="VideoCategory" />
+      <xs:enumeration value="BookCategory" />
+      <xs:enumeration value="Word" />
+      <xs:enumeration value="WordForm" />
+      <xs:enumeration value="WordCategory" />
+      <xs:enumeration value="Translation" />
+      <xs:enumeration value="Definition" />
+      <xs:enumeration value="Author" />
+      <xs:enumeration value="Game" />
+      <xs:enumeration value="Example" />
+      <xs:enumeration value="Bookmark" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ServerData" nillable="true" type="tns:ServerData" />
+  <xs:simpleType name="PropertyData">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Name" />
+      <xs:enumeration value="Role" />
+      <xs:enumeration value="Description" />
+      <xs:enumeration value="Path" />
+      <xs:enumeration value="SubPath" />
+      <xs:enumeration value="Imgpath" />
+      <xs:enumeration value="Mark" />
+      <xs:enumeration value="Created" />
+      <xs:enumeration value="Position" />
+      <xs:enumeration value="ScoreCount" />
+      <xs:enumeration value="Password" />
+      <xs:enumeration value="Level" />
+      <xs:enumeration value="Year" />
+      <xs:enumeration value="PastForm" />
+      <xs:enumeration value="PastThForm" />
+      <xs:enumeration value="PluralForm" />
+      <xs:enumeration value="Category" />
+      <xs:enumeration value="Author" />
+      <xs:enumeration value="Synonyms" />
+      <xs:enumeration value="Translation" />
+      <xs:enumeration value="Definition" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="PropertyData" nillable="true" type="tns:PropertyData" />
+</xs:schema>

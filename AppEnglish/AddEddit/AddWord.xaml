@@ -1,0 +1,65 @@
+﻿<Window x:Class="AppEnglish.AddWord"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Add Word" Height="300" Width="400" Icon="..\Images\Eye.png">
+    
+    <ScrollViewer>
+        <StackPanel Name="stMain" SizeChanged="StackPanel_SizeChanged">
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Word:</Label>
+                <TextBox Style="{StaticResource txtNormal}" TextChanged="txtWord_TextChanged" Name="txtWord" />
+                <Label Style="{StaticResource lbFormNormal}" Padding="0">*</Label>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Translation:</Label>
+                <TextBox Style="{StaticResource txtNormal}" Name="txtTranlation" TextChanged="txtWord_TextChanged"  />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Description:</Label>
+                <TextBox Style="{StaticResource txtNormal}" Name="txtDescription" TextChanged="txtWord_TextChanged" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Type:</Label>
+                <ComboBox Name="cmbType" Margin="7" />
+            </StackPanel>
+
+            <Label Style="{StaticResource lbFormNormal}">Image:</Label>
+            <Border Name="brImage" Style="{StaticResource brdDragDrop}" DragEnter="Border_DragEnter" DragLeave="Border_DragLeave" Drop="Border_Drop" MouseDown="Border_MouseDown">
+                <Image Name="imDrag" Source="..\Images\ImageDrop.png" />
+            </Border>
+            <Label Name="lPath" Margin="10">...</Label>
+
+            <Expander Header="Extra" Visibility="Collapsed">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource lbFormNormal}" FontSize="12">Past form:</Label>
+                        <TextBox Style="{StaticResource txtNormal}" Name="txtPast" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource lbFormNormal}" FontSize="12">Past participle:</Label>
+                        <TextBox Style="{StaticResource txtNormal}" Name="txtPastTh" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
+                        <Label Style="{StaticResource lbFormNormal}" FontSize="12">Plural form:</Label>
+                        <TextBox Style="{StaticResource txtNormal}" Name="txtPlural" />
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+
+            <ListBox Name="lstSynonyms" />
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+                <Button Name="btnOK" HorizontalAlignment="Left" Width="100" Margin="5" Click="btnOK_Click">OK</Button>
+                <Button Name="btnCancel" HorizontalAlignment="Right" Width="100" Margin="5" Click="btnCancel_Click">Cancel</Button>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

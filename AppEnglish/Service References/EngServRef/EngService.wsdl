@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="EngService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetTcpBinding_IEngService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy">
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:1792/EngService?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:1792/EngService?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:1792/EngService?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Server.Service" />
+      <xsd:import schemaLocation="http://localhost:1792/EngService?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IEngService_AddUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddUser" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddVideo_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddVideo" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddVideo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddVideoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddBook_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddBook" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddBook_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddAuthor_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddAuthor" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddAuthor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddAuthorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddCategory_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddCategory" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddCategory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddCategoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddItemCategory_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddItemCategory" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddItemCategory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddItemCategoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddBookAuthor_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddBookAuthor" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddBookAuthor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddBookAuthorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetItemProperty_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetItemProperty" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetItemProperty_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetItemPropertyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetItems_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetItems" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetItems_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetFItems_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFItems" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetFItems_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetUserItemWords_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserItemWords" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetUserItemWords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserItemWordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetItemData_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetItemData" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetItemData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetItemDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetUserId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserId" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetUserId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_CheckExistence_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckExistence" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_CheckExistence_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckExistenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_CheckAuthor_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckAuthor" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_CheckAuthor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckAuthorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_CheckUserPswd_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckUserPswd" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_CheckUserPswd_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckUserPswdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_CheckAbsolute_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckAbsolute" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_CheckAbsolute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckAbsoluteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_RemoveItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveItem" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_RemoveItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_RemoveItemWord_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveItemWord" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_RemoveItemWord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveItemWordResponse" />
+  </wsdl:message>
+  <wsdl:portType msc:usingSession="true" name="IEngService">
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddUser" message="tns:IEngService_AddUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddUserResponse" message="tns:IEngService_AddUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddVideo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddVideo" message="tns:IEngService_AddVideo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddVideoResponse" message="tns:IEngService_AddVideo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddBook">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddBook" message="tns:IEngService_AddBook_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddBookResponse" message="tns:IEngService_AddBook_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddAuthor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddAuthor" message="tns:IEngService_AddAuthor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddAuthorResponse" message="tns:IEngService_AddAuthor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddCategory">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddCategory" message="tns:IEngService_AddCategory_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddCategoryResponse" message="tns:IEngService_AddCategory_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddItemCategory">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddItemCategory" message="tns:IEngService_AddItemCategory_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddItemCategoryResponse" message="tns:IEngService_AddItemCategory_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddBookAuthor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddBookAuthor" message="tns:IEngService_AddBookAuthor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddBookAuthorResponse" message="tns:IEngService_AddBookAuthor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetItemProperty">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetItemProperty" message="tns:IEngService_GetItemProperty_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetItemPropertyResponse" message="tns:IEngService_GetItemProperty_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetItems">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetItems" message="tns:IEngService_GetItems_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetItemsResponse" message="tns:IEngService_GetItems_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetFItems">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetFItems" message="tns:IEngService_GetFItems_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetFItemsResponse" message="tns:IEngService_GetFItems_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetUserItemWords">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetUserItemWords" message="tns:IEngService_GetUserItemWords_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetUserItemWordsResponse" message="tns:IEngService_GetUserItemWords_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetItemData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetItemData" message="tns:IEngService_GetItemData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetItemDataResponse" message="tns:IEngService_GetItemData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetUserId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetUserId" message="tns:IEngService_GetUserId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetUserIdResponse" message="tns:IEngService_GetUserId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CheckExistence">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/CheckExistence" message="tns:IEngService_CheckExistence_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/CheckExistenceResponse" message="tns:IEngService_CheckExistence_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CheckAuthor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/CheckAuthor" message="tns:IEngService_CheckAuthor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/CheckAuthorResponse" message="tns:IEngService_CheckAuthor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CheckUserPswd">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/CheckUserPswd" message="tns:IEngService_CheckUserPswd_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/CheckUserPswdResponse" message="tns:IEngService_CheckUserPswd_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CheckAbsolute">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/CheckAbsolute" message="tns:IEngService_CheckAbsolute_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/CheckAbsoluteResponse" message="tns:IEngService_CheckAbsolute_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="RemoveItem">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/RemoveItem" message="tns:IEngService_RemoveItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/RemoveItemResponse" message="tns:IEngService_RemoveItem_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="RemoveItemWord">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/RemoveItemWord" message="tns:IEngService_RemoveItemWord_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/RemoveItemWordResponse" message="tns:IEngService_RemoveItemWord_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NetTcpBinding_IEngService" type="tns:IEngService">
+    <wsp:PolicyReference URI="#NetTcpBinding_IEngService_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="AddUser">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddVideo">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddVideo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddBook">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddBook" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddAuthor">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddAuthor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCategory">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddCategory" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddItemCategory">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddItemCategory" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddBookAuthor">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddBookAuthor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItemProperty">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetItemProperty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItems">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetItems" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFItems">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetFItems" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserItemWords">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetUserItemWords" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItemData">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetItemData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserId">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetUserId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckExistence">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/CheckExistence" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckAuthor">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/CheckAuthor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUserPswd">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/CheckUserPswd" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckAbsolute">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/CheckAbsolute" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveItem">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/RemoveItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveItemWord">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/RemoveItemWord" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EngService">
+    <wsdl:port name="NetTcpBinding_IEngService" binding="tns:NetTcpBinding_IEngService">
+      <soap12:address location="net.tcp://localhost:6759/" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://localhost:6759/</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Upn>DESKTOP-02L225S\Wolf</Upn>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

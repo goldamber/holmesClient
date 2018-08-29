@@ -1,0 +1,27 @@
+﻿<Window x:Class="AppEnglish.AddAuthor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Add Author" Height="180" Width="400" Icon="..\Images\Eye.png">
+
+    <StackPanel>
+        <StackPanel Name="stMain" SizeChanged="StackPanel_SizeChanged">
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Name:</Label>
+                <TextBox Style="{StaticResource txtNormal}" TextChanged="txtName_TextChanged" Name="txtName" />
+                <Label Style="{StaticResource lbFormNormal}" Padding="0">*</Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Surname:</Label>
+                <TextBox Style="{StaticResource txtNormal}" TextChanged="txtName_TextChanged" Name="txtSurname" />
+                <Label Style="{StaticResource lbFormNormal}" Padding="0">*</Label>
+            </StackPanel>
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="10">
+                <Button Name="btnOK" HorizontalAlignment="Left" Width="100" IsEnabled="False" Margin="5" Click="btnOK_Click">OK</Button>
+                <Button Name="btnCancel" HorizontalAlignment="Right" Width="100" Margin="5" Click="btnCancel_Click">Cancel</Button>
+            </WrapPanel>
+        </StackPanel>
+    </StackPanel>
+</Window>

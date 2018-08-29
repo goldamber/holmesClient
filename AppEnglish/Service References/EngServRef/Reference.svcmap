@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="3b9af16a-b6cd-4c4c-a530-d27a8f38dce1" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:1792/EngService" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="EngService.wsdl" MetadataType="Wsdl" ID="efbcb57f-e47f-4ece-b376-d55e48fc4ddb" SourceId="1" SourceUrl="http://localhost:1792/EngService?wsdl" />
+    <MetadataFile FileName="EngService.xsd" MetadataType="Schema" ID="bfbbf3be-3914-44ed-9428-7b6fc8608866" SourceId="1" SourceUrl="http://localhost:1792/EngService?xsd=xsd2" />
+    <MetadataFile FileName="EngService1.xsd" MetadataType="Schema" ID="ff2aa344-6d4a-4dd3-a757-abafc70366db" SourceId="1" SourceUrl="http://localhost:1792/EngService?xsd=xsd1" />
+    <MetadataFile FileName="EngService2.xsd" MetadataType="Schema" ID="d2273e88-a5db-4c13-a70c-35410c0e75f8" SourceId="1" SourceUrl="http://localhost:1792/EngService?xsd=xsd0" />
+    <MetadataFile FileName="EngService.disco" MetadataType="Disco" ID="9203cd5f-9878-40d0-adcd-f6b44dc1cda4" SourceId="1" SourceUrl="http://localhost:1792/EngService?disco" />
+    <MetadataFile FileName="EngService3.xsd" MetadataType="Schema" ID="9756968b-6ad3-4267-8fa9-fff6eb0bb6c7" SourceId="1" SourceUrl="http://localhost:1792/EngService?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

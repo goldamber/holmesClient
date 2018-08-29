@@ -1,0 +1,182 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:gif="http://wpfanimatedgif.codeplex.com">
+    
+    <!--Button-->
+    <Style x:Key="btnNormal" TargetType="Button">
+        <Setter Property="BorderBrush" Value="#FF1C65A2" />
+        <Setter Property="Background" Value="#FF70B7F1" />
+        <Setter Property="BorderThickness" Value="3" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="15 5" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Margin" Value="20" />
+        <Setter Property="Foreground" Value="WhiteSmoke" />
+    </Style>
+
+    <!--Border-->
+    <Style x:Key="brdDragDrop" TargetType="Border">
+        <Setter Property="BorderBrush" Value="#FF70B7F1" />
+        <Setter Property="BorderThickness" Value="3" />
+        <Setter Property="CornerRadius" Value="7" />
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Height" Value="200" />
+        <Setter Property="Width" Value="150" />
+        <Setter Property="Opacity" Value="0.4" />
+        <Setter Property="AllowDrop" Value="True" />
+
+        <Style.Triggers>
+            <Trigger Property="Border.IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="0.6" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="WinDrawBorder" TargetType="Border">
+        <Setter Property="BorderBrush" Value="#FF2887D6" />
+        <Setter Property="Background" Value="WhiteSmoke" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="Margin" Value="20" />
+
+        <Style.Triggers>
+            <Trigger Property="Border.IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="WhiteSmoke" />
+                <Setter Property="Background" Value="#FF2887D6" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="WinDrawText" TargetType="Label">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Foreground" Value="#FF2887D6" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="15 5" />
+
+        <Style.Triggers>
+            <Trigger Property="Label.IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="WhiteSmoke" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--Label-->
+    <Style x:Key="lbSub" TargetType="Label">
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="FontSize" Value="19" />
+
+        <Style.Triggers>
+            <Trigger Property="Label.IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#FF100F2F" />
+                <Setter Property="Foreground" Value="WhiteSmoke" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="lbFormNormal" TargetType="Label">
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="FontSize" Value="19" />
+        <Setter Property="Foreground" Value="#FF2887D6" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="lbFormWrong" TargetType="Label">
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="FontSize" Value="19" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="#FFA91515" />
+    </Style>
+
+    <!--TextBox-->
+    <Style x:Key="txtSub" TargetType="TextBox">
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="FontSize" Value="19" />
+        <Setter Property="IsReadOnly" Value="True" />
+
+        <Style.Triggers>
+            <Trigger Property="Label.IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#FF100F2F" />
+                <Setter Property="Foreground" Value="WhiteSmoke" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="txtNormal" TargetType="TextBox">
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Margin" Value="3,6,0,6" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="BorderBrush" Value="#FF2887D6" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>    
+    <Style x:Key="txtWrong" TargetType="TextBox">
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Margin" Value="3,6,0,6" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="Red" />
+        <Setter Property="BorderBrush" Value="#FFA91515" />
+        <Setter Property="BorderThickness" Value="2.5" />
+    </Style>
+
+    <!--PasswordBox-->
+    <Style x:Key="pswdNormal" TargetType="PasswordBox">
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Margin" Value="9,6,0,6" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Width" Value="200" />
+        <Setter Property="BorderBrush" Value="#FF2887D6" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="#FF2887D6" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    <Style x:Key="pswdWrong" TargetType="PasswordBox">
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Margin" Value="9,6,0,6" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Width" Value="200" />
+        <Setter Property="BorderBrush" Value="#FFA91515" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="#FFA91515" />
+        <Setter Property="BorderThickness" Value="2.5" />
+    </Style>
+
+    <!--Image-->
+    <Style x:Key="imgAva" TargetType="Image">
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+
+    <!--ProgressBar-->
+    <ControlTemplate x:Key="Preloader" TargetType="{x:Type ProgressBar}">
+        <StackPanel>
+            <Image Height="150" gif:ImageBehavior.AnimatedSource="Images\Orcas.gif" />
+            <Label Name="lLoad" Style="{StaticResource lbFormNormal}" HorizontalAlignment="Center" />
+        </StackPanel>
+
+        <ControlTemplate.Triggers>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <StringAnimationUsingKeyFrames Storyboard.TargetProperty="(Label.Content)" Storyboard.TargetName="lLoad" RepeatBehavior="Forever" >
+                            <DiscreteStringKeyFrame KeyTime="0:0:0.0" Value="Loading." />
+                            <DiscreteStringKeyFrame KeyTime="0:0:0.5" Value="Loading.."	/>
+                            <DiscreteStringKeyFrame KeyTime="0:0:1" Value="Loading..." />
+                            <DiscreteStringKeyFrame KeyTime="0:0:1.5" Value="Loading...." />
+                        </StringAnimationUsingKeyFrames>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--CheckBox-->
+    <Style x:Key="chNormal" TargetType="CheckBox">
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="#FF2887D6" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+</ResourceDictionary>
