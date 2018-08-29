@@ -9,8 +9,10 @@ using System.Windows.Media.Imaging;
 
 namespace AppEnglish
 {
+    //Types of data to be presented.
     enum DataType { Video, Book, Word, Game }
 
+    //Register, visual settings.
     public partial class MainWindow : MetroWindow
     {
         EngServRef.EngServiceClient _proxy;
@@ -91,14 +93,16 @@ namespace AppEnglish
         {
             (sender as Border).Opacity = 0.4;
         }
-        private void Border_Drop(object sender, DragEventArgs e)        //Choose image.
+        //Choose image.
+        private void Border_Drop(object sender, DragEventArgs e)        
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             lPath.Content = files[0];
             imDrag.Source = new BitmapImage(new Uri(lPath.Content.ToString()));
             brImage.Opacity = 0.4;
         }
-        private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)       //Click.
+        //Click.
+        private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image Files (*.png;*.jpg;*.jpeg;*.gif;*.tif)|*.png;*.jpg;*.jpeg;*.gif;*.tif|All files (*.*)|*.*";
@@ -111,6 +115,7 @@ namespace AppEnglish
         #endregion
 
         #region Register.
+        //Check the existence of login.
         private void txtREmail_TextChanged(object sender, TextChangedEventArgs e)
         {
             bool isUser = _proxy.CheckExistenceAsync(txtRName.Text, EngServRef.ServerData.User).Result;
@@ -128,6 +133,7 @@ namespace AppEnglish
             if ((sender as TextBox).Text == "")
                 ((sender as TextBox).Parent as Panel).ToolTip = "Empty strings are not allowed!";
         }
+        //Check the length of password.
         private void txtRPswd_PasswordChanged(object sender, RoutedEventArgs e)
         {
             bool wrongPswd = (sender as PasswordBox).Password.Length < 6;
@@ -143,6 +149,7 @@ namespace AppEnglish
 
             btnReg.IsEnabled = !wrongPswd && txtRName.Text != "" && !_proxy.CheckExistenceAsync(txtRName.Text, EngServRef.ServerData.User).Result;
         }
+        //Add user to a database and return to the first window.
         private void btnReg_Click(object sender, RoutedEventArgs e)
         {
             if (txtRPswd.Password != txtRCfrPswd.Password)
@@ -162,6 +169,7 @@ namespace AppEnglish
         }
         #endregion
         #region Login, logout.
+        //Chech the length password.
         private void txtPswd_PasswordChanged(object sender, RoutedEventArgs e)
         {
             bool wrongPswd = (sender as PasswordBox).Password == "";
@@ -177,6 +185,7 @@ namespace AppEnglish
 
             btnLogin.IsEnabled = !wrongPswd && txtUserName.Text != "";
         }
+        //Chech the existence of login.
         private void txtUserName_TextChanged(object sender, TextChangedEventArgs e)
         {
             bool isUser = _proxy.CheckExistenceAsync(txtUserName.Text, EngServRef.ServerData.User).Result;
@@ -195,6 +204,7 @@ namespace AppEnglish
                 ((sender as TextBox).Parent as Panel).ToolTip = "Empty strings are not allowed!";
         }
 
+        //Login and show the actions to user.
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             if (!_proxy.CheckUserPswdAsync(txtUserName.Text, txtPswd.Password).Result)
@@ -218,6 +228,7 @@ namespace AppEnglish
                 ButtonBack_Click(null, null);
             }
         }
+        //Go to the main menu and logout.
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
             imUserAvatar.Source = null;
@@ -229,6 +240,7 @@ namespace AppEnglish
         }
         #endregion
 
+        //Close connection.
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_proxy.State == CommunicationState.Opened)

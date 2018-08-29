@@ -16,10 +16,12 @@ namespace AppEnglish
         int? mark = null;
 
         #region Constructors.
+        //Initialization.
         public AddBook()
         {
             InitializeComponent();
         }
+        //Initialize '_proxy', fill the listboxes.
         public AddBook(EngServRef.EngServiceClient tmp) : this()
         {
             _proxy = tmp;
@@ -30,6 +32,7 @@ namespace AppEnglish
         #endregion
 
         #region Visualisation, validation.
+        //Change the size of the inner fields.
         private void StackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             foreach (var item in (sender as StackPanel).Children)
@@ -45,6 +48,7 @@ namespace AppEnglish
                 }
             }
         }
+        //Check the title of an book.
         private void txtName_TextChanged(object sender, TextChangedEventArgs e)
         {
             if ((sender as TextBox).Text == "" || ((sender as TextBox) == txtName) && _proxy.CheckExistenceAsync(txtName.Text, EngServRef.ServerData.Book).Result)
@@ -72,6 +76,7 @@ namespace AppEnglish
                 btnOK.IsEnabled = true;
             }
         }
+        //Forbids the input of letters.
         private void txtYear_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -87,14 +92,16 @@ namespace AppEnglish
         {
             (sender as Border).Opacity = 0.4;
         }
+        //Sets image.
         private void Border_Drop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             lPath.Content = files[0];
             imDrag.Source = new BitmapImage(new Uri(lPath.Content.ToString()));
             brImage.Opacity = 0.4;
-        }       //Set image.
-        private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        }
+        //Choose image (via OpenFileDialog).
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image Files (*.png;*.jpg;*.jpeg;*.gif;*.tif)|*.png;*.jpg;*.jpeg;*.gif;*.tif|All files (*.*)|*.*";
@@ -106,7 +113,8 @@ namespace AppEnglish
         }
         #endregion
         #region Rating.
-        private void imgRating_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        //Sets a rate.
+        private void imgRating_MouseDown(object sender, MouseButtonEventArgs e)
         {
             mark = ((sender as Image).Opacity == 1)? 0: Convert.ToInt32((sender as Image).Tag);
             foreach (Image item in wrRating.Children)
@@ -115,7 +123,8 @@ namespace AppEnglish
                 item.Opacity = (mark != 0 && Convert.ToInt32(item.Tag) <= Convert.ToInt32((sender as Image).Tag))? 1: 0.2;
             }
         }
-        private void imgRating_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        //Visualisation.
+        private void imgRating_MouseEnter(object sender, MouseEventArgs e)
         {
             foreach (Image item in wrRating.Children)
             {
@@ -123,7 +132,8 @@ namespace AppEnglish
                 item.Opacity = (Convert.ToInt32(item.Tag) <= Convert.ToInt32((sender as Image).Tag)) ? 0.5 : 0.2;
             }
         }
-        private void imgRating_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        //Visualisation.
+        private void imgRating_MouseLeave(object sender, MouseEventArgs e)
         {
             foreach (Image item in wrRating.Children)
             {
@@ -133,6 +143,7 @@ namespace AppEnglish
         }
         #endregion
 
+        //Choose the location of a file.
         private void btnPath_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -140,6 +151,7 @@ namespace AppEnglish
             if (ofd.ShowDialog() == true)
                 txtPath.Text = ofd.FileName;
         }
+        //Show a form for adding a new author.
         private void btnAddAuthor_Click(object sender, RoutedEventArgs e)
         {
             AddAuthor frm = new AddAuthor(_proxy);
@@ -152,6 +164,7 @@ namespace AppEnglish
             }
         }
 
+        //Fill 'Authors' list-box.
         void FillAuthors()
         {
             List<int> lst = new List<int>(_proxy.GetItemsAsync(EngServRef.ServerData.Author).Result);
@@ -160,6 +173,7 @@ namespace AppEnglish
                 lstAuthors.Items.Add(new CheckBox { VerticalAlignment = VerticalAlignment.Stretch, Tag = item, Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Author, EngServRef.PropertyData.Name).Result, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left });
             }
         }
+        //Fill 'Categories' list-box.
         void FillCategories()
         {
             List<int> lst = new List<int>(_proxy.GetItemsAsync(EngServRef.ServerData.BookCategory).Result);
@@ -169,6 +183,7 @@ namespace AppEnglish
             }
         }
         #region Close form (OK, Cancel).
+        //Add a new book.
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             int? year = null;
@@ -196,6 +211,7 @@ namespace AppEnglish
             }
             Close();
         }
+        //Close form.
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();

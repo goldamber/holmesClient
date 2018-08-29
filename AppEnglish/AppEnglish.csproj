@@ -92,6 +92,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Classes\SubTitle.cs" />
+    <Compile Include="View\Main\MainButtonsBehavior.cs" />
     <Compile Include="View\Main\MainWindow.cs" />
     <Compile Include="View\VideoPlayer.xaml.cs">
       <DependentUpon>VideoPlayer.xaml</DependentUpon>

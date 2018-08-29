@@ -2,6 +2,12 @@
 
 namespace AppEnglish
 {
+    /// <summary>
+    /// Num - position in the panel.
+    /// TimeStart - the time of the beginning of phrase.
+    /// TimeEnd - the time of the end of phrase.
+    /// Phrase - the content of sub.
+    /// </summary>
     class SubTitle
     {
         public int Num { get; set; }

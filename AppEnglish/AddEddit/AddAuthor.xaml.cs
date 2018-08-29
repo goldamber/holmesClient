@@ -8,10 +8,12 @@ namespace AppEnglish
         EngServRef.EngServiceClient _proxy;
 
         #region Constructors.
+        //Initialization.
         public AddAuthor()
         {
             InitializeComponent();
         }
+        //Initialize '_proxy'.
         public AddAuthor(EngServRef.EngServiceClient tmp) : this()
         {
             _proxy = tmp;
@@ -19,6 +21,7 @@ namespace AppEnglish
         #endregion
 
         #region Visualisation, validation.
+        //Change the size of the inner fields.
         private void StackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             foreach (var item in (sender as StackPanel).Children)
@@ -34,6 +37,7 @@ namespace AppEnglish
                 }
             }
         }
+        //Check the name and surname of an author.
         private void txtName_TextChanged(object sender, TextChangedEventArgs e)
         {
             if ((sender as TextBox).Text == "")
@@ -64,6 +68,7 @@ namespace AppEnglish
         #endregion
 
         #region Close form (OK, Cancel).
+        //Add an author.
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             if (!_proxy.CheckAuthor(txtName.Text, txtSurname.Text))
@@ -75,6 +80,7 @@ namespace AppEnglish
             else
                 MessageBox.Show("This person is already taken!", "Wrong.", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+        //Close the form.
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();

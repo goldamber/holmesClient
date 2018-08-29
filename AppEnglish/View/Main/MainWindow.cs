@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,11 +10,15 @@ using System.Windows.Media.Imaging;
 
 namespace AppEnglish
 {
+    //Renders views.
     public partial class MainWindow : MetroWindow
     {
         System.Windows.Forms.WebBrowser web = new System.Windows.Forms.WebBrowser();
 
-        #region User actions (books, videos, dictionary).
+        #region User actions (choose an option).
+        /// <summary>
+        /// Show a list of all books to the user.
+        /// </summary>
         private async void btnBooks_Click(object sender, RoutedEventArgs e)
         {
             stActions.Children.Clear();
@@ -24,6 +27,9 @@ namespace AppEnglish
             int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Book);
             await Task.Run(() => LoadList(lst, DataType.Book));
         }
+        /// <summary>
+        /// Show a list of all videos to the user.
+        /// </summary>
         private async void btnVideos_Click(object sender, RoutedEventArgs e)
         {
             stActions.Children.Clear();
@@ -32,6 +38,9 @@ namespace AppEnglish
             int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Video);
             await Task.Run(() => LoadList(lst, DataType.Video));
         }
+        /// <summary>
+        /// Show a list of all words to the user.
+        /// </summary>
         private async void btnWords_Click(object sender, RoutedEventArgs e)
         {
             stActions.Children.Clear();
@@ -40,8 +49,14 @@ namespace AppEnglish
             int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Word);
             await Task.Run(() => LoadList(lst, DataType.Word));
         }
+        #endregion
 
-        //Render body.
+        #region Render a template for list.
+        /// <summary>
+        /// Render a list-view (template).
+        /// </summary>
+        /// <param name="lst">List of items to be presented (videos, books, ...)</param>
+        /// <param name="data">Type of items to be presented</param>
         void LoadList(IEnumerable<int> lst, DataType data)
         {
             Dispatcher.Invoke(() => {
@@ -117,8 +132,11 @@ namespace AppEnglish
                 ret.Click += ButtonBack_Click;
                 stActions.Children.Add(ret);
             });            
-        }       //Template.
-
+        }
+        /// <summary>
+        /// Add a video item to the template.
+        /// </summary>
+        /// <param name="item">Id of video.</param>
         private void AddVideoItem(int item)
         {
             Expander tmp = new Expander { Header = item };
@@ -166,6 +184,10 @@ namespace AppEnglish
             tmp.Content = st;
             stActions.Children.Add(tmp);
         }
+        /// <summary>
+        /// Add a book item to the template.
+        /// </summary>
+        /// <param name="item">Id of book.</param>
         private void AddBookItem(int item)
         {
             Expander tmp = new Expander { Header = item };
@@ -215,6 +237,11 @@ namespace AppEnglish
             tmp.Content = st;
             stActions.Children.Add(tmp);
         }
+        /// <summary>
+        /// Add a word to template.
+        /// </summary>
+        /// <param name="item">Id of a word.</param>
+        /// <param name="parent">The element in which a word is supposed to appear.</param>
         private void AddWordItem(int item, Panel parent)
         {
             Expander tmp = new Expander { Header = item };
@@ -247,9 +274,16 @@ namespace AppEnglish
             tmp.Content = st;
             parent.Children.Add(tmp);
         }
+        /// <summary>
+        /// Insters extra data to an item (categories, words, ...).
+        /// </summary>
+        /// <param name="header">The title of expander.</param>
+        /// <param name="item">Id of item to be decorated.</param>
+        /// <param name="st">A panel where the data are supposed to add.</param>
+        /// <param name="data">A type of item.</param>
+        /// <param name="res">A type of the inserted data.</param>
         void AddExpanderData(string header, int item, Panel st, EngServRef.ServerData data, EngServRef.ServerData res)
         {
-
             if (_proxy.GetItemDataAsync(item, data, res).Result.Length == 0)
                 return;
 
@@ -271,221 +305,16 @@ namespace AppEnglish
             hor.Content = ver;
             st.Children.Add(hor);
         }
+        //Customize expander (hover).
         private void ExpanderItem_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             (sender as Panel).Background = Brushes.Azure;
         }
+        //Customize expander (hover).
         private void ExpanderItem_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             (sender as Panel).Background = Brushes.LightBlue;
         }
         #endregion
-        #region Video actions.
-        private void btnAddVideo(object sender, RoutedEventArgs e)
-        {
-            btnVideos_Click(null, null);
-        }
-        private void btnViewVideo_Click(object sender, RoutedEventArgs e)
-        {
-            VideoPlayer frm = new VideoPlayer((sender as Button).Tag.ToString(), false, _proxy);
-            frm.ShowDialog();
-        }
-        private void btnEditVideo_Click(object sender, RoutedEventArgs e)
-        {
-            btnVideos_Click(null, null);
-        }
-        private void btnRemoveVideo_Click(object sender, RoutedEventArgs e)
-        {
-            _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Video);
-            btnVideos_Click(null, null);
-        }
-        #endregion
-        #region Book actions.
-        private void btnAddBook(object sender, RoutedEventArgs e)
-        {
-            AddBook frm = new AddBook(_proxy);
-            frm.ShowDialog();
-            btnBooks_Click(null, null);
-        }
-        private void btnViewBook_Click(object sender, RoutedEventArgs e)
-        {
-            BookReader frm = new BookReader((sender as Button).Tag.ToString(), _proxy);
-            frm.ShowDialog();
-        }
-        private void btnEditBook_Click(object sender, RoutedEventArgs e)
-        {
-            btnBooks_Click(null, null);
-        }
-        private void btnRemoveBook_Click(object sender, RoutedEventArgs e)
-        {
-            _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Book);
-            btnBooks_Click(null, null);
-        }
-        #endregion
-        #region Word actions.
-        private void btnAddWord(object sender, RoutedEventArgs e)
-        {
-            btnWords_Click(null, null);
-        }
-        private void btnEditWord_Click(object sender, RoutedEventArgs e)
-        {
-            btnWords_Click(null, null);
-        }
-        private void btnRemoveWord_Click(object sender, RoutedEventArgs e)
-        {
-            _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Word);
-            btnWords_Click(null, null);
-        }
-        private void btnRemoveFromUser_Click(object sender, RoutedEventArgs e)
-        {
-            _proxy.RemoveItemWordAsync(Convert.ToInt32(lUserName.Tag), Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.User);
-            btnWords_Click(null, null);
-        }
-
-        private void btnPrintWords_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                using (StreamWriter sw = File.CreateText("Print.html"))
-                {
-                    sw.WriteLine($"<h2 style=\"color: #506DE9\">{(((((e.Source as Button).Parent as Panel).Parent as Expander).Parent as Panel).Parent as Expander).Header}</h2>");
-                    sw.WriteLine("<h3 style=\"color: #6E7BB2\">Words:</h3>");
-
-                    StringBuilder str = new StringBuilder();
-                    sw.WriteLine("<ol>");
-                    foreach (var item in ((e.Source as Button).Parent as Panel).Children)
-                    {
-                        if (item is Expander)
-                        {
-                            str = new StringBuilder();
-                            string word = (item as Expander).Header.ToString();
-                            str.Append($"<li><dt><b>{word[0].ToString().ToUpper() + word.Substring(1)}</b> - ");
-                            foreach (var val in ((item as Expander).Content as Panel).Children)
-                            {
-                                if (val is Expander)
-                                {
-                                    if ((val as Expander).Header.ToString().Contains("Categories"))
-                                    {
-                                        foreach (var i in ((val as Expander).Content as Panel).Children)
-                                        {
-                                            if (i is Panel)
-                                                str.Append(((i as Panel).Children[1] as Label).Content + ", ");
-                                        }
-                                    }
-                                    if ((val as Expander).Header.ToString().Contains("Translation"))
-                                    {
-                                        str.Append("<i style=\"color: #BBC2E0\">");
-                                        foreach (var i in ((val as Expander).Content as Panel).Children)
-                                        {
-                                            if (i is Panel)
-                                                str.Append(((i as Panel).Children[1] as Label).Content + ", ");
-                                        }
-                                        str.Append("</i>;");
-                                    }
-                                    if ((val as Expander).Header.ToString().Contains("Definition"))
-                                    {
-                                        foreach (var i in ((val as Expander).Content as Panel).Children)
-                                        {
-                                            if (i is Panel)
-                                                str.Append(((i as Panel).Children[1] as Label).Content + ", ");
-                                        }
-                                        str.Append("</dt>");
-                                    }
-                                    if ((val as Expander).Header.ToString().Contains("Example"))
-                                    {
-                                        foreach (var i in ((val as Expander).Content as Panel).Children)
-                                        {
-                                            if (i is Panel)
-                                                str.Append($"<dd><i>{((i as Panel).Children[1] as Label).Content }</i></dd>");
-                                        }
-                                    }
-                                }
-                            }
-                            str.Append("</li>");
-                            sw.WriteLine(str);
-                        }
-                    }
-                    sw.WriteLine("</ol>");
-
-                    MessageBox.Show("The document is ready!", "Print", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error.", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            web = new System.Windows.Forms.WebBrowser();
-            web.DocumentCompleted += Print_DocumentCompleted; ;
-            web.DocumentText = File.ReadAllText("Print.html");
-        }
-        private void Print_DocumentCompleted(object sender, System.Windows.Forms.WebBrowserDocumentCompletedEventArgs e)
-        {
-            web.Print();
-        }
-        #endregion
-
-        private async void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            if (txtSearch.Text == "")
-                return;
-
-            stActions.Children.Clear();
-            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-            int[] lst;
-
-            switch (btnSearch.Tag)
-            {
-                case "Book":
-                    lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.Book, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.Book));
-                    break;
-                    
-                case "Video":
-                    lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.Video, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.Video));
-                    break;
-
-                case "Word":
-                    lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.Word, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.Word));
-                    break;
-
-                case "Game":
-                    lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.Game, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.Game));
-                    break;
-            }
-        }
-        private void ButtonBack_Click(object sender, RoutedEventArgs e)
-        {
-            grSearch.Visibility = Visibility.Collapsed;
-            stActions.Children.Clear();
-
-            Button btn = new Button { Name = "btnBooks", Content = "Books", Style = TryFindResource("btnNormal") as Style };
-            btn.Click += btnBooks_Click;
-            stActions.Children.Add(btn);
-
-            btn = new Button { Name = "btnVideos", Content = "Videos", Style = TryFindResource("btnNormal") as Style };
-            btn.Click += btnVideos_Click;
-            stActions.Children.Add(btn);
-
-            btn = new Button { Name = "btnWords", Content = "Dictionary", Style = TryFindResource("btnNormal") as Style };
-            btn.Click += btnWords_Click;
-            stActions.Children.Add(btn);
-
-            if (lRole.Content.ToString() == "admin")
-            {
-                btn = new Button { Name = "btnVideoCategories", Content = "Video Categories", Style = TryFindResource("btnNormal") as Style };
-                //btn.Click += btnVideos_Click;
-                stActions.Children.Add(btn);
-
-                btn = new Button { Name = "btnBookCategories", Content = "Book Categories", Style = TryFindResource("btnNormal") as Style };
-                stActions.Children.Add(btn);
-
-                btn = new Button { Name = "btnUsers", Content = "Users", Style = TryFindResource("btnNormal") as Style };
-                stActions.Children.Add(btn);
-            }
-        }
     }
 }
