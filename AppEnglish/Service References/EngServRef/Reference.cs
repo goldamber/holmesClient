@@ -60,6 +60,9 @@ namespace AppEnglish.EngServRef {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         Bookmark = 14,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Group = 15,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
@@ -118,16 +121,34 @@ namespace AppEnglish.EngServRef {
         Category = 16,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Author = 17,
+        Categories = 17,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Synonyms = 18,
+        Author = 18,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Translation = 19,
+        Authors = 19,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Definition = 20,
+        Synonyms = 20,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Translation = 21,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Translations = 22,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Definition = 23,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Definitions = 24,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Group = 25,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Groups = 26,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

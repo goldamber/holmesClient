@@ -203,6 +203,36 @@ namespace AppEnglish
                     break;
             }
         }
+        //Filter data via link.
+        private async void ItemData_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            stActions.Children.Clear();
+            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+            int[] lst;
+
+            switch (btnSearch.Tag)
+            {
+                case "Book":
+                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.Book, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
+                    await Task.Run(() => LoadList(lst, DataType.Book));
+                    break;
+
+                case "Video":
+                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.Video, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
+                    await Task.Run(() => LoadList(lst, DataType.Video));
+                    break;
+
+                case "Word":
+                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.Word, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
+                    await Task.Run(() => LoadList(lst, DataType.Word));
+                    break;
+
+                case "Game":
+                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.Game, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
+                    await Task.Run(() => LoadList(lst, DataType.Game));
+                    break;
+            }
+        }
         //Return to the list of actions.
         private void ButtonBack_Click(object sender, RoutedEventArgs e)
         {

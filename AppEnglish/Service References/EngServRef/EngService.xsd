@@ -17,6 +17,7 @@
       <xs:enumeration value="Game" />
       <xs:enumeration value="Example" />
       <xs:enumeration value="Bookmark" />
+      <xs:enumeration value="Group" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="ServerData" nillable="true" type="tns:ServerData" />
@@ -39,10 +40,16 @@
       <xs:enumeration value="PastThForm" />
       <xs:enumeration value="PluralForm" />
       <xs:enumeration value="Category" />
+      <xs:enumeration value="Categories" />
       <xs:enumeration value="Author" />
+      <xs:enumeration value="Authors" />
       <xs:enumeration value="Synonyms" />
       <xs:enumeration value="Translation" />
+      <xs:enumeration value="Translations" />
       <xs:enumeration value="Definition" />
+      <xs:enumeration value="Definitions" />
+      <xs:enumeration value="Group" />
+      <xs:enumeration value="Groups" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="PropertyData" nillable="true" type="tns:PropertyData" />

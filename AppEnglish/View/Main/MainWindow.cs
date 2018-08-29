@@ -64,7 +64,8 @@ namespace AppEnglish
 
                 grSearch.Children.Remove(FindName("btnAdd") as Button);
                 cmbFilter.Items.Clear();
-                Button btnGrid = new Button { Name = "btnAdd", Background = Brushes.LightGreen, Content = "Add " + data.ToString(), Foreground = Brushes.White, Margin = new Thickness(20) };
+
+                Button btnGrid = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Add.png")), Height = 20 }, Width = 50, Height = 50, Name = "btnAdd", Background = Brushes.LightGreen, ToolTip = "Add " + data.ToString(), Margin = new Thickness(20) };
                 switch (data)
                 {
                     case DataType.Video:
@@ -92,6 +93,7 @@ namespace AppEnglish
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Translation", Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Definition", Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Category", Foreground = Brushes.Black });
+                        cmbFilter.Items.Add(new ComboBoxItem { Content = "Group", Foreground = Brushes.Black });
                         btnSearch.Tag = "Word";
                         break;
                     case DataType.Game:
@@ -155,6 +157,25 @@ namespace AppEnglish
                 hor.Children.Add(new Label { Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Description).Result });
                 st.Children.Add(hor);
             }
+            if (_proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Created).Result != null)
+            {
+                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+                hor.Children.Add(new Label { Content = "Created:", FontSize = 14, FontWeight = FontWeights.Bold });
+                hor.Children.Add(new Label { Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Created).Result });
+                st.Children.Add(hor);
+            }
+            if (_proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Year).Result != null)
+            {
+                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+                hor.Children.Add(new Label { Content = "Year:", FontSize = 14, FontWeight = FontWeights.Bold });
+
+                TextBlock label = new TextBlock { Padding = new Thickness(5), Foreground = Brushes.DarkBlue, TextDecorations = TextDecorations.Underline, Tag = "Year", Text = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Year).Result };
+                label.MouseDown += ItemData_MouseDown;
+                label.MouseEnter += ItemData_MouseEnter;
+                label.MouseLeave += ItemData_MouseLeave;
+                hor.Children.Add(label);
+                st.Children.Add(hor);
+            }
             if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Video, EngServRef.ServerData.VideoCategory).Result != null)
                 AddExpanderData("Categories", item, st, EngServRef.ServerData.Video, EngServRef.ServerData.VideoCategory);
             if (_proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Book).Result != null && _proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Book).Result.Length > 0)
@@ -173,17 +194,21 @@ namespace AppEnglish
                 st.Children.Add(words);
             }
 
-            Button btn = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Foreground = Brushes.WhiteSmoke, Tag = item, Content = "Remove" };
+            #region Buttons.
+            StackPanel stButtons = new StackPanel { Orientation = Orientation.Horizontal };
+            Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Delete.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Tag = item, ToolTip = "Delete" };
             btn.Click += btnRemoveVideo_Click;
-            st.Children.Add(btn);
+            stButtons.Children.Add(btn);
 
-            btn = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Yellow, Foreground = Brushes.Black, Tag = item, Content = "Edit" };
+            btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Yellow, Tag = item, ToolTip = "Edit" };
             btn.Click += btnEditVideo_Click;
-            st.Children.Add(btn);
+            stButtons.Children.Add(btn);
 
-            btn = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Left, Tag = item, Content = "View" };
+            btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/View.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Tag = item, ToolTip = "View" };
             btn.Click += btnViewVideo_Click;
-            st.Children.Add(btn);
+            stButtons.Children.Add(btn);
+            st.Children.Add(stButtons);
+            #endregion
 
             tmp.Content = st;
             stActions.Children.Add(tmp);
@@ -206,6 +231,25 @@ namespace AppEnglish
                 hor.Children.Add(new Label { Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Description).Result });
                 st.Children.Add(hor);
             }
+            if (_proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Created).Result != null)
+            {
+                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+                hor.Children.Add(new Label { Content = "Created:", FontSize = 14, FontWeight = FontWeights.Bold });
+                hor.Children.Add(new Label { Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Created).Result });
+                st.Children.Add(hor);
+            }
+            if (_proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Year).Result != null)
+            {
+                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+                hor.Children.Add(new Label { Content = "Year:", FontSize = 14, FontWeight = FontWeights.Bold });
+
+                TextBlock label = new TextBlock { Padding = new Thickness(5), Foreground = Brushes.DarkBlue, TextDecorations = TextDecorations.Underline, Tag = "Year", Text = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Year).Result };
+                label.MouseDown += ItemData_MouseDown;
+                label.MouseEnter += ItemData_MouseEnter;
+                label.MouseLeave += ItemData_MouseLeave;
+                hor.Children.Add(label);
+                st.Children.Add(hor);
+            }
             if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Book, EngServRef.ServerData.BookCategory).Result != null)
                 AddExpanderData("Categories", item, st, EngServRef.ServerData.Book, EngServRef.ServerData.BookCategory);
             if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Book, EngServRef.ServerData.Author).Result != null)
@@ -226,17 +270,21 @@ namespace AppEnglish
                 st.Children.Add(words);
             }
 
-            Button btn = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Foreground = Brushes.WhiteSmoke, Tag = item, Content = "Remove" };
+            #region Buttons.
+            StackPanel stButtons = new StackPanel { Orientation = Orientation.Horizontal };
+            Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Delete.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Tag = item, ToolTip = "Delete" };
             btn.Click += btnRemoveBook_Click;
-            st.Children.Add(btn);
+            stButtons.Children.Add(btn);
 
-            btn = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Yellow, Foreground = Brushes.Black, Tag = item, Content = "Edit" };
+            btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Yellow, Tag = item, ToolTip = "Edit" };
             btn.Click += btnEditBook_Click;
-            st.Children.Add(btn);
+            stButtons.Children.Add(btn);
 
-            btn = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Left, Tag = item, Content = "View" };
+            btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/View.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Tag = item, ToolTip = "View" };
             btn.Click += btnViewBook_Click;
-            st.Children.Add(btn);
+            stButtons.Children.Add(btn);
+            st.Children.Add(stButtons);
+            #endregion
 
             tmp.Content = st;
             stActions.Children.Add(tmp);
@@ -258,22 +306,28 @@ namespace AppEnglish
                 AddExpanderData("Categories", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.WordCategory);
             if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Word, EngServRef.ServerData.Translation).Result != null)
                 AddExpanderData("Translations", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Translation);
+            if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Word, EngServRef.ServerData.Group).Result != null)
+                AddExpanderData("Groups", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Group);
             if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Word, EngServRef.ServerData.Definition).Result != null)
                 AddExpanderData("Definitions", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Definition);
 
-            Button btn = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Foreground = Brushes.WhiteSmoke, Tag = item, Content = "Remove" };
+            #region Buttons.
+            StackPanel stButtons = new StackPanel { Orientation = Orientation.Horizontal };
+            Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Delete.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Tag = item, ToolTip = "Delete" };
             if (parent == stActions)
                 btn.Click += btnRemoveWord_Click;
             else
                 btn.Click += btnRemoveFromUser_Click;
-            st.Children.Add(btn);
+            stButtons.Children.Add(btn);
 
             if (parent == stActions)
             {
-                btn = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Yellow, Foreground = Brushes.Black, Tag = item, Content = "Edit" };
+                btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Yellow, Tag = item, ToolTip = "Edit" };
                 btn.Click += btnEditWord_Click;
-                st.Children.Add(btn);
+                stButtons.Children.Add(btn);
             }
+            st.Children.Add(stButtons);
+            #endregion
 
             tmp.Content = st;
             parent.Children.Add(tmp);
@@ -301,14 +355,32 @@ namespace AppEnglish
                 panel.MouseEnter += ExpanderItem_MouseEnter;
                 panel.MouseLeave += ExpanderItem_MouseLeave;
 
-                panel.Children.Add(new Border { CornerRadius = new CornerRadius(50), BorderBrush = Brushes.Gray, BorderThickness = new Thickness(2), Child = new Label { Content = count, Padding = new Thickness(2), FontSize = 10, FontWeight = FontWeights.Bold }, Padding = new Thickness(7, 5, 7, 5), Margin = new Thickness(5) });
-                panel.Children.Add(new Label { Padding = new Thickness(5), VerticalContentAlignment = VerticalAlignment.Stretch, HorizontalContentAlignment = HorizontalAlignment.Left, Tag = val, Content = _proxy.GetItemPropertyAsync(val, res, EngServRef.PropertyData.Name).Result, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Center, FontWeight = FontWeights.Normal });
+                panel.Children.Add(new Border { CornerRadius = new CornerRadius(22, 22, 20, 20), BorderBrush = Brushes.Gray, BorderThickness = new Thickness(2), Child = new Label { Content = count, Padding = new Thickness(2), FontSize = 9, FontWeight = FontWeights.Bold }, Padding = new Thickness(7, 5, 7, 5), Margin = new Thickness(5) });
+                TextBlock label = new TextBlock { Padding = new Thickness(5), Foreground = Brushes.DarkBlue, TextDecorations = TextDecorations.Underline, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left, Tag = header, Text = _proxy.GetItemPropertyAsync(val, res, EngServRef.PropertyData.Name).Result, FontSize = 12, FontWeight = FontWeights.Normal };
+                label.MouseDown += ItemData_MouseDown;
+                label.MouseEnter += ItemData_MouseEnter;
+                label.MouseLeave += ItemData_MouseLeave;
+                panel.Children.Add(label);
                 ver.Children.Add(panel);
                 count++;
             }
             hor.Content = ver;
             st.Children.Add(hor);
         }
+
+        //Customize expanders label (hover).
+        private void ItemData_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            (sender as TextBlock).TextDecorations = TextDecorations.Underline;
+            (sender as TextBlock).Foreground = Brushes.DarkBlue;
+        }
+        //Customize expanders label (hover).
+        private void ItemData_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            (sender as TextBlock).TextDecorations = null;
+            (sender as TextBlock).Foreground = Brushes.DeepSkyBlue;
+        }
+        
         //Customize expander (hover).
         private void ExpanderItem_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
