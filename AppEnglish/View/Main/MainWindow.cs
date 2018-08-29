@@ -72,6 +72,8 @@ namespace AppEnglish
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Description", Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Category", Foreground = Brushes.Black });
+                        cmbFilter.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
+                        cmbFilter.Items.Add(new ComboBoxItem { Content = "Mark", Foreground = Brushes.Black });
                         btnSearch.Tag = "Video";
                         break;
                     case DataType.Book:
@@ -80,6 +82,8 @@ namespace AppEnglish
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Description", Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Category", Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Author", Foreground = Brushes.Black });
+                        cmbFilter.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
+                        cmbFilter.Items.Add(new ComboBoxItem { Content = "Mark", Foreground = Brushes.Black });
                         btnSearch.Tag = "Book";
                         break;
                     case DataType.Word:
@@ -139,7 +143,7 @@ namespace AppEnglish
         /// <param name="item">Id of video.</param>
         private void AddVideoItem(int item)
         {
-            Expander tmp = new Expander { Header = item };
+            Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
             string img = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Imgpath).Result;
             st.Children.Add(new Image { Source = new BitmapImage(new Uri(img != null && img != "WolfV.png" && File.Exists(img) ? img : $"pack://application:,,,/Images/{img}")), MaxHeight = 100, HorizontalAlignment = HorizontalAlignment.Center });
@@ -190,7 +194,7 @@ namespace AppEnglish
         /// <param name="item">Id of book.</param>
         private void AddBookItem(int item)
         {
-            Expander tmp = new Expander { Header = item };
+            Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
             string img = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath).Result;
             st.Children.Add(new Image { Source = new BitmapImage(new Uri(img != null && img != "WolfB.png" && File.Exists(img) ? img : $"pack://application:,,,/Images/{img}")), MaxHeight = 100, HorizontalAlignment = HorizontalAlignment.Center });
@@ -244,7 +248,7 @@ namespace AppEnglish
         /// <param name="parent">The element in which a word is supposed to appear.</param>
         private void AddWordItem(int item, Panel parent)
         {
-            Expander tmp = new Expander { Header = item };
+            Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.Word, EngServRef.PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
             string img = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Word, EngServRef.PropertyData.Imgpath).Result;
             if (img != null && File.Exists(img))
