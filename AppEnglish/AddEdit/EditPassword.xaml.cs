@@ -1,25 +1,26 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace AppEnglish
+namespace AppEnglish.AddEdit
 {
-    public partial class AddAuthor : Window
+    public partial class EditPassword : Window
     {
         EngServRef.EngServiceClient _proxy;
+        int id;
 
         #region Constructors.
         //Initialization.
-        public AddAuthor()
+        public EditPassword()
         {
             InitializeComponent();
         }
-        //Initialize '_proxy'.
-        public AddAuthor(EngServRef.EngServiceClient tmp) : this()
+        //Initialize '_proxy'. Requires the users id.
+        public EditPassword(EngServRef.EngServiceClient tmp, int id) : this()
         {
             _proxy = tmp;
+            this.id = id;
         }
         #endregion
-
         #region Visualisation, validation.
         //Change the size of the inner fields.
         private void StackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -37,48 +38,46 @@ namespace AppEnglish
                 }
             }
         }
-        //Check the name and surname of an author.
-        private void txtName_TextChanged(object sender, TextChangedEventArgs e)
+        //Check fields.
+        private void txtName_TextChanged(object sender, RoutedEventArgs e)
         {
-            if ((sender as TextBox).Text == "")
+            if ((sender as PasswordBox).Password.Length < 6)
             {
-                foreach (FrameworkElement item in ((sender as TextBox).Parent as Panel).Children)
+                foreach (FrameworkElement item in ((sender as PasswordBox).Parent as Panel).Children)
                 {
-                    if (item is TextBox)
-                        item.Style = TryFindResource("txtWrong") as Style;
+                    if (item is PasswordBox)
+                        item.Style = TryFindResource("pswdWrong") as Style;
                     else if (item is Label)
                         item.Style = TryFindResource("lbFormWrong") as Style;
                 }
-                ((sender as TextBox).Parent as Panel).ToolTip = (sender as TextBox).Text == "Empty strings are not allowed!";
+                ((sender as PasswordBox).Parent as Panel).ToolTip = "Password must contain more than 6 symbols!";
                 btnOK.IsEnabled = false;
             }
             else
             {
-                foreach (FrameworkElement item in ((sender as TextBox).Parent as Panel).Children)
+                foreach (FrameworkElement item in ((sender as PasswordBox).Parent as Panel).Children)
                 {
-                    if (item is TextBox)
-                        item.Style = TryFindResource("txtNormal") as Style;
+                    if (item is PasswordBox)
+                        item.Style = TryFindResource("pswdNormal") as Style;
                     else if (item is Label)
                         item.Style = TryFindResource("lbFormNormal") as Style;
                 }
-                ((sender as TextBox).Parent as Panel).ToolTip = "Input data.";
+                ((sender as PasswordBox).Parent as Panel).ToolTip = "Input data.";
                 btnOK.IsEnabled = true;
             }
         }
         #endregion
-
         #region Close form (OK, Cancel).
-        //Add an author.
+        //Edit.
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (!_proxy.CheckAuthor(txtName.Text, txtSurname.Text))
+            if (pswdNew.Password != pswdConfirm.Password)
             {
-                _proxy.AddAuthor(txtName.Text, txtSurname.Text);
-                FormData.Author = $"{txtSurname.Text}, {txtName.Text}";
-                Close();
+                MessageBox.Show("Passwords do not match! Try again.", "Wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            else
-                MessageBox.Show("This person is already taken!", "Wrong.", MessageBoxButton.OK, MessageBoxImage.Error);
+            _proxy.EditData(id, pswdNew.Password, EngServRef.ServerData.User, EngServRef.PropertyData.Password);
+            Close();
         }
         //Close the form.
         private void btnCancel_Click(object sender, RoutedEventArgs e)

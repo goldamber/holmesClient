@@ -80,8 +80,8 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <StackPanel>
                     <Label Name="lUserName" HorizontalContentAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="#FF2E72A9" />
-                    <Label Name="lRole" HorizontalContentAlignment="Right" Foreground="#FF2887D6" Padding="0" Margin="2" />
-                    <Label Name="lLevel" HorizontalContentAlignment="Right" Foreground="#FF2887D6" Padding="0" Margin="0" FontSize="9" />
+                    <TextBlock Name="lProfile" Text="Profile" FontSize="12" HorizontalAlignment="Right" Foreground="DarkBlue"  MouseEnter="ItemData_MouseEnter" MouseLeave="ItemData_MouseLeave" TextDecorations="Underline" MouseDown="lProfile_MouseDown" />
+                    <Label Name="lRole" Visibility="Collapsed" />
                 </StackPanel>                
                 <Image Name="imUserAvatar" Style="{StaticResource imgAva}" Source="..\..\Images\Wolf.png" MaxHeight="100" />
             </StackPanel>

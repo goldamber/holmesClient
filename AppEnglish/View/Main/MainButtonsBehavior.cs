@@ -1,17 +1,107 @@
-﻿using MahApps.Metro.Controls;
+﻿using AppEnglish.AddEdit;
+using MahApps.Metro.Controls;
 using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace AppEnglish
 {
     //Clicks actions.
     public partial class MainWindow : MetroWindow
     {
+        System.Windows.Forms.WebBrowser web = new System.Windows.Forms.WebBrowser();
+
+        #region Users actions.
+        //View user profile.
+        private void lProfile_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            stActions.Children.Clear();
+            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+            Task.Run(() => {
+                Dispatcher.Invoke(() => {
+                    WrapPanel tmp = new WrapPanel();
+                    tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontWeight = FontWeights.Bold, Content = "Login:" });
+                    tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontSize = 14, Content = lUserName.Content });
+                    Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 7 }, Width = 32, Height = 30, VerticalAlignment = VerticalAlignment.Top, Background = Brushes.Yellow, Tag = _proxy.GetUserId(lUserName.Content.ToString()), ToolTip = "Edit" };
+                    btn.Click += btnEditUsername_Click;
+                    tmp.Children.Add(btn);
+                    stActions.Children.Add(tmp);
+
+                    tmp = new WrapPanel();
+                    tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontWeight = FontWeights.Bold, Content = "Role:" });
+                    tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontSize = 14, Content = lRole.Content });
+                    stActions.Children.Add(tmp);
+
+                    tmp = new WrapPanel { ToolTip = "Your level depends on the quantity of played games and the score of each game." };
+                    tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontWeight = FontWeights.Bold, Content = "Level:" });
+                    tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontSize = 14, Content = _proxy.GetItemProperty(Convert.ToInt32(_proxy.GetUserId(lUserName.Content.ToString())), EngServRef.ServerData.User, EngServRef.PropertyData.Level) });
+                    stActions.Children.Add(tmp);
+
+                    tmp = new WrapPanel();
+                    btn = new Button { Style = TryFindResource("btnNormal") as Style, Content = "Change password", Margin = new Thickness(5), Tag = _proxy.GetUserId(lUserName.Content.ToString()) };
+                    btn.Click += btnEditPassword_Click;
+                    tmp.Children.Add(btn);
+                    stActions.Children.Add(tmp);
+
+                    tmp = new WrapPanel();
+                    btn = new Button { Style = TryFindResource("btnNormal") as Style, Content = "Change avatar", Margin = new Thickness(5), Tag = _proxy.GetUserId(lUserName.Content.ToString()) };
+                    btn.Click += btnEditAvatar_Click;
+                    tmp.Children.Add(btn);
+                    stActions.Children.Add(tmp);
+
+                    Button ret = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Width = 50, Height = 50, HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(20, 0, 20, 0) };
+                    ret.Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/ArrowBack.png")), Height = 35 };
+                    ret.Click += ButtonBack_Click;
+                    stActions.Children.Add(ret);
+
+                    foreach (var item in stActions.Children)
+                    {
+                        if (item is ProgressBar)
+                        {
+                            stActions.Children.Remove(item as UIElement);
+                            break;
+                        }
+                    }
+                });
+            });
+        }
+
+        //Show a form for login editting.
+        private void btnEditUsername_Click(object sender, RoutedEventArgs e)
+        {
+            int id = Convert.ToInt32((sender as Button).Tag);
+            EditUsername form = new EditUsername(_proxy, id);
+            form.ShowDialog();
+            lUserName.Content = (_proxy.GetItemProperty(id, EngServRef.ServerData.User, EngServRef.PropertyData.Name)).ToUpper();
+            (((sender as Button).Parent as Panel).Children[1] as Label).Content = lUserName.Content;
+        }
+        //Show a form for login editting.
+        private void btnEditPassword_Click(object sender, RoutedEventArgs e)
+        {
+            EditPassword form = new EditPassword(_proxy, Convert.ToInt32((sender as Button).Tag));
+            form.ShowDialog();
+        }
+        //Show a form for login editting.
+        private void btnEditAvatar_Click(object sender, RoutedEventArgs e)
+        {
+            //...
+        }
+        #endregion
         #region Video actions.
+        //Show a list of all videos to the user.
+        private async void btnVideos_Click(object sender, RoutedEventArgs e)
+        {
+            stActions.Children.Clear();
+            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+
+            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Video);
+            await Task.Run(() => LoadList(lst, DataType.Video));
+        }
         //Show a form for adding a new video.
         private void btnAddVideo(object sender, RoutedEventArgs e)
         {
@@ -36,6 +126,15 @@ namespace AppEnglish
         }
         #endregion
         #region Book actions.
+        //Show a list of all books to the user.
+        private async void btnBooks_Click(object sender, RoutedEventArgs e)
+        {
+            stActions.Children.Clear();
+            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+
+            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Book);
+            await Task.Run(() => LoadList(lst, DataType.Book));
+        }
         //Show a form for adding a new book.
         private void btnAddBook(object sender, RoutedEventArgs e)
         {
@@ -62,6 +161,15 @@ namespace AppEnglish
         }
         #endregion
         #region Word actions.
+        //Show a list of all words to the user.
+        private async void btnWords_Click(object sender, RoutedEventArgs e)
+        {
+            stActions.Children.Clear();
+            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+
+            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Word);
+            await Task.Run(() => LoadList(lst, DataType.Word));
+        }
         //Show a form for adding a new word.
         private void btnAddWord(object sender, RoutedEventArgs e)
         {
@@ -170,11 +278,11 @@ namespace AppEnglish
         }
         #endregion
 
-        //Filter the data.
+        //Filter data.
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             if (txtSearch.Text == "")
-                return;
+                _proxy.GetItems((EngServRef.ServerData)Enum.Parse(typeof(EngServRef.ServerData), btnSearch.Tag.ToString()));
 
             stActions.Children.Clear();
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
@@ -239,7 +347,7 @@ namespace AppEnglish
             grSearch.Visibility = Visibility.Collapsed;
             stActions.Children.Clear();
 
-            Button btn = new Button { Name = "btnBooks", Content = "Books", Style = TryFindResource("btnNormal") as Style };
+            /*Button btn = new Button { Name = "btnBooks", Content = "Books", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnBooks_Click;
             stActions.Children.Add(btn);
 
@@ -261,7 +369,7 @@ namespace AppEnglish
 
                 btn = new Button { Name = "btnUsers", Content = "Users", Style = TryFindResource("btnNormal") as Style };
                 stActions.Children.Add(btn);
-            }
+            }*/
         }
     }
 }

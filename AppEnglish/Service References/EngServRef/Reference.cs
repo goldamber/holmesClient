@@ -197,6 +197,12 @@ namespace AppEnglish.EngServRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddBookAuthor", ReplyAction="http://tempuri.org/IEngService/AddBookAuthorResponse")]
         System.Threading.Tasks.Task AddBookAuthorAsync(int bookId, int author);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/EditData", ReplyAction="http://tempuri.org/IEngService/EditDataResponse")]
+        void EditData(int id, string changes, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/EditData", ReplyAction="http://tempuri.org/IEngService/EditDataResponse")]
+        System.Threading.Tasks.Task EditDataAsync(int id, string changes, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItemProperty", ReplyAction="http://tempuri.org/IEngService/GetItemPropertyResponse")]
         string GetItemProperty(int id, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property);
         
@@ -351,6 +357,14 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task AddBookAuthorAsync(int bookId, int author) {
             return base.Channel.AddBookAuthorAsync(bookId, author);
+        }
+        
+        public void EditData(int id, string changes, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property) {
+            base.Channel.EditData(id, changes, data, property);
+        }
+        
+        public System.Threading.Tasks.Task EditDataAsync(int id, string changes, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property) {
+            return base.Channel.EditDataAsync(id, changes, data, property);
         }
         
         public string GetItemProperty(int id, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property) {

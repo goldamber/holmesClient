@@ -9,9 +9,6 @@ using System.Windows.Media.Imaging;
 
 namespace AppEnglish
 {
-    //Types of data to be presented.
-    enum DataType { Video, Book, Word, Game }
-
     //Register, visual settings.
     public partial class MainWindow : MetroWindow
     {
@@ -223,7 +220,6 @@ namespace AppEnglish
                 txtUserName.Tag = _proxy.GetUserIdAsync(txtUserName.Text).Result;
                 string roleId = _proxy.GetItemPropertyAsync(Convert.ToInt32(txtUserName.Tag), EngServRef.ServerData.User, EngServRef.PropertyData.Role).Result;
                 lRole.Content = roleId == null? "": _proxy.GetItemProperty(Convert.ToInt32(roleId), EngServRef.ServerData.Role, EngServRef.PropertyData.Name);
-                lLevel.Content = "Level: " + (_proxy.GetItemProperty(Convert.ToInt32(txtUserName.Tag), EngServRef.ServerData.User, EngServRef.PropertyData.Level) ?? "");
                 string path = _proxy.GetItemPropertyAsync(Convert.ToInt32(txtUserName.Tag), EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath).Result ?? "Wolf.png";
                 imUserAvatar.Source = new BitmapImage(new Uri(path != "Wolf.png" ? $"pack://siteoforigin:,,,/{path}" : "pack://application:,,,/Images/Wolf.png"));
                 ButtonBack_Click(null, null);
@@ -235,7 +231,6 @@ namespace AppEnglish
             imUserAvatar.Source = null;
             lUserName.Content = "";
             lRole.Content = "";
-            lLevel.Content = "";
 
             grCab.Visibility = Visibility.Collapsed;
             stFirst.Visibility = Visibility.Visible;

@@ -73,14 +73,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddEddit\AddAuthor.xaml.cs">
+    <Compile Include="AddEdit\AddAuthor.xaml.cs">
       <DependentUpon>AddAuthor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddEddit\AddBook.xaml.cs">
+    <Compile Include="AddEdit\AddBook.xaml.cs">
       <DependentUpon>AddBook.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddEddit\AddWord.xaml.cs">
+    <Compile Include="AddEdit\AddWord.xaml.cs">
       <DependentUpon>AddWord.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddEdit\EditAvatar.xaml.cs">
+      <DependentUpon>EditAvatar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddEdit\EditPassword.xaml.cs">
+      <DependentUpon>EditPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddEdit\EditUsername.xaml.cs">
+      <DependentUpon>EditUsername.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\BookReader.xaml.cs">
       <DependentUpon>BookReader.xaml</DependentUpon>
@@ -97,15 +106,27 @@
     <Compile Include="View\VideoPlayer.xaml.cs">
       <DependentUpon>VideoPlayer.xaml</DependentUpon>
     </Compile>
-    <Page Include="AddEddit\AddAuthor.xaml">
+    <Page Include="AddEdit\AddAuthor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddEddit\AddBook.xaml">
+    <Page Include="AddEdit\AddBook.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddEddit\AddWord.xaml">
+    <Page Include="AddEdit\AddWord.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEdit\EditAvatar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEdit\EditPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEdit\EditUsername.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

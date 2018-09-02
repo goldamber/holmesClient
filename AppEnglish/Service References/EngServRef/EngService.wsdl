@@ -79,6 +79,12 @@
   <wsdl:message name="IEngService_AddBookAuthor_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddBookAuthorResponse" />
   </wsdl:message>
+  <wsdl:message name="IEngService_EditData_InputMessage">
+    <wsdl:part name="parameters" element="tns:EditData" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_EditData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EditDataResponse" />
+  </wsdl:message>
   <wsdl:message name="IEngService_GetItemProperty_InputMessage">
     <wsdl:part name="parameters" element="tns:GetItemProperty" />
   </wsdl:message>
@@ -179,6 +185,10 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddBookAuthor">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddBookAuthor" message="tns:IEngService_AddBookAuthor_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddBookAuthorResponse" message="tns:IEngService_AddBookAuthor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="EditData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/EditData" message="tns:IEngService_EditData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/EditDataResponse" message="tns:IEngService_EditData_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetItemProperty">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetItemProperty" message="tns:IEngService_GetItemProperty_InputMessage" />
@@ -288,6 +298,15 @@
     </wsdl:operation>
     <wsdl:operation name="AddBookAuthor">
       <soap12:operation soapAction="http://tempuri.org/IEngService/AddBookAuthor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EditData">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/EditData" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

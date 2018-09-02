@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,44 +12,9 @@ namespace AppEnglish
     //Renders views.
     public partial class MainWindow : MetroWindow
     {
-        System.Windows.Forms.WebBrowser web = new System.Windows.Forms.WebBrowser();
-
-        #region User actions (choose an option).
-        /// <summary>
-        /// Show a list of all books to the user.
-        /// </summary>
-        private async void btnBooks_Click(object sender, RoutedEventArgs e)
-        {
-            stActions.Children.Clear();
-            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-
-            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Book);
-            await Task.Run(() => LoadList(lst, DataType.Book));
-        }
-        /// <summary>
-        /// Show a list of all videos to the user.
-        /// </summary>
-        private async void btnVideos_Click(object sender, RoutedEventArgs e)
-        {
-            stActions.Children.Clear();
-            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-
-            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Video);
-            await Task.Run(() => LoadList(lst, DataType.Video));
-        }
-        /// <summary>
-        /// Show a list of all words to the user.
-        /// </summary>
-        private async void btnWords_Click(object sender, RoutedEventArgs e)
-        {
-            stActions.Children.Clear();
-            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-
-            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Word);
-            await Task.Run(() => LoadList(lst, DataType.Word));
-        }
-        #endregion
-
+        //Types of data to be presented.
+        enum DataType { Video, Book, Word, Game }
+        
         #region Render a template for list.
         /// <summary>
         /// Render a list-view (template).
@@ -131,7 +95,7 @@ namespace AppEnglish
                         stActions.Children.Remove(item as UIElement);
                         break;
                     }
-                }                
+                }
 
                 Button ret = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Width = 50, Height = 50, HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(20, 0, 20, 0) };
                 ret.Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/ArrowBack.png")), Height = 35 };
@@ -150,35 +114,12 @@ namespace AppEnglish
             string img = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Imgpath).Result;
             st.Children.Add(new Image { Source = new BitmapImage(new Uri(img != null && img != "WolfV.png" && File.Exists(img) ? img : $"pack://application:,,,/Images/{img}")), MaxHeight = 100, HorizontalAlignment = HorizontalAlignment.Center });
 
-            if (_proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Description).Result != null)
-            {
-                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-                hor.Children.Add(new Label { Content = "Description:", FontSize = 14, FontWeight = FontWeights.Bold });
-                hor.Children.Add(new Label { Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Description).Result });
-                st.Children.Add(hor);
-            }
-            if (_proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Created).Result != null)
-            {
-                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-                hor.Children.Add(new Label { Content = "Created:", FontSize = 14, FontWeight = FontWeights.Bold });
-                hor.Children.Add(new Label { Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Created).Result });
-                st.Children.Add(hor);
-            }
-            if (_proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Year).Result != null)
-            {
-                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-                hor.Children.Add(new Label { Content = "Year:", FontSize = 14, FontWeight = FontWeights.Bold });
+            AddStaticContent(item, st, EngServRef.ServerData.Video, EngServRef.PropertyData.Description);
+            AddStaticContent(item, st, EngServRef.ServerData.Video, EngServRef.PropertyData.Created);
+            AddHoverableData(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Year, st);
 
-                TextBlock label = new TextBlock { Padding = new Thickness(5), Foreground = Brushes.DarkBlue, TextDecorations = TextDecorations.Underline, Tag = "Year", Text = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Year).Result };
-                label.MouseDown += ItemData_MouseDown;
-                label.MouseEnter += ItemData_MouseEnter;
-                label.MouseLeave += ItemData_MouseLeave;
-                hor.Children.Add(label);
-                st.Children.Add(hor);
-            }
-            if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Video, EngServRef.ServerData.VideoCategory).Result != null)
-                AddExpanderData("Categories", item, st, EngServRef.ServerData.Video, EngServRef.ServerData.VideoCategory);
-            if (_proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Book).Result != null && _proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Book).Result.Length > 0)
+            AddExpanderData("Categories", item, st, EngServRef.ServerData.Video, EngServRef.ServerData.VideoCategory);
+            if (_proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Video).Result != null && _proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Video).Result.Length > 0)
             {
                 Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
                 StackPanel stack = new StackPanel();
@@ -194,21 +135,7 @@ namespace AppEnglish
                 st.Children.Add(words);
             }
 
-            #region Buttons.
-            StackPanel stButtons = new StackPanel { Orientation = Orientation.Horizontal };
-            Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Delete.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Tag = item, ToolTip = "Delete" };
-            btn.Click += btnRemoveVideo_Click;
-            stButtons.Children.Add(btn);
-
-            btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Yellow, Tag = item, ToolTip = "Edit" };
-            btn.Click += btnEditVideo_Click;
-            stButtons.Children.Add(btn);
-
-            btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/View.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Tag = item, ToolTip = "View" };
-            btn.Click += btnViewVideo_Click;
-            stButtons.Children.Add(btn);
-            st.Children.Add(stButtons);
-            #endregion
+            AddButtons(item, st, btnRemoveVideo_Click, btnEditVideo_Click, btnViewVideo_Click);
 
             tmp.Content = st;
             stActions.Children.Add(tmp);
@@ -224,36 +151,14 @@ namespace AppEnglish
             string img = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath).Result;
             st.Children.Add(new Image { Source = new BitmapImage(new Uri(img != null && img != "WolfB.png" && File.Exists(img) ? img : $"pack://application:,,,/Images/{img}")), MaxHeight = 100, HorizontalAlignment = HorizontalAlignment.Center });
 
-            if (_proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Description).Result != null)
-            {
-                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-                hor.Children.Add(new Label { Content = "Description:", FontSize = 14, FontWeight = FontWeights.Bold });
-                hor.Children.Add(new Label { Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Description).Result });
-                st.Children.Add(hor);
-            }
-            if (_proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Created).Result != null)
-            {
-                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-                hor.Children.Add(new Label { Content = "Created:", FontSize = 14, FontWeight = FontWeights.Bold });
-                hor.Children.Add(new Label { Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Created).Result });
-                st.Children.Add(hor);
-            }
-            if (_proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Year).Result != null)
-            {
-                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-                hor.Children.Add(new Label { Content = "Year:", FontSize = 14, FontWeight = FontWeights.Bold });
+            AddStaticContent(item, st, EngServRef.ServerData.Book, EngServRef.PropertyData.Description);
+            AddStaticContent(item, st, EngServRef.ServerData.Book, EngServRef.PropertyData.Created);
 
-                TextBlock label = new TextBlock { Padding = new Thickness(5), Foreground = Brushes.DarkBlue, TextDecorations = TextDecorations.Underline, Tag = "Year", Text = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Year).Result };
-                label.MouseDown += ItemData_MouseDown;
-                label.MouseEnter += ItemData_MouseEnter;
-                label.MouseLeave += ItemData_MouseLeave;
-                hor.Children.Add(label);
-                st.Children.Add(hor);
-            }
-            if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Book, EngServRef.ServerData.BookCategory).Result != null)
-                AddExpanderData("Categories", item, st, EngServRef.ServerData.Book, EngServRef.ServerData.BookCategory);
-            if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Book, EngServRef.ServerData.Author).Result != null)
-                AddExpanderData("Authors", item, st, EngServRef.ServerData.Book, EngServRef.ServerData.Author);
+            AddHoverableData(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Year, st);
+
+            AddExpanderData("Categories", item, st, EngServRef.ServerData.Book, EngServRef.ServerData.BookCategory);
+            AddExpanderData("Authors", item, st, EngServRef.ServerData.Book, EngServRef.ServerData.Author);
+
             if (_proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Book).Result != null && _proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Book).Result.Length > 0)
             {
                 Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
@@ -269,22 +174,8 @@ namespace AppEnglish
                 words.Content = stack;
                 st.Children.Add(words);
             }
-
-            #region Buttons.
-            StackPanel stButtons = new StackPanel { Orientation = Orientation.Horizontal };
-            Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Delete.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Tag = item, ToolTip = "Delete" };
-            btn.Click += btnRemoveBook_Click;
-            stButtons.Children.Add(btn);
-
-            btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Yellow, Tag = item, ToolTip = "Edit" };
-            btn.Click += btnEditBook_Click;
-            stButtons.Children.Add(btn);
-
-            btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/View.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Tag = item, ToolTip = "View" };
-            btn.Click += btnViewBook_Click;
-            stButtons.Children.Add(btn);
-            st.Children.Add(stButtons);
-            #endregion
+            
+            AddButtons(item, st, btnRemoveBook_Click, btnEditBook_Click, btnViewBook_Click);
 
             tmp.Content = st;
             stActions.Children.Add(tmp);
@@ -301,48 +192,38 @@ namespace AppEnglish
             string img = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Word, EngServRef.PropertyData.Imgpath).Result;
             if (img != null && File.Exists(img))
                 st.Children.Add(new Image { Source = new BitmapImage(new Uri(img)) });
-            
-            if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Word, EngServRef.ServerData.WordCategory).Result != null)
-                AddExpanderData("Categories", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.WordCategory);
-            if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Word, EngServRef.ServerData.Translation).Result != null)
-                AddExpanderData("Translations", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Translation);
-            if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Word, EngServRef.ServerData.Group).Result != null)
-                AddExpanderData("Groups", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Group);
-            if (_proxy.GetItemDataAsync(item, EngServRef.ServerData.Word, EngServRef.ServerData.Definition).Result != null)
-                AddExpanderData("Definitions", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Definition);
 
-            #region Buttons.
-            StackPanel stButtons = new StackPanel { Orientation = Orientation.Horizontal };
-            Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Delete.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Tag = item, ToolTip = "Delete" };
-            if (parent == stActions)
-                btn.Click += btnRemoveWord_Click;
-            else
-                btn.Click += btnRemoveFromUser_Click;
-            stButtons.Children.Add(btn);
+            AddExpanderData("Categories", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.WordCategory);
+            AddExpanderData("Translations", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Translation);
+            AddExpanderData("Groups", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Group);
+            AddExpanderData("Definitions", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Definition);
 
+            RoutedEventHandler delete;
+            RoutedEventHandler edit = null;
             if (parent == stActions)
             {
-                btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Yellow, Tag = item, ToolTip = "Edit" };
-                btn.Click += btnEditWord_Click;
-                stButtons.Children.Add(btn);
+                delete = btnRemoveWord_Click;
+                edit = btnEditWord_Click;
             }
-            st.Children.Add(stButtons);
-            #endregion
+            else
+                delete = btnRemoveFromUser_Click;
+            AddButtons(item, st, delete, edit, null);
 
             tmp.Content = st;
             parent.Children.Add(tmp);
         }
+
         /// <summary>
         /// Insters extra data to an item (categories, words, ...).
         /// </summary>
         /// <param name="header">The title of expander.</param>
         /// <param name="item">Id of item to be decorated.</param>
-        /// <param name="st">A panel where the data are supposed to add.</param>
+        /// <param name="st">A panel where the data are supposed to be added.</param>
         /// <param name="data">A type of item.</param>
         /// <param name="res">A type of the inserted data.</param>
         void AddExpanderData(string header, int item, Panel st, EngServRef.ServerData data, EngServRef.ServerData res)
         {
-            if (_proxy.GetItemDataAsync(item, data, res).Result.Length == 0)
+            if (_proxy.GetItemDataAsync(item, data, res).Result == null || _proxy.GetItemDataAsync(item, data, res).Result.Length == 0)
                 return;
 
             Expander hor = new Expander { Header = header, Background = Brushes.Azure };
@@ -366,6 +247,78 @@ namespace AppEnglish
             }
             hor.Content = ver;
             st.Children.Add(hor);
+        }
+        /// <summary>
+        /// Describes static one-line property.
+        /// </summary>
+        /// <param name="content">The data to insert.</param>
+        /// <param name="item">Id of the item to which this property belongs.</param>
+        /// <param name="st">The panel where to insert.</param>
+        /// <param name="dataType">The type of an item.</param>
+        /// <param name="property">The type of property.</param>
+        void AddStaticContent(int item, Panel st, EngServRef.ServerData dataType, EngServRef.PropertyData property)
+        {
+            if (_proxy.GetItemPropertyAsync(item, dataType, property).Result != null)
+            {
+                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+                hor.Children.Add(new Label { Content = $"{property.ToString()}:", FontSize = 14, FontWeight = FontWeights.Bold });
+                hor.Children.Add(new Label { Content = _proxy.GetItemPropertyAsync(item, dataType, property).Result });
+                st.Children.Add(hor);
+            }
+        }
+        /// <summary>
+        /// Inserts the data for sorting elements.
+        /// </summary>
+        /// <param name="item">Id of item to be decorated.</param>
+        /// <param name="dataType">A type of item.</param>
+        /// <param name="property">A type of the inserted data.</param>
+        /// <param name="st">A panel where the data are supposed to be added.</param>
+        void AddHoverableData(int item, EngServRef.ServerData dataType, EngServRef.PropertyData property, Panel st)
+        {
+            if (_proxy.GetItemPropertyAsync(item, dataType, property).Result != null)
+            {
+                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+                hor.Children.Add(new Label { Content = $"{property.ToString()}:", FontSize = 14, FontWeight = FontWeights.Bold });
+
+                TextBlock label = new TextBlock { Padding = new Thickness(5), Foreground = Brushes.DarkBlue, TextDecorations = TextDecorations.Underline, Tag = property.ToString(), Text = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Year).Result };
+                label.MouseDown += ItemData_MouseDown;
+                label.MouseEnter += ItemData_MouseEnter;
+                label.MouseLeave += ItemData_MouseLeave;
+                hor.Children.Add(label);
+                st.Children.Add(hor);
+            }
+        }
+        /// <summary>
+        /// Inserts default actions.
+        /// </summary>
+        /// <param name="item">Id of item.</param>
+        /// <param name="st">A panel where the buttons are supposed to be inserted.</param>
+        /// <param name="delete">'Delete' action.</param>
+        /// <param name="edit">'Edit' action.</param>
+        /// <param name="view">'View' action.</param>
+        void AddButtons(int item, Panel st, RoutedEventHandler delete, RoutedEventHandler edit, RoutedEventHandler view)
+        {
+            StackPanel stButtons = new StackPanel { Orientation = Orientation.Horizontal };
+            Button btn;
+            if (delete != null && lRole.Content.ToString() == "admin")
+            {
+                btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Delete.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Tag = item, ToolTip = "Delete" };
+                btn.Click += delete;
+                stButtons.Children.Add(btn);
+            }
+            if (edit != null && lRole.Content.ToString() == "admin")
+            {
+                btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Yellow, Tag = item, ToolTip = "Edit" };
+                btn.Click += edit;
+                stButtons.Children.Add(btn);
+            }
+            if (view != null)
+            {
+                btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/View.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Tag = item, ToolTip = "View" };
+                btn.Click += btnViewBook_Click;
+                stButtons.Children.Add(btn);
+                st.Children.Add(stButtons);
+            }
         }
 
         //Customize expanders label (hover).
