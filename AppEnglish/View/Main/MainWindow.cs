@@ -13,7 +13,7 @@ namespace AppEnglish
     public partial class MainWindow : MetroWindow
     {
         //Types of data to be presented.
-        enum DataType { Video, Book, Word, Game }
+        enum DataType { Video, Book, Word, User }
         
         #region Render a template for list.
         /// <summary>
@@ -28,6 +28,7 @@ namespace AppEnglish
 
                 grSearch.Children.Remove(FindName("btnAdd") as Button);
                 cmbFilter.Items.Clear();
+                cmbSort.Items.Clear();
 
                 Button btnGrid = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Add.png")), Height = 20 }, Width = 50, Height = 50, Name = "btnAdd", Background = Brushes.LightGreen, ToolTip = "Add " + data.ToString(), Margin = new Thickness(20) };
                 switch (data)
@@ -39,7 +40,14 @@ namespace AppEnglish
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Category", Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Mark", Foreground = Brushes.Black });
+
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Mark", Foreground = Brushes.Black });
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Date", Foreground = Brushes.Black });
+
                         btnSearch.Tag = "Video";
+                        btnSort.Tag = "Video";
                         break;
                     case DataType.Book:
                         btnGrid.Click += btnAddBook;
@@ -49,7 +57,14 @@ namespace AppEnglish
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Author", Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Mark", Foreground = Brushes.Black });
+
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Mark", Foreground = Brushes.Black });
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Date", Foreground = Brushes.Black });
+
                         btnSearch.Tag = "Book";
+                        btnSort.Tag = "Book";
                         break;
                     case DataType.Word:
                         btnGrid.Click += btnAddWord;
@@ -58,14 +73,27 @@ namespace AppEnglish
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Definition", Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Category", Foreground = Brushes.Black });
                         cmbFilter.Items.Add(new ComboBoxItem { Content = "Group", Foreground = Brushes.Black });
+
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+
                         btnSearch.Tag = "Word";
+                        btnSort.Tag = "Word";
                         break;
-                    case DataType.Game:
-                        cmbFilter.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
-                        btnSearch.Tag = "Game";
+                    case DataType.User:
+                        cmbFilter.Items.Add(new ComboBoxItem { Content = "Login", IsSelected = true, Foreground = Brushes.Black });
+                        cmbFilter.Items.Add(new ComboBoxItem { Content = "Role", Foreground = Brushes.Black });
+                        cmbFilter.Items.Add(new ComboBoxItem { Content = "Level", Foreground = Brushes.Black });
+
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Login", IsSelected = true, Foreground = Brushes.Black });
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Role", Foreground = Brushes.Black });
+                        cmbSort.Items.Add(new ComboBoxItem { Content = "Level", Foreground = Brushes.Black });
+
+                        btnSearch.Tag = "User";
+                        btnSort.Tag = "User";
                         break;
                 }
-                grSearch.Children.Add(btnGrid);
+                if (data != DataType.User)
+                    grSearch.Children.Add(btnGrid);
 
                 if (lst != null)
                 {
@@ -82,7 +110,8 @@ namespace AppEnglish
                             case DataType.Word:
                                 AddWordItem(item, stActions);
                                 break;
-                            case DataType.Game:
+                            case DataType.User:
+                                AddUserItem(item, stActions);
                                 break;
                         }
                     }
@@ -119,11 +148,12 @@ namespace AppEnglish
             AddHoverableData(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Year, st);
 
             AddExpanderData("Categories", item, st, EngServRef.ServerData.Video, EngServRef.ServerData.VideoCategory);
-            if (_proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Video).Result != null && _proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Video).Result.Length > 0)
+            int id = _proxy.GetUserId(lUserName.Content.ToString()) ?? 0;
+            if (_proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Video).Result != null && _proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Video).Result.Length > 0)
             {
                 Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
                 StackPanel stack = new StackPanel();
-                foreach (int val in _proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag.ToString()), item, EngServRef.ServerData.Video).Result)
+                foreach (int val in _proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Video).Result)
                 {
                     AddWordItem(val, stack);
                 }
@@ -159,11 +189,12 @@ namespace AppEnglish
             AddExpanderData("Categories", item, st, EngServRef.ServerData.Book, EngServRef.ServerData.BookCategory);
             AddExpanderData("Authors", item, st, EngServRef.ServerData.Book, EngServRef.ServerData.Author);
 
-            if (_proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Book).Result != null && _proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Book).Result.Length > 0)
+            int id = _proxy.GetUserId(lUserName.Content.ToString())?? 0;
+            if (_proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Book).Result != null && _proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Book).Result.Length > 0)
             {
                 Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
                 StackPanel stack = new StackPanel();
-                foreach (int val in _proxy.GetUserItemWordsAsync(Convert.ToInt32(lUserName.Tag), item, EngServRef.ServerData.Book).Result)
+                foreach (int val in _proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Book).Result)
                 {
                     AddWordItem(val, stack);
                 }
@@ -212,6 +243,26 @@ namespace AppEnglish
             tmp.Content = st;
             parent.Children.Add(tmp);
         }
+        /// <summary>
+        /// Add user to template.
+        /// </summary>
+        /// <param name="item">Users Id.</param>
+        /// <param name="parent">The element in which an item is supposed to appear.</param>
+        private void AddUserItem(int item, Panel parent)
+        {
+            Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.User, EngServRef.PropertyData.Name) };
+            StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+            string img = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath).Result ?? "Wolf.png";
+            st.Children.Add(new Image { Source = new BitmapImage(new Uri(img != "Wolf.png" ? $"pack://siteoforigin:,,,/{img}" : "pack://application:,,,/Images/Wolf.png")), Height = 120 });
+
+            AddStaticContent(item, st, EngServRef.ServerData.User, EngServRef.PropertyData.Name);
+            AddHoverableData(item, EngServRef.ServerData.User, EngServRef.PropertyData.RolesName, st);
+            AddHoverableData(item, EngServRef.ServerData.User, EngServRef.PropertyData.Level, st);
+            AddButtons(item, st, btnRemoveUser_Click, btnEditRole_Click, null);
+
+            tmp.Content = st;
+            parent.Children.Add(tmp);
+        }
 
         /// <summary>
         /// Insters extra data to an item (categories, words, ...).
@@ -227,7 +278,6 @@ namespace AppEnglish
                 return;
 
             Expander hor = new Expander { Header = header, Background = Brushes.Azure };
-
             StackPanel ver = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
             int count = 1;
             foreach (int val in _proxy.GetItemDataAsync(item, data, res).Result)
@@ -280,7 +330,7 @@ namespace AppEnglish
                 StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
                 hor.Children.Add(new Label { Content = $"{property.ToString()}:", FontSize = 14, FontWeight = FontWeights.Bold });
 
-                TextBlock label = new TextBlock { Padding = new Thickness(5), Foreground = Brushes.DarkBlue, TextDecorations = TextDecorations.Underline, Tag = property.ToString(), Text = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Year).Result };
+                TextBlock label = new TextBlock { Padding = new Thickness(5), Foreground = Brushes.DarkBlue, TextDecorations = TextDecorations.Underline, Tag = property.ToString(), Text = _proxy.GetItemPropertyAsync(item, dataType, property).Result };
                 label.MouseDown += ItemData_MouseDown;
                 label.MouseEnter += ItemData_MouseEnter;
                 label.MouseLeave += ItemData_MouseLeave;
@@ -300,13 +350,13 @@ namespace AppEnglish
         {
             StackPanel stButtons = new StackPanel { Orientation = Orientation.Horizontal };
             Button btn;
-            if (delete != null && lRole.Content.ToString() == "admin")
+            if (delete != null && lRole.Content.ToString().Equals("admin"))
             {
                 btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Delete.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Tag = item, ToolTip = "Delete" };
                 btn.Click += delete;
                 stButtons.Children.Add(btn);
             }
-            if (edit != null && lRole.Content.ToString() == "admin")
+            if (edit != null && lRole.Content.ToString().Equals("admin"))
             {
                 btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Yellow, Tag = item, ToolTip = "Edit" };
                 btn.Click += edit;
@@ -317,8 +367,8 @@ namespace AppEnglish
                 btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/View.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Tag = item, ToolTip = "View" };
                 btn.Click += btnViewBook_Click;
                 stButtons.Children.Add(btn);
-                st.Children.Add(stButtons);
             }
+            st.Children.Add(stButtons);
         }
 
         //Customize expanders label (hover).

@@ -1,27 +1,72 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Win32;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace AppEnglish.AddEdit
 {
-    /// <summary>
-    /// Interaction logic for EditAvatar.xaml
-    /// </summary>
     public partial class EditAvatar : Window
     {
+        EngServRef.EngServiceClient _proxy;
+        int id;
+
+        #region Constructors.
+        //Initialization.
         public EditAvatar()
         {
             InitializeComponent();
         }
+        //Initialize '_proxy'. Requires the users id.
+        public EditAvatar(EngServRef.EngServiceClient tmp, int id) : this()
+        {
+            _proxy = tmp;
+            this.id = id;
+        }
+        #endregion
+        #region Drag&drop.
+        private void Border_DragEnter(object sender, DragEventArgs e)
+        {
+            (sender as Border).Opacity = 1;
+        }
+        private void Border_DragLeave(object sender, DragEventArgs e)
+        {
+            (sender as Border).Opacity = 0.4;
+        }
+        //Choose image.
+        private void Border_Drop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            lPath.Content = files[0];
+            btnOK.IsEnabled = true;
+            imDrag.Source = new BitmapImage(new Uri(lPath.Content.ToString()));
+            brImage.Opacity = 0.4;
+        }
+        //Click.
+        private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image Files (*.png;*.jpg;*.jpeg;*.gif;*.tif)|*.png;*.jpg;*.jpeg;*.gif;*.tif|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                lPath.Content = openFileDialog.FileName;
+                btnOK.IsEnabled = true;
+                imDrag.Source = new BitmapImage(new Uri(lPath.Content.ToString()));
+            }
+        }
+        #endregion
+        #region Close form (OK, Cancel).
+        //Change.
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            _proxy.EditData(id, lPath.Content.ToString(), EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath);
+            Close();
+        }
+        //Close the form.
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+        #endregion
     }
 }

@@ -181,19 +181,35 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetSortedItems">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q12:ServerData" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="property" type="q13:PropertyData" />
+        <xs:element minOccurs="0" name="desc" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSortedItemsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetSortedItemsResult" nillable="true" type="q14:ArrayOfint" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetUserItemWords">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="user" type="xs:int" />
         <xs:element minOccurs="0" name="item" type="xs:int" />
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q12:ServerData" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q15:ServerData" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetUserItemWordsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q13="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetUserItemWordsResult" nillable="true" type="q13:ArrayOfint" />
+        <xs:element xmlns:q16="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetUserItemWordsResult" nillable="true" type="q16:ArrayOfint" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -201,15 +217,15 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="id" type="xs:int" />
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q14:ServerData" />
-        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="res" type="q15:ServerData" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q17:ServerData" />
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="res" type="q18:ServerData" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetItemDataResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q16="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetItemDataResult" nillable="true" type="q16:ArrayOfint" />
+        <xs:element xmlns:q19="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetItemDataResult" nillable="true" type="q19:ArrayOfint" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -231,7 +247,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
-        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q17:ServerData" />
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q20:ServerData" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -276,7 +292,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="id" type="xs:int" />
-        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q18:ServerData" />
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q21:ServerData" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -291,7 +307,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="id" type="xs:int" />
-        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q19:ServerData" />
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q22:ServerData" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -305,7 +321,7 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="item" type="xs:int" />
         <xs:element minOccurs="0" name="word" type="xs:int" />
-        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q20:ServerData" />
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/Server.Service" minOccurs="0" name="data" type="q23:ServerData" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

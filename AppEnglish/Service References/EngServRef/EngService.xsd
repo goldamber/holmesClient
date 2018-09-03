@@ -24,13 +24,16 @@
   <xs:simpleType name="PropertyData">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Name" />
+      <xs:enumeration value="Login" />
       <xs:enumeration value="Role" />
+      <xs:enumeration value="RolesName" />
       <xs:enumeration value="Description" />
       <xs:enumeration value="Path" />
       <xs:enumeration value="SubPath" />
       <xs:enumeration value="Imgpath" />
       <xs:enumeration value="Mark" />
       <xs:enumeration value="Created" />
+      <xs:enumeration value="Date" />
       <xs:enumeration value="Position" />
       <xs:enumeration value="ScoreCount" />
       <xs:enumeration value="Password" />

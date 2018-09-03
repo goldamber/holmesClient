@@ -41,7 +41,7 @@
                 <TextBox Style="{StaticResource txtNormal}" IsReadOnly="True" TextChanged="txtName_TextChanged" Name="txtPath" />
                 <Button Name="btnPath" Height="30" Click="btnPath_Click" Margin="5">...</Button>
             </StackPanel>
-            <CheckBox Name="chCopy" IsChecked="False" Style="{StaticResource chNormal}">Copy</CheckBox>
+            <CheckBox Name="chCopy" IsChecked="False" Style="{StaticResource chNormal}">Make public</CheckBox>
 
             <StackPanel>
                 <Label Style="{StaticResource lbFormNormal}">Category:</Label>

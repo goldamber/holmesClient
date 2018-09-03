@@ -103,6 +103,12 @@
   <wsdl:message name="IEngService_GetFItems_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetFItemsResponse" />
   </wsdl:message>
+  <wsdl:message name="IEngService_GetSortedItems_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSortedItems" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetSortedItems_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSortedItemsResponse" />
+  </wsdl:message>
   <wsdl:message name="IEngService_GetUserItemWords_InputMessage">
     <wsdl:part name="parameters" element="tns:GetUserItemWords" />
   </wsdl:message>
@@ -201,6 +207,10 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetFItems">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetFItems" message="tns:IEngService_GetFItems_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetFItemsResponse" message="tns:IEngService_GetFItems_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetSortedItems">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetSortedItems" message="tns:IEngService_GetSortedItems_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetSortedItemsResponse" message="tns:IEngService_GetSortedItems_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetUserItemWords">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetUserItemWords" message="tns:IEngService_GetUserItemWords_InputMessage" />
@@ -334,6 +344,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetFItems">
       <soap12:operation soapAction="http://tempuri.org/IEngService/GetFItems" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSortedItems">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetSortedItems" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

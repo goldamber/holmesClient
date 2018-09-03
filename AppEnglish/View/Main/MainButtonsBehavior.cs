@@ -15,6 +15,7 @@ namespace AppEnglish
     public partial class MainWindow : MetroWindow
     {
         System.Windows.Forms.WebBrowser web = new System.Windows.Forms.WebBrowser();
+        bool _desc = false;
 
         #region Users actions.
         //View user profile.
@@ -70,6 +71,15 @@ namespace AppEnglish
                 });
             });
         }
+        //Show a list of all users to the admin.
+        private async void btnUsersAct_Click(object sender, RoutedEventArgs e)
+        {
+            stActions.Children.Clear();
+            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+
+            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.User);
+            await Task.Run(() => LoadList(lst, DataType.User));
+        }
 
         //Show a form for login editting.
         private void btnEditUsername_Click(object sender, RoutedEventArgs e)
@@ -80,16 +90,43 @@ namespace AppEnglish
             lUserName.Content = (_proxy.GetItemProperty(id, EngServRef.ServerData.User, EngServRef.PropertyData.Name)).ToUpper();
             (((sender as Button).Parent as Panel).Children[1] as Label).Content = lUserName.Content;
         }
-        //Show a form for login editting.
+        //Show a form for password editting.
         private void btnEditPassword_Click(object sender, RoutedEventArgs e)
         {
             EditPassword form = new EditPassword(_proxy, Convert.ToInt32((sender as Button).Tag));
             form.ShowDialog();
         }
-        //Show a form for login editting.
+        //Show a form for avatar editting.
         private void btnEditAvatar_Click(object sender, RoutedEventArgs e)
         {
-            //...
+            int id = Convert.ToInt32((sender as Button).Tag);
+            EditAvatar form = new EditAvatar(_proxy, id);
+            form.ShowDialog();
+            string path = _proxy.GetItemPropertyAsync(id, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath).Result ?? "Wolf.png";
+            imUserAvatar.Source = new BitmapImage(new Uri(path != "Wolf.png" ? $"pack://siteoforigin:,,,/{path}" : "pack://application:,,,/Images/Wolf.png"));
+        }
+        //Show a form for editting the role.
+        private void btnEditRole_Click(object sender, RoutedEventArgs e)
+        {
+            int usId = Convert.ToInt32((sender as Button).Tag);
+            EditRole form = new EditRole(_proxy, usId);
+            form.ShowDialog();
+
+            if (usId == _proxy.GetUserId(lUserName.Content.ToString()))
+                lRole.Content = _proxy.GetItemProperty(usId, EngServRef.ServerData.User, EngServRef.PropertyData.RolesName);
+            if (lRole.Content.ToString() != "admin")
+                ButtonBack_Click(null, null);
+            else
+                btnUsersAct_Click(null, null);
+        }
+        //Remove item and refresh the canvas.
+        private void btnRemoveUser_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to remove this user?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.User);
+                btnUsersAct_Click(null, null);
+            }
         }
         #endregion
         #region Video actions.
@@ -121,8 +158,11 @@ namespace AppEnglish
         //Remove item and refresh the canvas.
         private void btnRemoveVideo_Click(object sender, RoutedEventArgs e)
         {
-            _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Video);
-            btnVideos_Click(null, null);
+            if (MessageBox.Show("Are you sure you want to remove this video?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Video);
+                btnVideos_Click(null, null);
+            }
         }
         #endregion
         #region Book actions.
@@ -156,8 +196,11 @@ namespace AppEnglish
         //Remove item and refresh the canvas.
         private void btnRemoveBook_Click(object sender, RoutedEventArgs e)
         {
-            _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Book);
-            btnBooks_Click(null, null);
+            if (MessageBox.Show("Are you sure you want to remove this book?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Book);
+                btnBooks_Click(null, null);
+            }
         }
         #endregion
         #region Word actions.
@@ -183,14 +226,20 @@ namespace AppEnglish
         //Remove item and refresh the canvas.
         private void btnRemoveWord_Click(object sender, RoutedEventArgs e)
         {
-            _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Word);
-            btnWords_Click(null, null);
+            if (MessageBox.Show("Are you sure you want to remove this word?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Word);
+                btnWords_Click(null, null);
+            }
         }
         //Remove a word from specific user.
         private void btnRemoveFromUser_Click(object sender, RoutedEventArgs e)
         {
-            _proxy.RemoveItemWordAsync(Convert.ToInt32(lUserName.Tag), Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.User);
-            btnWords_Click(null, null);
+            if (MessageBox.Show("Are you sure you want to remove this word?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _proxy.RemoveItemWordAsync(Convert.ToInt32(lUserName.Tag), Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.User);
+                btnWords_Click(null, null);
+            }
         }
 
         //Generate a file to be printed.
@@ -305,11 +354,45 @@ namespace AppEnglish
                     await Task.Run(() => LoadList(lst, DataType.Word));
                     break;
 
-                case "Game":
-                    lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.Game, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.Game));
+                case "User":
+                    lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.User, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
+                    await Task.Run(() => LoadList(lst, DataType.User));
                     break;
             }
+        }
+        //Sort data.
+        private async void btnSort_Click(object sender, RoutedEventArgs e)
+        {
+            stActions.Children.Clear();
+            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+            int[] lst;
+
+            switch (btnSort.Tag)
+            {
+                case "Book":
+                    lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.Book, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
+                    await Task.Run(() => LoadList(lst, DataType.Book));
+                    break;
+
+                case "Video":
+                    lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.Video, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
+                    await Task.Run(() => LoadList(lst, DataType.Video));
+                    break;
+
+                case "Word":
+                    lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.Word, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
+                    await Task.Run(() => LoadList(lst, DataType.Word));
+                    break;
+
+                case "User":
+                    lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.User, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
+                    await Task.Run(() => LoadList(lst, DataType.User));
+                    break;
+            }
+
+            _desc = !_desc;
+            string pic = _desc ? "SortR" : "Sort"; 
+            (sender as Button).Content = new Image { Source = new BitmapImage(new Uri($"pack://application:,,,/Images/{pic}.png")), Margin = new Thickness(5) };
         }
         //Filter data via link.
         private async void ItemData_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -335,9 +418,9 @@ namespace AppEnglish
                     await Task.Run(() => LoadList(lst, DataType.Word));
                     break;
 
-                case "Game":
-                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.Game, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
-                    await Task.Run(() => LoadList(lst, DataType.Game));
+                case "User":
+                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.User, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
+                    await Task.Run(() => LoadList(lst, DataType.User));
                     break;
             }
         }
@@ -347,29 +430,32 @@ namespace AppEnglish
             grSearch.Visibility = Visibility.Collapsed;
             stActions.Children.Clear();
 
-            /*Button btn = new Button { Name = "btnBooks", Content = "Books", Style = TryFindResource("btnNormal") as Style };
+            Button btn = new Button { Name = "btnBooks", Content = "Books", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnBooks_Click;
             stActions.Children.Add(btn);
 
-            btn = new Button { Name = "btnVideos", Content = "Videos", Style = TryFindResource("btnNormal") as Style };
+            /*btn = new Button { Name = "btnVideos", Content = "Videos", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnVideos_Click;
             stActions.Children.Add(btn);
 
             btn = new Button { Name = "btnWords", Content = "Dictionary", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnWords_Click;
-            stActions.Children.Add(btn);
+            stActions.Children.Add(btn);*/
 
             if (lRole.Content.ToString() == "admin")
             {
-                btn = new Button { Name = "btnVideoCategories", Content = "Video Categories", Style = TryFindResource("btnNormal") as Style };
+                btn = new Button { Name = "btnUsersAct", Content = "Users", Style = TryFindResource("btnNormal") as Style };
+                btn.Click += btnUsersAct_Click;
+                stActions.Children.Add(btn);
+                /*btn = new Button { Name = "btnVideoCategories", Content = "Video Categories", Style = TryFindResource("btnNormal") as Style };
                 stActions.Children.Add(btn);
 
                 btn = new Button { Name = "btnBookCategories", Content = "Book Categories", Style = TryFindResource("btnNormal") as Style };
                 stActions.Children.Add(btn);
 
                 btn = new Button { Name = "btnUsers", Content = "Users", Style = TryFindResource("btnNormal") as Style };
-                stActions.Children.Add(btn);
-            }*/
+                stActions.Children.Add(btn);*/
+            }
         }
     }
 }

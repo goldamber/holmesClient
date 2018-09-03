@@ -3,10 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AppEnglish.AddEdit"
         mc:Ignorable="d"
-        Title="EditAvatar" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Edit Avatar" Height="410" Width="400" Icon="..\Images\Eye.png">
+
+    <ScrollViewer>
+        <StackPanel VerticalAlignment="Center">
+            <StackPanel Name="stMain" HorizontalAlignment="Center">
+                <Label Style="{StaticResource lbFormNormal}">Avatar:</Label>
+                <Border Name="brImage" HorizontalAlignment="Center" Style="{StaticResource brdDragDrop}" DragEnter="Border_DragEnter" DragLeave="Border_DragLeave" Drop="Border_Drop" MouseDown="Border_MouseDown">
+                    <Image Name="imDrag" Source="..\Images\ImageDrop.png" />
+                </Border>
+                <Label Name="lPath" Margin="10">...</Label>
+                
+                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="10">
+                    <Button Name="btnOK" HorizontalAlignment="Left" Width="100" IsEnabled="False" Margin="5" Click="btnOK_Click">OK</Button>
+                    <Button Name="btnCancel" HorizontalAlignment="Right" Width="100" Margin="5" Click="btnCancel_Click">Cancel</Button>
+                </WrapPanel>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </Window>

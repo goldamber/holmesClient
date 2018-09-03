@@ -73,82 +73,91 @@ namespace AppEnglish.EngServRef {
         Name = 0,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Role = 1,
+        Login = 1,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Description = 2,
+        Role = 2,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Path = 3,
+        RolesName = 3,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        SubPath = 4,
+        Description = 4,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Imgpath = 5,
+        Path = 5,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Mark = 6,
+        SubPath = 6,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Created = 7,
+        Imgpath = 7,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Position = 8,
+        Mark = 8,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        ScoreCount = 9,
+        Created = 9,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Password = 10,
+        Date = 10,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Level = 11,
+        Position = 11,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Year = 12,
+        ScoreCount = 12,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PastForm = 13,
+        Password = 13,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PastThForm = 14,
+        Level = 14,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PluralForm = 15,
+        Year = 15,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Category = 16,
+        PastForm = 16,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Categories = 17,
+        PastThForm = 17,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Author = 18,
+        PluralForm = 18,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Authors = 19,
+        Category = 19,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Synonyms = 20,
+        Categories = 20,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Translation = 21,
+        Author = 21,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Translations = 22,
+        Authors = 22,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Definition = 23,
+        Synonyms = 23,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Definitions = 24,
+        Translation = 24,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Group = 25,
+        Translations = 25,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Groups = 26,
+        Definition = 26,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Definitions = 27,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Group = 28,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Groups = 29,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -220,6 +229,12 @@ namespace AppEnglish.EngServRef {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetFItems", ReplyAction="http://tempuri.org/IEngService/GetFItemsResponse")]
         System.Threading.Tasks.Task<int[]> GetFItemsAsync(string filter, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData fil);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetSortedItems", ReplyAction="http://tempuri.org/IEngService/GetSortedItemsResponse")]
+        int[] GetSortedItems(AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property, bool desc);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetSortedItems", ReplyAction="http://tempuri.org/IEngService/GetSortedItemsResponse")]
+        System.Threading.Tasks.Task<int[]> GetSortedItemsAsync(AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property, bool desc);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetUserItemWords", ReplyAction="http://tempuri.org/IEngService/GetUserItemWordsResponse")]
         int[] GetUserItemWords(int user, int item, AppEnglish.EngServRef.ServerData data);
@@ -389,6 +404,14 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task<int[]> GetFItemsAsync(string filter, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData fil) {
             return base.Channel.GetFItemsAsync(filter, data, fil);
+        }
+        
+        public int[] GetSortedItems(AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property, bool desc) {
+            return base.Channel.GetSortedItems(data, property, desc);
+        }
+        
+        public System.Threading.Tasks.Task<int[]> GetSortedItemsAsync(AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property, bool desc) {
+            return base.Channel.GetSortedItemsAsync(data, property, desc);
         }
         
         public int[] GetUserItemWords(int user, int item, AppEnglish.EngServRef.ServerData data) {

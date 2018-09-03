@@ -110,6 +110,16 @@
                                     <ComboBoxItem IsSelected="True" Foreground="Black">Name</ComboBoxItem>
                                 </ComboBox>
                             </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Label Style="{StaticResource lbFormNormal}" FontSize="14" Padding="3">Sort by:</Label>
+                                <ComboBox Name="cmbSort" IsEditable="False" Height="20" Width="150">
+                                    <ComboBoxItem IsSelected="True" Foreground="Black">Name</ComboBoxItem>
+                                </ComboBox>
+                                <Button Name="btnSort" Style="{DynamicResource MetroCircleButtonStyle}" MaxWidth="35" MaxHeight="35" Padding="3" Click="btnSort_Click">
+                                    <Image Margin="5" Source="../../Images/Sort.png"/>
+                                </Button>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
 

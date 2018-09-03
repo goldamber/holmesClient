@@ -88,6 +88,9 @@
     <Compile Include="AddEdit\EditPassword.xaml.cs">
       <DependentUpon>EditPassword.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddEdit\EditRole.xaml.cs">
+      <DependentUpon>EditRole.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddEdit\EditUsername.xaml.cs">
       <DependentUpon>EditUsername.xaml</DependentUpon>
     </Compile>
@@ -123,6 +126,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddEdit\EditPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEdit\EditRole.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -259,6 +266,12 @@
     <Resource Include="Images\Delete.png" />
     <Resource Include="Images\Edit.png" />
     <Resource Include="Images\View.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Sort.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SortR.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

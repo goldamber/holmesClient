@@ -74,6 +74,7 @@ namespace AppEnglish
         {
             txtRName.Text = "";
             txtRPswd.Password = "";
+            txtRCfrPswd.Password = "";
             lPath.Content = "...";
             imDrag.Source = new BitmapImage(new Uri("pack://application:,,,/Images/ImageDrop.png"));
 

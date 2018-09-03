@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         Title="Add Author" Height="180" Width="400" Icon="..\Images\Eye.png">
 
-    <StackPanel>
+    <StackPanel VerticalAlignment="Center">
         <StackPanel Name="stMain" SizeChanged="StackPanel_SizeChanged">
             <StackPanel Orientation="Horizontal">
                 <Label Style="{StaticResource lbFormNormal}">Name:</Label>
