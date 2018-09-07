@@ -182,6 +182,7 @@ namespace AppEnglish
                 lstCategory.Items.Add(new CheckBox { VerticalAlignment = VerticalAlignment.Stretch, Tag = item, Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.BookCategory, EngServRef.PropertyData.Name).Result, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left });
             }
         }
+
         #region Close form (OK, Cancel).
         //Add a new book.
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -192,7 +193,7 @@ namespace AppEnglish
             int? id = _proxy.AddBook(txtName.Text, txtDesc.Text == "" ? null : txtDesc.Text, chCopy.IsChecked == true ? $"{txtName.Text}{Path.GetExtension(txtPath.Text)}": txtPath.Text, lPath.Content.ToString() == "..." ? "WolfB.png" : lPath.Content.ToString(), chCopy.IsChecked == true? false: true, mark, year, DateTime.Now);
             if (id == null)
             {
-                MessageBox.Show("Something gone wrong.", "Operation denied", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Something went wrong.", "Operation denied", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 

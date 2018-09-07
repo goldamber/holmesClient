@@ -94,6 +94,17 @@ namespace AppEnglish
                 }
                 if (data != DataType.User)
                     grSearch.Children.Add(btnGrid);
+                else
+                {
+                    for (int i = 0; i < grSearch.Children.Count; i++)
+                    {
+                        if (grSearch.Children[i] is Button && ((grSearch.Children[i] as Button).Name == "btnAdd" || (grSearch.Children[i] as Button).ToolTip.ToString().StartsWith("Add")))
+                        {
+                            grSearch.Children.RemoveAt(i);
+                            break;
+                        }
+                    }
+                }
 
                 if (lst != null)
                 {
