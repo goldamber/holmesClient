@@ -93,8 +93,8 @@ namespace AppEnglish
                         break;
                 }
                 if (data != DataType.User)
-                    grSearch.Children.Add(btnGrid);
-                else
+                    stActions.Children.Add(btnGrid);
+               /* else
                 {
                     for (int i = 0; i < grSearch.Children.Count; i++)
                     {
@@ -104,7 +104,7 @@ namespace AppEnglish
                             break;
                         }
                     }
-                }
+                }*/
 
                 if (lst != null)
                 {

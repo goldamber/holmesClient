@@ -160,6 +160,29 @@ namespace AppEnglish.EngServRef {
         Groups = 29,
     }
     
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="FilesType", Namespace="http://schemas.datacontract.org/2004/07/Server.Service")]
+    public enum FilesType : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Video = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Avatar = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        BookImage = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        WordImage = 3,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        VideoImage = 4,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Book = 5,
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="EngServRef.IEngService", SessionMode=System.ServiceModel.SessionMode.Required)]
     public interface IEngService {
@@ -211,6 +234,18 @@ namespace AppEnglish.EngServRef {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/EditData", ReplyAction="http://tempuri.org/IEngService/EditDataResponse")]
         System.Threading.Tasks.Task EditDataAsync(int id, string changes, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/Upload", ReplyAction="http://tempuri.org/IEngService/UploadResponse")]
+        bool Upload(byte[] file, string name, AppEnglish.EngServRef.FilesType type);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/Upload", ReplyAction="http://tempuri.org/IEngService/UploadResponse")]
+        System.Threading.Tasks.Task<bool> UploadAsync(byte[] file, string name, AppEnglish.EngServRef.FilesType type);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/Download", ReplyAction="http://tempuri.org/IEngService/DownloadResponse")]
+        byte[] Download(string name, AppEnglish.EngServRef.FilesType type);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/Download", ReplyAction="http://tempuri.org/IEngService/DownloadResponse")]
+        System.Threading.Tasks.Task<byte[]> DownloadAsync(string name, AppEnglish.EngServRef.FilesType type);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItemProperty", ReplyAction="http://tempuri.org/IEngService/GetItemPropertyResponse")]
         string GetItemProperty(int id, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property);
@@ -380,6 +415,22 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task EditDataAsync(int id, string changes, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property) {
             return base.Channel.EditDataAsync(id, changes, data, property);
+        }
+        
+        public bool Upload(byte[] file, string name, AppEnglish.EngServRef.FilesType type) {
+            return base.Channel.Upload(file, name, type);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UploadAsync(byte[] file, string name, AppEnglish.EngServRef.FilesType type) {
+            return base.Channel.UploadAsync(file, name, type);
+        }
+        
+        public byte[] Download(string name, AppEnglish.EngServRef.FilesType type) {
+            return base.Channel.Download(name, type);
+        }
+        
+        public System.Threading.Tasks.Task<byte[]> DownloadAsync(string name, AppEnglish.EngServRef.FilesType type) {
+            return base.Channel.DownloadAsync(name, type);
         }
         
         public string GetItemProperty(int id, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property) {

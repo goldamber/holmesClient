@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.IO;
 using System.ServiceModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -156,14 +157,28 @@ namespace AppEnglish
                 return;
             }
 
-            if (!Directory.Exists("Avatars"))
-                Directory.CreateDirectory("Avatars");
+            Task.Run(new Action(() =>
+            {
+                Dispatcher.Invoke(new Action(() => {
+                    try
+                    {
+                        string ava = $"{txtRName.Text}{Path.GetExtension(lPath.Content.ToString())}";
+                        if (lPath.Content.ToString() != "...")
+                            _proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), ava, EngServRef.FilesType.Avatar);
 
-            if (lPath.Content.ToString() != "...")
-                File.Copy(lPath.Content.ToString(), $@"Avatars\{Path.GetFileName(lPath.Content.ToString())}", true);
-
-            _proxy.AddUserAsync(txtRName.Text, txtRPswd.Password, lPath.Content.ToString() == "..." ? "Wolf.png" : $@"Avatars\{Path.GetFileName(lPath.Content.ToString())}", "user", 0);
-            btnReturn_Click(null, null);
+                        _proxy.AddUserAsync(txtRName.Text, txtRPswd.Password, lPath.Content.ToString() == "..." ? "Wolf.png" : ava, "user", 0);
+                        btnReturn_Click(null, null);
+                    }
+                    catch (OutOfMemoryException memory)
+                    {
+                        MessageBox.Show($"This file is too large!\n{memory.Message}", "Choose another file", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }));
+            }));
         }
         #endregion
         #region Login, logout.
@@ -221,10 +236,29 @@ namespace AppEnglish
                 txtUserName.Tag = _proxy.GetUserIdAsync(txtUserName.Text).Result;
                 string roleId = _proxy.GetItemPropertyAsync(Convert.ToInt32(txtUserName.Tag), EngServRef.ServerData.User, EngServRef.PropertyData.Role).Result;
                 lRole.Content = roleId == null? "": _proxy.GetItemProperty(Convert.ToInt32(roleId), EngServRef.ServerData.Role, EngServRef.PropertyData.Name);
-                string path = _proxy.GetItemPropertyAsync(Convert.ToInt32(txtUserName.Tag), EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath).Result ?? "Wolf.png";
-                imUserAvatar.Source = new BitmapImage(new Uri(path != "Wolf.png" ? $"pack://siteoforigin:,,,/{path}" : "pack://application:,,,/Images/Wolf.png"));
+                SetAvatar(Convert.ToInt32(txtUserName.Tag));
                 ButtonBack_Click(null, null);
             }
+        }
+        void SetAvatar(int id)
+        {
+            string path = _proxy.GetItemPropertyAsync(id, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath).Result ?? "Wolf.png";
+            if (path == "Wolf.png")
+                imUserAvatar.Source = new BitmapImage(new Uri("pack://application:,,,/Images/Wolf.png"));
+            else if (!File.Exists($@"Temp\Avatars\{path}"))
+            {
+                Task.Run(new Action(() => {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        if (!Directory.Exists(@"Temp\Avatars"))
+                            Directory.CreateDirectory(@"Temp\Avatars");
+                        File.WriteAllBytes($@"Temp\Avatars\{path}", _proxy.Download(path, EngServRef.FilesType.Avatar));
+                        imUserAvatar.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
+                    }));
+                }));
+            }
+            else
+                imUserAvatar.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
         }
         //Go to the main menu and logout.
         private void btnLogout_Click(object sender, RoutedEventArgs e)

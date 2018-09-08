@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -22,6 +24,24 @@ namespace AppEnglish.AddEdit
         {
             _proxy = tmp;
             this.id = id;
+
+            string path = _proxy.GetItemProperty(id, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath)?? "Wolf.png";
+            if (path == "Wolf.png")
+                imDrag.Source = new BitmapImage(new Uri("pack://application:,,,/Images/Wolf.png"));
+            else if (!File.Exists($@"Temp\Avatars\{path}"))
+            {
+                Task.Run(new Action(() => {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        if (!Directory.Exists(@"Temp\Avatars"))
+                            Directory.CreateDirectory(@"Temp\Avatars");
+                        File.WriteAllBytes($@"Temp\Avatars\{path}", _proxy.Download(path, EngServRef.FilesType.Avatar));
+                        imDrag.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
+                    }));
+                }));
+            }
+            else
+                imDrag.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
         }
         #endregion
         #region Drag&drop.
@@ -59,8 +79,25 @@ namespace AppEnglish.AddEdit
         //Change.
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            _proxy.EditData(id, lPath.Content.ToString(), EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath);
-            Close();
+            Task.Run(new Action(() => {
+                Dispatcher.Invoke(new Action(() => {
+                    try
+                    {
+                        string file = $"{_proxy.GetItemProperty(id, EngServRef.ServerData.User, EngServRef.PropertyData.Login)}{Path.GetExtension(lPath.Content.ToString())}";
+                        _proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), file, EngServRef.FilesType.Avatar);
+                        _proxy.EditData(id, file, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath);
+                        Close();
+                    }
+                    catch (OutOfMemoryException memory)
+                    {
+                        MessageBox.Show($"The file is too large!\n{memory.Message}", "Choose another file", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }));
+            }));
         }
         //Close the form.
         private void btnCancel_Click(object sender, RoutedEventArgs e)

@@ -102,8 +102,7 @@ namespace AppEnglish
             int id = Convert.ToInt32((sender as Button).Tag);
             EditAvatar form = new EditAvatar(_proxy, id);
             form.ShowDialog();
-            string path = _proxy.GetItemPropertyAsync(id, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath).Result ?? "Wolf.png";
-            imUserAvatar.Source = new BitmapImage(new Uri(path != "Wolf.png" ? $"pack://siteoforigin:,,,/{path}" : "pack://application:,,,/Images/Wolf.png"));
+            SetAvatar(id);
         }
         //Show a form for editting the role.
         private void btnEditRole_Click(object sender, RoutedEventArgs e)
@@ -427,14 +426,14 @@ namespace AppEnglish
         //Return to the list of actions.
         private void ButtonBack_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < grSearch.Children.Count; i++)
+           /* for (int i = 0; i < grSearch.Children.Count; i++)
             {
                 if (grSearch.Children[i] is Button && ((grSearch.Children[i] as Button).Name == "btnAdd" || (grSearch.Children[i] as Button).ToolTip.ToString().StartsWith("Add")))
                 {
                     grSearch.Children.RemoveAt(i);
                     break;
                 }
-            }
+            }*/
             grSearch.Visibility = Visibility.Collapsed;
             stActions.Children.Clear();
 

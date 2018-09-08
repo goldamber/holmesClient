@@ -85,6 +85,18 @@
   <wsdl:message name="IEngService_EditData_OutputMessage">
     <wsdl:part name="parameters" element="tns:EditDataResponse" />
   </wsdl:message>
+  <wsdl:message name="IEngService_Upload_InputMessage">
+    <wsdl:part name="parameters" element="tns:Upload" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_Upload_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_Download_InputMessage">
+    <wsdl:part name="parameters" element="tns:Download" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_Download_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadResponse" />
+  </wsdl:message>
   <wsdl:message name="IEngService_GetItemProperty_InputMessage">
     <wsdl:part name="parameters" element="tns:GetItemProperty" />
   </wsdl:message>
@@ -195,6 +207,14 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="EditData">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/EditData" message="tns:IEngService_EditData_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/EditDataResponse" message="tns:IEngService_EditData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Upload">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/Upload" message="tns:IEngService_Upload_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/UploadResponse" message="tns:IEngService_Upload_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Download">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/Download" message="tns:IEngService_Download_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/DownloadResponse" message="tns:IEngService_Download_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetItemProperty">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetItemProperty" message="tns:IEngService_GetItemProperty_InputMessage" />
@@ -317,6 +337,24 @@
     </wsdl:operation>
     <wsdl:operation name="EditData">
       <soap12:operation soapAction="http://tempuri.org/IEngService/EditData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Upload">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/Upload" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Download">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/Download" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
