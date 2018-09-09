@@ -2,14 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace AppEnglish
 {
-    //Renders views.
+    //Renders views (user).
     public partial class MainWindow : MetroWindow
     {
         //Types of data to be presented.
@@ -30,7 +32,7 @@ namespace AppEnglish
                 cmbFilter.Items.Clear();
                 cmbSort.Items.Clear();
 
-                Button btnGrid = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Add.png")), Height = 20 }, Width = 50, Height = 50, Name = "btnAdd", Background = Brushes.LightGreen, ToolTip = "Add " + data.ToString(), Margin = new Thickness(20) };
+                Button btnGrid = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Add.png")), Height = 20 }, Width = 50, Height = 50, Name = "btnAdd", Background = Brushes.LightGreen, ToolTip = "Add " + data.ToString(), HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(20) };
                 switch (data)
                 {
                     case DataType.Video:
@@ -43,7 +45,6 @@ namespace AppEnglish
 
                         cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                         cmbSort.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
-                        cmbSort.Items.Add(new ComboBoxItem { Content = "Mark", Foreground = Brushes.Black });
                         cmbSort.Items.Add(new ComboBoxItem { Content = "Date", Foreground = Brushes.Black });
 
                         btnSearch.Tag = "Video";
@@ -60,7 +61,6 @@ namespace AppEnglish
 
                         cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                         cmbSort.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
-                        cmbSort.Items.Add(new ComboBoxItem { Content = "Mark", Foreground = Brushes.Black });
                         cmbSort.Items.Add(new ComboBoxItem { Content = "Date", Foreground = Brushes.Black });
 
                         btnSearch.Tag = "Book";
@@ -94,17 +94,6 @@ namespace AppEnglish
                 }
                 if (data != DataType.User)
                     stActions.Children.Add(btnGrid);
-               /* else
-                {
-                    for (int i = 0; i < grSearch.Children.Count; i++)
-                    {
-                        if (grSearch.Children[i] is Button && ((grSearch.Children[i] as Button).Name == "btnAdd" || (grSearch.Children[i] as Button).ToolTip.ToString().StartsWith("Add")))
-                        {
-                            grSearch.Children.RemoveAt(i);
-                            break;
-                        }
-                    }
-                }*/
 
                 if (lst != null)
                 {
@@ -151,11 +140,11 @@ namespace AppEnglish
         {
             Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-            string img = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Imgpath).Result;
-            st.Children.Add(new Image { Source = new BitmapImage(new Uri(img != null && img != "WolfV.png" && File.Exists(img) ? img : $"pack://application:,,,/Images/{img}")), MaxHeight = 100, HorizontalAlignment = HorizontalAlignment.Center });
+            AddImage(item, "WolfV.png", "VideoImages", st, EngServRef.ServerData.Video);
 
             AddStaticContent(item, st, EngServRef.ServerData.Video, EngServRef.PropertyData.Description);
             AddStaticContent(item, st, EngServRef.ServerData.Video, EngServRef.PropertyData.Created);
+            AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, EngServRef.ServerData.Video);
             AddHoverableData(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Year, st);
 
             AddExpanderData("Categories", item, st, EngServRef.ServerData.Video, EngServRef.ServerData.VideoCategory);
@@ -189,12 +178,11 @@ namespace AppEnglish
         {
             Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-            string img = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath).Result;
-            st.Children.Add(new Image { Source = new BitmapImage(new Uri(img != null && img != "WolfB.png" && File.Exists(img) ? img : $"pack://application:,,,/Images/{img}")), MaxHeight = 100, HorizontalAlignment = HorizontalAlignment.Center });
+            AddImage(item, "WolfB.png", "BookImages", st, EngServRef.ServerData.Book);
 
             AddStaticContent(item, st, EngServRef.ServerData.Book, EngServRef.PropertyData.Description);
             AddStaticContent(item, st, EngServRef.ServerData.Book, EngServRef.PropertyData.Created);
-
+            AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, EngServRef.ServerData.Book);
             AddHoverableData(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Year, st);
 
             AddExpanderData("Categories", item, st, EngServRef.ServerData.Book, EngServRef.ServerData.BookCategory);
@@ -231,9 +219,7 @@ namespace AppEnglish
         {
             Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.Word, EngServRef.PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-            string img = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Word, EngServRef.PropertyData.Imgpath).Result;
-            if (img != null && File.Exists(img))
-                st.Children.Add(new Image { Source = new BitmapImage(new Uri(img)) });
+            AddImage(item, null, "WordImages", st, EngServRef.ServerData.Word);
 
             AddExpanderData("Categories", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.WordCategory);
             AddExpanderData("Translations", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Translation);
@@ -250,26 +236,6 @@ namespace AppEnglish
             else
                 delete = btnRemoveFromUser_Click;
             AddButtons(item, st, delete, edit, null);
-
-            tmp.Content = st;
-            parent.Children.Add(tmp);
-        }
-        /// <summary>
-        /// Add user to template.
-        /// </summary>
-        /// <param name="item">Users Id.</param>
-        /// <param name="parent">The element in which an item is supposed to appear.</param>
-        private void AddUserItem(int item, Panel parent)
-        {
-            Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.User, EngServRef.PropertyData.Name) };
-            StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-            string img = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath).Result ?? "Wolf.png";
-            st.Children.Add(new Image { Source = new BitmapImage(new Uri(img != "Wolf.png" ? $"pack://siteoforigin:,,,/{img}" : "pack://application:,,,/Images/Wolf.png")), Height = 120 });
-
-            AddStaticContent(item, st, EngServRef.ServerData.User, EngServRef.PropertyData.Name);
-            AddHoverableData(item, EngServRef.ServerData.User, EngServRef.PropertyData.RolesName, st);
-            AddHoverableData(item, EngServRef.ServerData.User, EngServRef.PropertyData.Level, st);
-            AddButtons(item, st, btnRemoveUser_Click, btnEditRole_Click, null);
 
             tmp.Content = st;
             parent.Children.Add(tmp);
@@ -381,27 +347,112 @@ namespace AppEnglish
             }
             st.Children.Add(stButtons);
         }
+        /// <summary>
+        /// Downloads an image from server and presents it.
+        /// </summary>
+        /// <param name="id">Images id.</param>
+        /// <param name="defaultPath">Default path.</param>
+        /// <param name="tempPath">The location of temporary files.</param>
+        /// <param name="parent">The panel where an image is supposed to be added.</param>
+        /// <param name="type">Data type.</param>
+        void AddImage(int id, string defaultPath, string tempPath, Panel parent, EngServRef.ServerData type)
+        {
+            string img = _proxy.GetItemPropertyAsync(id, type, EngServRef.PropertyData.Imgpath).Result ?? defaultPath;
+            if (img == null)
+                return;
+
+            string source = "";
+            if (img == defaultPath)
+                source = $"pack://application:,,,/Images/{defaultPath}";
+            else if (!File.Exists($@"Temp\{tempPath}\{img}"))
+            {
+                Task.Run(new Action(() => {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        if (!Directory.Exists($@"Temp\{tempPath}"))
+                            Directory.CreateDirectory($@"Temp\{tempPath}");
+                        
+                        EngServRef.FilesType filesType = EngServRef.FilesType.Avatar;
+                        switch (type)
+                        {
+                            case EngServRef.ServerData.Video:
+                                filesType = EngServRef.FilesType.VideoImage;
+                                break;
+                            case EngServRef.ServerData.Book:
+                                filesType = EngServRef.FilesType.BookImage;
+                                break;
+                            case EngServRef.ServerData.User:
+                                filesType = EngServRef.FilesType.Avatar;
+                                break;
+                            case EngServRef.ServerData.Word:
+                                filesType = EngServRef.FilesType.WordImage;
+                                break;
+                        }
+                        if (_proxy.Download(img, filesType) != null)
+                        {
+                            File.WriteAllBytes($@"Temp\{tempPath}\{img}", _proxy.Download(img, filesType));
+                            source = $@"pack://siteoforigin:,,,/Temp\{tempPath}\{img}";
+                        }
+                    }));
+                }));
+            }
+            else
+                source = $@"pack://siteoforigin:,,,/Temp\{tempPath}\{img}";
+            parent.Children.Add(new Image { Source = new BitmapImage(new Uri(source)), Height = 110 });
+        }
+        /// <summary>
+        /// Inserts rating.
+        /// </summary>
+        /// <param name="id">Id of item.</param>
+        /// <param name="userId">Id of user.</param>
+        /// <param name="parent">The panel, where items are supposed to be added.</param>
+        /// <param name="type">Type of item.</param>
+        void AddMarkingStars(int id, int? userId, Panel parent, EngServRef.ServerData type)
+        {
+            int? stars = null;
+            switch (type)
+            {
+                case EngServRef.ServerData.Video:
+                    stars = _proxy.GetMark(id, Convert.ToInt32(userId), EngServRef.ServerData.Video);
+                    break;
+                case EngServRef.ServerData.Book:
+                    stars = _proxy.GetMark(id, Convert.ToInt32(userId), EngServRef.ServerData.Book);
+                    break;
+            }
+
+            int mark = stars == null ? 0 : Convert.ToInt32(stars);
+            StackPanel stack = new StackPanel { Orientation = Orientation.Horizontal, ToolTip = mark == 0? "N/G": mark.ToString() };
+            stack.Children.Add(new Label { Content = $"Rating:", FontSize = 14, FontWeight = FontWeights.Bold });
+            for (int i = 0; i < 5; i++)
+            {
+                stack.Children.Add(new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Rating.png")), Height = 40, Margin = new Thickness(2), Opacity = i < mark? 1: 0.2 });
+            }
+            Button edit = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 7 }, Width = 32, Height = 30, VerticalAlignment = VerticalAlignment.Top, Background = Brushes.Yellow, Tag = $"{type.ToString()}:{id}:{userId}:{mark}", ToolTip = "Edit" };
+            edit.Click += btnEditRating_Click;
+            stack.Children.Add(edit);
+            parent.Children.Add(stack);
+        }
 
         //Customize expanders label (hover).
-        private void ItemData_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        private void ItemData_MouseLeave(object sender, MouseEventArgs e)
         {
             (sender as TextBlock).TextDecorations = TextDecorations.Underline;
             (sender as TextBlock).Foreground = Brushes.DarkBlue;
         }
         //Customize expanders label (hover).
-        private void ItemData_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        private void ItemData_MouseEnter(object sender, MouseEventArgs e)
         {
             (sender as TextBlock).TextDecorations = null;
             (sender as TextBlock).Foreground = Brushes.DeepSkyBlue;
         }
         
         //Customize expander (hover).
-        private void ExpanderItem_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        private void ExpanderItem_MouseLeave(object sender, MouseEventArgs e)
         {
             (sender as Panel).Background = Brushes.Azure;
         }
         //Customize expander (hover).
-        private void ExpanderItem_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        private void ExpanderItem_MouseEnter(object sender, MouseEventArgs e)
         {
             (sender as Panel).Background = Brushes.LightBlue;
         }

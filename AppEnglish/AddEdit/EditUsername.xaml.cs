@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace AppEnglish.AddEdit
@@ -62,6 +63,8 @@ namespace AppEnglish.AddEdit
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             _proxy.EditData(id, txtName.Text, EngServRef.ServerData.User, EngServRef.PropertyData.Name);
+            string ext = Path.GetExtension(_proxy.GetItemProperty(id, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath));
+            _proxy.EditData(id, $"{txtName.Text}{ext}", EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath);
             Close();
         }
         //Close the form.

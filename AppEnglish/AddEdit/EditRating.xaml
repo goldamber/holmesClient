@@ -1,0 +1,26 @@
+﻿<Window x:Class="AppEnglish.AddEdit.EditRating"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Edit Rating" Height="130" Width="400" Icon="..\Images\Eye.png">
+
+    <StackPanel VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal">
+            <Label Style="{StaticResource lbFormNormal}">Rating:</Label>
+            <WrapPanel Name="wrRating" VerticalAlignment="Center">
+                <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="1" />
+                <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="2" />
+                <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="3" />
+                <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="4" />
+                <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="5" />
+            </WrapPanel>
+        </StackPanel>
+
+        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="10">
+            <Button Name="btnOK" HorizontalAlignment="Left" Width="100" IsEnabled="False" Margin="5" Click="btnOK_Click">OK</Button>
+            <Button Name="btnCancel" HorizontalAlignment="Right" Width="100" Margin="5" Click="btnCancel_Click">Cancel</Button>
+        </WrapPanel>
+    </StackPanel>
+</Window>

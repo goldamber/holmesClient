@@ -29,6 +29,7 @@
       <xs:enumeration value="RolesName" />
       <xs:enumeration value="Description" />
       <xs:enumeration value="Path" />
+      <xs:enumeration value="IsAbsolute" />
       <xs:enumeration value="SubPath" />
       <xs:enumeration value="Imgpath" />
       <xs:enumeration value="Mark" />

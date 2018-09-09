@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,6 +15,18 @@ namespace AppEnglish
     {
         EngServRef.EngServiceClient _proxy;
         int? mark = null;
+        int? user;
+        #region Edit.
+        int bookId;
+        string name = null;
+        string desc;
+        int? year;
+        string path;
+        bool isAbsolute;
+        List<int> categories;
+        List<int> authors;
+        string imgPath;
+        #endregion
 
         #region Constructors.
         //Initialization.
@@ -21,13 +34,72 @@ namespace AppEnglish
         {
             InitializeComponent();
         }
-        //Initialize '_proxy', fill the listboxes.
-        public AddBook(EngServRef.EngServiceClient tmp) : this()
+        /// <summary>
+        /// Initializes '_proxy', fills the listboxes.
+        /// </summary>
+        /// <param name="tmp">Host.</param>
+        /// <param name="userId">Id of user.</param>
+        public AddBook(EngServRef.EngServiceClient tmp, int? userId) : this()
         {
             _proxy = tmp;
+            user = userId;
 
             FillAuthors();
             FillCategories();
+        }
+        /// <summary>
+        /// 'Edit' form. Hides rating, fills fields.
+        /// </summary>
+        /// <param name="tmp">Host.</param>
+        /// <param name="id">Books id.</param>
+        /// <param name="name">Books name.</param>
+        /// <param name="description">Books description.</param>
+        /// <param name="year">Year (if given).</param>
+        /// <param name="path">Books path.</param>
+        /// <param name="isAbsolute">Is path absolute?</param>
+        /// <param name="cat">Books categories.</param>
+        /// <param name="auth">Books authors.</param>
+        /// <param name="img">Poster.</param>
+        public AddBook(EngServRef.EngServiceClient tmp, int id, string name, string description, int? year, string path, bool isAbsolute, List<int> cat, List<int> auth, string img) : this()
+        {
+            _proxy = tmp;
+
+            bookId = id;
+            txtName.Text = this.name = name;
+            txtDesc.Text = desc = description;
+            txtPath.Text = this.path = path;
+            this.year = year;
+            if (year != null)
+                txtYear.Text = year.ToString();
+            this.isAbsolute = isAbsolute;
+            chCopy.IsChecked = !this.isAbsolute;
+            imgPath = img;
+            if (imgPath == "WolfB.png")
+                imDrag.Source = new BitmapImage(new Uri("pack://application:,,,/Images/WolfB.png"));
+            else if (!File.Exists($@"Temp\BookImages\{imgPath}"))
+            {
+                Task.Run(new Action(() => {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        if (!Directory.Exists(@"Temp\Avatars"))
+                            Directory.CreateDirectory(@"Temp\Avatars");
+                        if (_proxy.Download(imgPath, EngServRef.FilesType.Avatar) != null)
+                        {
+                            File.WriteAllBytes($@"Temp\Avatars\{imgPath}", _proxy.Download(imgPath, EngServRef.FilesType.Avatar));
+                            imDrag.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{imgPath}"));
+                        }
+                    }));
+                }));
+            }
+            else
+                imDrag.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\BookImages\{imgPath}"));
+            lPath.Content = "...";
+            categories = cat;
+            authors = auth;
+
+            stRating.Visibility = Visibility.Collapsed;
+            FillAuthors(cat);
+            FillCategories(auth);
         }
         #endregion
 
@@ -173,6 +245,15 @@ namespace AppEnglish
                 lstAuthors.Items.Add(new CheckBox { VerticalAlignment = VerticalAlignment.Stretch, Tag = item, Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Author, EngServRef.PropertyData.Name).Result, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left });
             }
         }
+        //Fill 'Authors' list-box with default values.
+        void FillAuthors(List<int> tmp)
+        {
+            List<int> lst = new List<int>(_proxy.GetItemsAsync(EngServRef.ServerData.Author).Result);
+            foreach (int item in lst)
+            {
+                lstAuthors.Items.Add(new CheckBox { VerticalAlignment = VerticalAlignment.Stretch, Tag = item, Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Author, EngServRef.PropertyData.Name).Result, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left, IsChecked = tmp.Contains(item) });
+            }
+        }
         //Fill 'Categories' list-box.
         void FillCategories()
         {
@@ -180,6 +261,15 @@ namespace AppEnglish
             foreach (int item in lst)
             {
                 lstCategory.Items.Add(new CheckBox { VerticalAlignment = VerticalAlignment.Stretch, Tag = item, Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.BookCategory, EngServRef.PropertyData.Name).Result, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left });
+            }
+        }
+        //Fill 'Categories' list-box with default values.
+        void FillCategories(List<int> tmp)
+        {
+            List<int> lst = new List<int>(_proxy.GetItemsAsync(EngServRef.ServerData.BookCategory).Result);
+            foreach (int item in lst)
+            {
+                lstCategory.Items.Add(new CheckBox { VerticalAlignment = VerticalAlignment.Stretch, Tag = item, Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.BookCategory, EngServRef.PropertyData.Name).Result, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left, IsChecked = tmp.Contains(item) });
             }
         }
 
@@ -190,27 +280,107 @@ namespace AppEnglish
             int? year = null;
             if (txtYear.Text != "")
                 year = Convert.ToInt32(txtYear.Text);
-            int? id = _proxy.AddBook(txtName.Text, txtDesc.Text == "" ? null : txtDesc.Text, chCopy.IsChecked == true ? $"{txtName.Text}{Path.GetExtension(txtPath.Text)}": txtPath.Text, lPath.Content.ToString() == "..." ? "WolfB.png" : lPath.Content.ToString(), chCopy.IsChecked == true? false: true, mark, year, DateTime.Now);
-            if (id == null)
-            {
-                MessageBox.Show("Something went wrong.", "Operation denied", MessageBoxButton.OK, MessageBoxImage.Stop);
-                return;
-            }
+            int edit = 0;
 
-            foreach (CheckBox item in lstCategory.Items)
-            {
-                if (item.IsChecked == true)
-                    _proxy.AddItemCategoryAsync(Convert.ToInt32(id), Convert.ToInt32(item.Tag), EngServRef.ServerData.BookCategory);
-            }
-            if (chCopy.IsChecked == true)
-                File.Copy(txtPath.Text, $@"Books\{txtName.Text}{Path.GetExtension(txtPath.Text)}", true);
-            foreach (CheckBox item in lstAuthors.Items)
-            {
-                //item.Content.ToString().Split(",".ToCharArray())[1].Substring(1), item.Content.ToString().Split(",".ToCharArray())[0]
-                if (item.IsChecked == true)
-                    _proxy.AddBookAuthorAsync(Convert.ToInt32(id), Convert.ToInt32(item.Tag));
-            }
-            Close();
+            Task.Run(new Action(() => {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    stMain.Visibility = Visibility.Collapsed;
+                    stPreloader.Visibility = Visibility.Visible;
+                    stPreloader.Children.Clear();
+                    stPreloader.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+
+                    if (name == null)
+                    {
+                        if (lPath.Content.ToString() != "...")
+                        {
+                            if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), $"{txtName.Text}{Path.GetExtension(lPath.Content.ToString())}", EngServRef.FilesType.BookImage))
+                            {
+                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                stMain.Visibility = Visibility.Visible;
+                                stPreloader.Visibility = Visibility.Collapsed;
+                                return;
+                            }
+                        }
+                        if (chCopy.IsChecked == true)
+                        {
+                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{txtName.Text}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Book))
+                            {
+                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                stMain.Visibility = Visibility.Visible;
+                                stPreloader.Visibility = Visibility.Collapsed;
+                                return;
+                            }
+                        }
+                        int? id = _proxy.AddBook(txtName.Text, txtDesc.Text == "" ? null : txtDesc.Text, chCopy.IsChecked == true ? $"{txtName.Text}{Path.GetExtension(txtPath.Text)}" : txtPath.Text, lPath.Content.ToString() == "..." ? "WolfB.png" : $"{txtName.Text}{Path.GetExtension(lPath.Content.ToString())}", chCopy.IsChecked == true ? false : true, mark, user, year, DateTime.Now);
+                        if (id == null)
+                        {
+                            MessageBox.Show("Something went wrong.", "Operation denied", MessageBoxButton.OK, MessageBoxImage.Stop);
+                            stMain.Visibility = Visibility.Visible;
+                            stPreloader.Visibility = Visibility.Collapsed;
+                            return;
+                        }
+                        edit = Convert.ToInt32(id);
+                    }
+                    else
+                    {
+                        edit = bookId;
+                        if (chCopy.IsChecked == true)
+                        {
+                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{txtName.Text}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Book))
+                            {
+                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                stMain.Visibility = Visibility.Visible;
+                                stPreloader.Visibility = Visibility.Collapsed;
+                                return;
+                            }
+                            _proxy.Delete(path, EngServRef.FilesType.Book);
+                            _proxy.EditData(edit, $"{txtName.Text}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
+                        }
+                        else
+                        {
+                            _proxy.Delete(path, EngServRef.FilesType.Book);
+                            _proxy.EditData(edit, txtPath.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
+                        }
+                        if (lPath.Content.ToString() != "...")
+                        {
+                            string file = $"{txtName.Text}{Path.GetExtension(lPath.Content.ToString())}";
+                            if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), file, EngServRef.FilesType.BookImage))
+                            {
+                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                stMain.Visibility = Visibility.Visible;
+                                stPreloader.Visibility = Visibility.Collapsed;
+                                return;
+                            }
+                            _proxy.EditData(edit, file, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
+                        }
+                        else
+                        {
+                            _proxy.Delete(imgPath, EngServRef.FilesType.BookImage);
+                            string ext = Path.GetExtension(imgPath);
+                            _proxy.EditData(edit, $"{txtName.Text}{ext}", EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
+                        }
+                        _proxy.RemoveFullItemData(edit, EngServRef.ServerData.Author);
+                        _proxy.RemoveFullItemData(edit, EngServRef.ServerData.BookCategory);
+
+                        _proxy.EditData(edit, txtName.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Name);
+                        _proxy.EditData(edit, txtDesc.Text == "" ? null : txtDesc.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Description);
+                        _proxy.EditData(edit, txtYear.Text == "" ? null : txtYear.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Year);
+                    }
+
+                    foreach (CheckBox item in lstCategory.Items)
+                    {
+                        if (item.IsChecked == true)
+                            _proxy.AddItemCategoryAsync(edit, Convert.ToInt32(item.Tag), EngServRef.ServerData.BookCategory);
+                    }
+                    foreach (CheckBox item in lstAuthors.Items)
+                    {
+                        if (item.IsChecked == true)
+                            _proxy.AddBookAuthorAsync(edit, Convert.ToInt32(item.Tag));
+                    }
+                    Close();
+                }));
+            }));
         }
         //Close form.
         private void btnCancel_Click(object sender, RoutedEventArgs e)

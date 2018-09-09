@@ -88,76 +88,79 @@ namespace AppEnglish.EngServRef {
         Path = 5,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        SubPath = 6,
+        IsAbsolute = 6,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Imgpath = 7,
+        SubPath = 7,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Mark = 8,
+        Imgpath = 8,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Created = 9,
+        Mark = 9,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Date = 10,
+        Created = 10,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Position = 11,
+        Date = 11,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        ScoreCount = 12,
+        Position = 12,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Password = 13,
+        ScoreCount = 13,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Level = 14,
+        Password = 14,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Year = 15,
+        Level = 15,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PastForm = 16,
+        Year = 16,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PastThForm = 17,
+        PastForm = 17,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PluralForm = 18,
+        PastThForm = 18,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Category = 19,
+        PluralForm = 19,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Categories = 20,
+        Category = 20,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Author = 21,
+        Categories = 21,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Authors = 22,
+        Author = 22,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Synonyms = 23,
+        Authors = 23,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Translation = 24,
+        Synonyms = 24,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Translations = 25,
+        Translation = 25,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Definition = 26,
+        Translations = 26,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Definitions = 27,
+        Definition = 27,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Group = 28,
+        Definitions = 28,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Groups = 29,
+        Group = 29,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Groups = 30,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
@@ -194,16 +197,16 @@ namespace AppEnglish.EngServRef {
         System.Threading.Tasks.Task<System.Nullable<int>> AddUserAsync(string login, string pswd, string avatar, string role, int level);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddVideo", ReplyAction="http://tempuri.org/IEngService/AddVideoResponse")]
-        System.Nullable<int> AddVideo(string name, string desc, string path, string sub, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> year, System.DateTime created);
+        System.Nullable<int> AddVideo(string name, string desc, string path, string sub, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> user, System.Nullable<int> year, System.DateTime created);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddVideo", ReplyAction="http://tempuri.org/IEngService/AddVideoResponse")]
-        System.Threading.Tasks.Task<System.Nullable<int>> AddVideoAsync(string name, string desc, string path, string sub, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> year, System.DateTime created);
+        System.Threading.Tasks.Task<System.Nullable<int>> AddVideoAsync(string name, string desc, string path, string sub, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> user, System.Nullable<int> year, System.DateTime created);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddBook", ReplyAction="http://tempuri.org/IEngService/AddBookResponse")]
-        System.Nullable<int> AddBook(string name, string desc, string path, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> year, System.DateTime created);
+        System.Nullable<int> AddBook(string name, string desc, string path, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> user, System.Nullable<int> year, System.DateTime created);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddBook", ReplyAction="http://tempuri.org/IEngService/AddBookResponse")]
-        System.Threading.Tasks.Task<System.Nullable<int>> AddBookAsync(string name, string desc, string path, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> year, System.DateTime created);
+        System.Threading.Tasks.Task<System.Nullable<int>> AddBookAsync(string name, string desc, string path, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> user, System.Nullable<int> year, System.DateTime created);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddAuthor", ReplyAction="http://tempuri.org/IEngService/AddAuthorResponse")]
         System.Nullable<int> AddAuthor(string name, string surname);
@@ -235,6 +238,12 @@ namespace AppEnglish.EngServRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/EditData", ReplyAction="http://tempuri.org/IEngService/EditDataResponse")]
         System.Threading.Tasks.Task EditDataAsync(int id, string changes, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/EditMark", ReplyAction="http://tempuri.org/IEngService/EditMarkResponse")]
+        void EditMark(int id, int usersId, int changes, AppEnglish.EngServRef.ServerData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/EditMark", ReplyAction="http://tempuri.org/IEngService/EditMarkResponse")]
+        System.Threading.Tasks.Task EditMarkAsync(int id, int usersId, int changes, AppEnglish.EngServRef.ServerData data);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/Upload", ReplyAction="http://tempuri.org/IEngService/UploadResponse")]
         bool Upload(byte[] file, string name, AppEnglish.EngServRef.FilesType type);
         
@@ -247,11 +256,23 @@ namespace AppEnglish.EngServRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/Download", ReplyAction="http://tempuri.org/IEngService/DownloadResponse")]
         System.Threading.Tasks.Task<byte[]> DownloadAsync(string name, AppEnglish.EngServRef.FilesType type);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/Delete", ReplyAction="http://tempuri.org/IEngService/DeleteResponse")]
+        void Delete(string name, AppEnglish.EngServRef.FilesType type);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/Delete", ReplyAction="http://tempuri.org/IEngService/DeleteResponse")]
+        System.Threading.Tasks.Task DeleteAsync(string name, AppEnglish.EngServRef.FilesType type);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItemProperty", ReplyAction="http://tempuri.org/IEngService/GetItemPropertyResponse")]
         string GetItemProperty(int id, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItemProperty", ReplyAction="http://tempuri.org/IEngService/GetItemPropertyResponse")]
         System.Threading.Tasks.Task<string> GetItemPropertyAsync(int id, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetMark", ReplyAction="http://tempuri.org/IEngService/GetMarkResponse")]
+        System.Nullable<int> GetMark(int itemId, int userId, AppEnglish.EngServRef.ServerData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetMark", ReplyAction="http://tempuri.org/IEngService/GetMarkResponse")]
+        System.Threading.Tasks.Task<System.Nullable<int>> GetMarkAsync(int itemId, int userId, AppEnglish.EngServRef.ServerData data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItems", ReplyAction="http://tempuri.org/IEngService/GetItemsResponse")]
         int[] GetItems(AppEnglish.EngServRef.ServerData data);
@@ -319,6 +340,12 @@ namespace AppEnglish.EngServRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/RemoveItem", ReplyAction="http://tempuri.org/IEngService/RemoveItemResponse")]
         System.Threading.Tasks.Task RemoveItemAsync(int id, AppEnglish.EngServRef.ServerData data);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/RemoveFullItemData", ReplyAction="http://tempuri.org/IEngService/RemoveFullItemDataResponse")]
+        void RemoveFullItemData(int id, AppEnglish.EngServRef.ServerData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/RemoveFullItemData", ReplyAction="http://tempuri.org/IEngService/RemoveFullItemDataResponse")]
+        System.Threading.Tasks.Task RemoveFullItemDataAsync(int id, AppEnglish.EngServRef.ServerData data);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/RemoveItemWord", ReplyAction="http://tempuri.org/IEngService/RemoveItemWordResponse")]
         void RemoveItemWord(int item, int word, AppEnglish.EngServRef.ServerData data);
         
@@ -361,20 +388,20 @@ namespace AppEnglish.EngServRef {
             return base.Channel.AddUserAsync(login, pswd, avatar, role, level);
         }
         
-        public System.Nullable<int> AddVideo(string name, string desc, string path, string sub, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> year, System.DateTime created) {
-            return base.Channel.AddVideo(name, desc, path, sub, img, absolute, mark, year, created);
+        public System.Nullable<int> AddVideo(string name, string desc, string path, string sub, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> user, System.Nullable<int> year, System.DateTime created) {
+            return base.Channel.AddVideo(name, desc, path, sub, img, absolute, mark, user, year, created);
         }
         
-        public System.Threading.Tasks.Task<System.Nullable<int>> AddVideoAsync(string name, string desc, string path, string sub, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> year, System.DateTime created) {
-            return base.Channel.AddVideoAsync(name, desc, path, sub, img, absolute, mark, year, created);
+        public System.Threading.Tasks.Task<System.Nullable<int>> AddVideoAsync(string name, string desc, string path, string sub, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> user, System.Nullable<int> year, System.DateTime created) {
+            return base.Channel.AddVideoAsync(name, desc, path, sub, img, absolute, mark, user, year, created);
         }
         
-        public System.Nullable<int> AddBook(string name, string desc, string path, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> year, System.DateTime created) {
-            return base.Channel.AddBook(name, desc, path, img, absolute, mark, year, created);
+        public System.Nullable<int> AddBook(string name, string desc, string path, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> user, System.Nullable<int> year, System.DateTime created) {
+            return base.Channel.AddBook(name, desc, path, img, absolute, mark, user, year, created);
         }
         
-        public System.Threading.Tasks.Task<System.Nullable<int>> AddBookAsync(string name, string desc, string path, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> year, System.DateTime created) {
-            return base.Channel.AddBookAsync(name, desc, path, img, absolute, mark, year, created);
+        public System.Threading.Tasks.Task<System.Nullable<int>> AddBookAsync(string name, string desc, string path, string img, bool absolute, System.Nullable<int> mark, System.Nullable<int> user, System.Nullable<int> year, System.DateTime created) {
+            return base.Channel.AddBookAsync(name, desc, path, img, absolute, mark, user, year, created);
         }
         
         public System.Nullable<int> AddAuthor(string name, string surname) {
@@ -417,6 +444,14 @@ namespace AppEnglish.EngServRef {
             return base.Channel.EditDataAsync(id, changes, data, property);
         }
         
+        public void EditMark(int id, int usersId, int changes, AppEnglish.EngServRef.ServerData data) {
+            base.Channel.EditMark(id, usersId, changes, data);
+        }
+        
+        public System.Threading.Tasks.Task EditMarkAsync(int id, int usersId, int changes, AppEnglish.EngServRef.ServerData data) {
+            return base.Channel.EditMarkAsync(id, usersId, changes, data);
+        }
+        
         public bool Upload(byte[] file, string name, AppEnglish.EngServRef.FilesType type) {
             return base.Channel.Upload(file, name, type);
         }
@@ -433,12 +468,28 @@ namespace AppEnglish.EngServRef {
             return base.Channel.DownloadAsync(name, type);
         }
         
+        public void Delete(string name, AppEnglish.EngServRef.FilesType type) {
+            base.Channel.Delete(name, type);
+        }
+        
+        public System.Threading.Tasks.Task DeleteAsync(string name, AppEnglish.EngServRef.FilesType type) {
+            return base.Channel.DeleteAsync(name, type);
+        }
+        
         public string GetItemProperty(int id, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property) {
             return base.Channel.GetItemProperty(id, data, property);
         }
         
         public System.Threading.Tasks.Task<string> GetItemPropertyAsync(int id, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property) {
             return base.Channel.GetItemPropertyAsync(id, data, property);
+        }
+        
+        public System.Nullable<int> GetMark(int itemId, int userId, AppEnglish.EngServRef.ServerData data) {
+            return base.Channel.GetMark(itemId, userId, data);
+        }
+        
+        public System.Threading.Tasks.Task<System.Nullable<int>> GetMarkAsync(int itemId, int userId, AppEnglish.EngServRef.ServerData data) {
+            return base.Channel.GetMarkAsync(itemId, userId, data);
         }
         
         public int[] GetItems(AppEnglish.EngServRef.ServerData data) {
@@ -527,6 +578,14 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task RemoveItemAsync(int id, AppEnglish.EngServRef.ServerData data) {
             return base.Channel.RemoveItemAsync(id, data);
+        }
+        
+        public void RemoveFullItemData(int id, AppEnglish.EngServRef.ServerData data) {
+            base.Channel.RemoveFullItemData(id, data);
+        }
+        
+        public System.Threading.Tasks.Task RemoveFullItemDataAsync(int id, AppEnglish.EngServRef.ServerData data) {
+            return base.Channel.RemoveFullItemDataAsync(id, data);
         }
         
         public void RemoveItemWord(int item, int word, AppEnglish.EngServRef.ServerData data) {

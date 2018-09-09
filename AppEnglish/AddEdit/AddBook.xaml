@@ -3,12 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AppEnglish"
         mc:Ignorable="d"
         Title="Add Book" Height="300" Width="400" Icon="..\Images\Eye.png">
 
     <ScrollViewer>
-        <StackPanel Name="stMain" SizeChanged="StackPanel_SizeChanged">
+        <Grid>
+            <StackPanel Name="stMain" SizeChanged="StackPanel_SizeChanged">
             <StackPanel Orientation="Horizontal">
                 <Label Style="{StaticResource lbFormNormal}">Name:</Label>
                 <TextBox Style="{StaticResource txtNormal}" TextChanged="txtName_TextChanged" Name="txtName" />
@@ -25,7 +25,7 @@
                 <TextBox Style="{StaticResource txtNormal}" Name="txtYear" PreviewTextInput="txtYear_PreviewTextInput" />
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Name="stRating" Orientation="Horizontal">
                 <Label Style="{StaticResource lbFormNormal}">Rating:</Label>
                 <WrapPanel Name="wrRating" VerticalAlignment="Center">
                     <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="1" />
@@ -65,5 +65,7 @@
                 <Button Name="btnCancel" HorizontalAlignment="Right" Width="100" Margin="5" Click="btnCancel_Click">Cancel</Button>
             </WrapPanel>
         </StackPanel>
+            <StackPanel Name="stPreloader" Visibility="Collapsed" />
+        </Grid>
     </ScrollViewer>
 </Window>

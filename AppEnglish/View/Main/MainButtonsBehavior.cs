@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace AppEnglish
 {
-    //Clicks actions.
+    //Clicks actions (user).
     public partial class MainWindow : MetroWindow
     {
         System.Windows.Forms.WebBrowser web = new System.Windows.Forms.WebBrowser();
@@ -71,16 +71,7 @@ namespace AppEnglish
                 });
             });
         }
-        //Show a list of all users to the admin.
-        private async void btnUsersAct_Click(object sender, RoutedEventArgs e)
-        {
-            stActions.Children.Clear();
-            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-
-            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.User);
-            await Task.Run(() => LoadList(lst, DataType.User));
-        }
-
+        
         //Show a form for login editting.
         private void btnEditUsername_Click(object sender, RoutedEventArgs e)
         {
@@ -104,27 +95,23 @@ namespace AppEnglish
             form.ShowDialog();
             SetAvatar(id);
         }
-        //Show a form for editting the role.
-        private void btnEditRole_Click(object sender, RoutedEventArgs e)
-        {
-            int usId = Convert.ToInt32((sender as Button).Tag);
-            EditRole form = new EditRole(_proxy, usId);
-            form.ShowDialog();
 
-            if (usId == _proxy.GetUserId(lUserName.Content.ToString()))
-                lRole.Content = _proxy.GetItemProperty(usId, EngServRef.ServerData.User, EngServRef.PropertyData.RolesName);
-            if (lRole.Content.ToString() != "admin")
-                ButtonBack_Click(null, null);
-            else
-                btnUsersAct_Click(null, null);
-        }
-        //Remove item and refresh the canvas.
-        private void btnRemoveUser_Click(object sender, RoutedEventArgs e)
+        //Edit rating of book or video.
+        private void btnEditRating_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to remove this user?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            string[] keys = (sender as Button).Tag.ToString().Split(':');
+            EngServRef.ServerData type = keys[0] =="Book"? EngServRef.ServerData.Book : EngServRef.ServerData.Video;
+            EditRating book = new EditRating(_proxy, Convert.ToInt32(keys[1]), Convert.ToInt32(keys[2]), Convert.ToInt32(keys[3]), type);
+            book.ShowDialog();
+
+            switch (type)
             {
-                _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.User);
-                btnUsersAct_Click(null, null);
+                case EngServRef.ServerData.Video:
+                    btnVideos_Click(null, null);
+                    break;
+                case EngServRef.ServerData.Book:
+                    btnBooks_Click(null, null);
+                    break;
             }
         }
         #endregion
@@ -149,20 +136,6 @@ namespace AppEnglish
             VideoPlayer frm = new VideoPlayer((sender as Button).Tag.ToString(), false, _proxy);
             frm.ShowDialog();
         }
-        //Show a form for editting the video.
-        private void btnEditVideo_Click(object sender, RoutedEventArgs e)
-        {
-            btnVideos_Click(null, null);
-        }
-        //Remove item and refresh the canvas.
-        private void btnRemoveVideo_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("Are you sure you want to remove this video?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Video);
-                btnVideos_Click(null, null);
-            }
-        }
         #endregion
         #region Book actions.
         //Show a list of all books to the user.
@@ -177,7 +150,7 @@ namespace AppEnglish
         //Show a form for adding a new book.
         private void btnAddBook(object sender, RoutedEventArgs e)
         {
-            AddBook frm = new AddBook(_proxy);
+            AddBook frm = new AddBook(_proxy, _proxy.GetUserId(lUserName.Content.ToString()));
             frm.ShowDialog();
             btnBooks_Click(null, null);
         }
@@ -186,20 +159,6 @@ namespace AppEnglish
         {
             BookReader frm = new BookReader((sender as Button).Tag.ToString(), _proxy);
             frm.ShowDialog();
-        }
-        //Show a form for editting the book.
-        private void btnEditBook_Click(object sender, RoutedEventArgs e)
-        {
-            btnBooks_Click(null, null);
-        }
-        //Remove item and refresh the canvas.
-        private void btnRemoveBook_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("Are you sure you want to remove this book?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Book);
-                btnBooks_Click(null, null);
-            }
         }
         #endregion
         #region Word actions.
@@ -216,20 +175,6 @@ namespace AppEnglish
         private void btnAddWord(object sender, RoutedEventArgs e)
         {
             btnWords_Click(null, null);
-        }
-        //Show a form for editting the word.
-        private void btnEditWord_Click(object sender, RoutedEventArgs e)
-        {
-            btnWords_Click(null, null);
-        }
-        //Remove item and refresh the canvas.
-        private void btnRemoveWord_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("Are you sure you want to remove this word?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                _proxy.RemoveItemAsync(Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.Word);
-                btnWords_Click(null, null);
-            }
         }
         //Remove a word from specific user.
         private void btnRemoveFromUser_Click(object sender, RoutedEventArgs e)
@@ -426,14 +371,6 @@ namespace AppEnglish
         //Return to the list of actions.
         private void ButtonBack_Click(object sender, RoutedEventArgs e)
         {
-           /* for (int i = 0; i < grSearch.Children.Count; i++)
-            {
-                if (grSearch.Children[i] is Button && ((grSearch.Children[i] as Button).Name == "btnAdd" || (grSearch.Children[i] as Button).ToolTip.ToString().StartsWith("Add")))
-                {
-                    grSearch.Children.RemoveAt(i);
-                    break;
-                }
-            }*/
             grSearch.Visibility = Visibility.Collapsed;
             stActions.Children.Clear();
 

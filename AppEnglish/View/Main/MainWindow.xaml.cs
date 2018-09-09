@@ -164,7 +164,13 @@ namespace AppEnglish
                     {
                         string ava = $"{txtRName.Text}{Path.GetExtension(lPath.Content.ToString())}";
                         if (lPath.Content.ToString() != "...")
-                            _proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), ava, EngServRef.FilesType.Avatar);
+                        {
+                            if (_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), ava, EngServRef.FilesType.Avatar))
+                            {
+                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                return;
+                            }
+                        }
 
                         _proxy.AddUserAsync(txtRName.Text, txtRPswd.Password, lPath.Content.ToString() == "..." ? "Wolf.png" : ava, "user", 0);
                         btnReturn_Click(null, null);
@@ -252,8 +258,11 @@ namespace AppEnglish
                     {
                         if (!Directory.Exists(@"Temp\Avatars"))
                             Directory.CreateDirectory(@"Temp\Avatars");
-                        File.WriteAllBytes($@"Temp\Avatars\{path}", _proxy.Download(path, EngServRef.FilesType.Avatar));
-                        imUserAvatar.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
+                        if (_proxy.Download(path, EngServRef.FilesType.Avatar) != null)
+                        {
+                            File.WriteAllBytes($@"Temp\Avatars\{path}", _proxy.Download(path, EngServRef.FilesType.Avatar));
+                            imUserAvatar.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
+                        }
                     }));
                 }));
             }

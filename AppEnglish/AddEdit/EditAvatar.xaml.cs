@@ -35,8 +35,11 @@ namespace AppEnglish.AddEdit
                     {
                         if (!Directory.Exists(@"Temp\Avatars"))
                             Directory.CreateDirectory(@"Temp\Avatars");
-                        File.WriteAllBytes($@"Temp\Avatars\{path}", _proxy.Download(path, EngServRef.FilesType.Avatar));
-                        imDrag.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
+                        if (_proxy.Download(path, EngServRef.FilesType.Avatar) != null)
+                        {
+                            File.WriteAllBytes($@"Temp\Avatars\{path}", _proxy.Download(path, EngServRef.FilesType.Avatar));
+                            imDrag.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
+                        }
                     }));
                 }));
             }
@@ -80,22 +83,16 @@ namespace AppEnglish.AddEdit
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             Task.Run(new Action(() => {
-                Dispatcher.Invoke(new Action(() => {
-                    try
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    string file = $"{_proxy.GetItemProperty(id, EngServRef.ServerData.User, EngServRef.PropertyData.Login)}{Path.GetExtension(lPath.Content.ToString())}";
+                    if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), file, EngServRef.FilesType.Avatar))
                     {
-                        string file = $"{_proxy.GetItemProperty(id, EngServRef.ServerData.User, EngServRef.PropertyData.Login)}{Path.GetExtension(lPath.Content.ToString())}";
-                        _proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), file, EngServRef.FilesType.Avatar);
-                        _proxy.EditData(id, file, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath);
-                        Close();
+                        MessageBox.Show($"The file is too large!", "Choose another file", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
-                    catch (OutOfMemoryException memory)
-                    {
-                        MessageBox.Show($"The file is too large!\n{memory.Message}", "Choose another file", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                    _proxy.EditData(id, file, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath);
+                    Close();
                 }));
             }));
         }
