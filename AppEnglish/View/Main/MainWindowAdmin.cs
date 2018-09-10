@@ -15,7 +15,7 @@ namespace AppEnglish
         {
             Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.User, EngServRef.PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-            AddImage(item, "Wolf.png", "Avatars", st, EngServRef.ServerData.User);
+            AddImage(item, "Wolf.png", "Avatars", st, EngServRef.ServerData.User, false);
 
             AddStaticContent(item, st, EngServRef.ServerData.User, EngServRef.PropertyData.Name);
             AddHoverableData(item, EngServRef.ServerData.User, EngServRef.PropertyData.RolesName, st);

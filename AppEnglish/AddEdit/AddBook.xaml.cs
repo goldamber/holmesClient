@@ -76,30 +76,21 @@ namespace AppEnglish
             imgPath = img;
             if (imgPath == "WolfB.png")
                 imDrag.Source = new BitmapImage(new Uri("pack://application:,,,/Images/WolfB.png"));
-            else if (!File.Exists($@"Temp\BookImages\{imgPath}"))
-            {
-                Task.Run(new Action(() => {
-                    Dispatcher.Invoke(new Action(() =>
-                    {
-                        if (!Directory.Exists(@"Temp\Avatars"))
-                            Directory.CreateDirectory(@"Temp\Avatars");
-                        if (_proxy.Download(imgPath, EngServRef.FilesType.Avatar) != null)
-                        {
-                            File.WriteAllBytes($@"Temp\Avatars\{imgPath}", _proxy.Download(imgPath, EngServRef.FilesType.Avatar));
-                            imDrag.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{imgPath}"));
-                        }
-                    }));
-                }));
-            }
             else
-                imDrag.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\BookImages\{imgPath}"));
+            {
+                if (File.Exists($@"Temp\BookImages\{imgPath}"))
+                    imDrag.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\BookImages\{imgPath}"));
+                else
+                    MessageBox.Show("Image can not be found!", "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
             lPath.Content = "...";
             categories = cat;
             authors = auth;
 
             stRating.Visibility = Visibility.Collapsed;
-            FillAuthors(cat);
-            FillCategories(auth);
+            FillAuthors(auth);
+            FillCategories(cat);
         }
         #endregion
 
@@ -123,7 +114,7 @@ namespace AppEnglish
         //Check the title of an book.
         private void txtName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if ((sender as TextBox).Text == "" || ((sender as TextBox) == txtName) && _proxy.CheckExistenceAsync(txtName.Text, EngServRef.ServerData.Book).Result)
+            if ((sender as TextBox).Text == "" || (((sender as TextBox) == txtName) && _proxy.CheckExistenceAsync(txtName.Text, EngServRef.ServerData.Book).Result && name == null) || (((sender as TextBox) == txtName) && name != null && txtName.Text != name && _proxy.CheckExistenceAsync(txtName.Text, EngServRef.ServerData.Book).Result))
             {
                 foreach (FrameworkElement item in ((sender as TextBox).Parent as Panel).Children)
                 {
@@ -282,6 +273,12 @@ namespace AppEnglish
                 year = Convert.ToInt32(txtYear.Text);
             int edit = 0;
 
+            if (txtPath.Text == "")
+            {
+                MessageBox.Show("Choose file!", "No file chosen", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
+
             Task.Run(new Action(() => {
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -312,7 +309,7 @@ namespace AppEnglish
                                 return;
                             }
                         }
-                        int? id = _proxy.AddBook(txtName.Text, txtDesc.Text == "" ? null : txtDesc.Text, chCopy.IsChecked == true ? $"{txtName.Text}{Path.GetExtension(txtPath.Text)}" : txtPath.Text, lPath.Content.ToString() == "..." ? "WolfB.png" : $"{txtName.Text}{Path.GetExtension(lPath.Content.ToString())}", chCopy.IsChecked == true ? false : true, mark, user, year, DateTime.Now);
+                        int? id = _proxy.AddBook(txtName.Text, txtDesc.Text == "" ? null : txtDesc.Text, txtPath.Text, "WolfB.png", chCopy.IsChecked == true ? false : true, mark, user, year, DateTime.Now);
                         if (id == null)
                         {
                             MessageBox.Show("Something went wrong.", "Operation denied", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -321,30 +318,32 @@ namespace AppEnglish
                             return;
                         }
                         edit = Convert.ToInt32(id);
+                        if (chCopy.IsChecked == true)
+                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
+                        if (lPath.Content.ToString() != "...")
+                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(lPath.Content.ToString())}", EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
                     }
                     else
                     {
                         edit = bookId;
-                        if (chCopy.IsChecked == true)
+
+                        if (txtPath.Text != path && chCopy.IsChecked == true)
                         {
-                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{txtName.Text}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Book))
+                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
+                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Book))
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 stMain.Visibility = Visibility.Visible;
                                 stPreloader.Visibility = Visibility.Collapsed;
                                 return;
                             }
-                            _proxy.Delete(path, EngServRef.FilesType.Book);
-                            _proxy.EditData(edit, $"{txtName.Text}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
                         }
-                        else
-                        {
-                            _proxy.Delete(path, EngServRef.FilesType.Book);
+                        else if (chCopy.IsChecked == false)
                             _proxy.EditData(edit, txtPath.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
-                        }
                         if (lPath.Content.ToString() != "...")
                         {
-                            string file = $"{txtName.Text}{Path.GetExtension(lPath.Content.ToString())}";
+                            string file = $"{edit}{Path.GetExtension(lPath.Content.ToString())}";
+                            _proxy.EditData(edit, file, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
                             if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), file, EngServRef.FilesType.BookImage))
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -352,20 +351,15 @@ namespace AppEnglish
                                 stPreloader.Visibility = Visibility.Collapsed;
                                 return;
                             }
-                            _proxy.EditData(edit, file, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
                         }
-                        else
-                        {
-                            _proxy.Delete(imgPath, EngServRef.FilesType.BookImage);
-                            string ext = Path.GetExtension(imgPath);
-                            _proxy.EditData(edit, $"{txtName.Text}{ext}", EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
-                        }
+                        _proxy.EditData(edit, chCopy.IsChecked != true ? "True" : null, EngServRef.ServerData.Book, EngServRef.PropertyData.IsAbsolute);
+                        _proxy.EditData(edit, txtYear.Text == "" ? null : txtYear.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Year);
                         _proxy.RemoveFullItemData(edit, EngServRef.ServerData.Author);
                         _proxy.RemoveFullItemData(edit, EngServRef.ServerData.BookCategory);
-
-                        _proxy.EditData(edit, txtName.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Name);
-                        _proxy.EditData(edit, txtDesc.Text == "" ? null : txtDesc.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Description);
-                        _proxy.EditData(edit, txtYear.Text == "" ? null : txtYear.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Year);
+                        if (txtName.Text != name)
+                            _proxy.EditData(edit, txtName.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Name);
+                        if (txtDesc.Text != desc)
+                            _proxy.EditData(edit, txtDesc.Text == "" ? null : txtDesc.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Description);
                     }
 
                     foreach (CheckBox item in lstCategory.Items)

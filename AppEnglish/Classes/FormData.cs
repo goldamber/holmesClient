@@ -1,4 +1,6 @@
-﻿namespace AppEnglish
+﻿using System.IO;
+
+namespace AppEnglish
 {
     /// <summary>
     /// The metadata transfered between forms.

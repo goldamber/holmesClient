@@ -19,7 +19,7 @@ namespace AppEnglish
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
 
             int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.User);
-            await Task.Run(() => LoadList(lst, DataType.User));
+            await Task.Run(() => LoadList(lst, DataType.User, false));
         }
         //Show a form for editting the role.
         private void btnEditRole_Click(object sender, RoutedEventArgs e)
@@ -48,9 +48,13 @@ namespace AppEnglish
         #endregion
         #region Video actions.
         //Show a form for editting the video.
-        private void btnEditVideo_Click(object sender, RoutedEventArgs e)
+        private async void btnEditVideo_Click(object sender, RoutedEventArgs e)
         {
-            btnVideos_Click(null, null);
+            stActions.Children.Clear();
+            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+
+            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Video);
+            await Task.Run(() => LoadList(lst, DataType.Video, true));
         }
         //Remove item and refresh the canvas.
         private void btnRemoveVideo_Click(object sender, RoutedEventArgs e)
@@ -66,7 +70,7 @@ namespace AppEnglish
         #endregion
         #region Book actions.
         //Show a form for editting the book.
-        private void btnEditBook_Click(object sender, RoutedEventArgs e)
+        private async void btnEditBook_Click(object sender, RoutedEventArgs e)
         {
             int id = Convert.ToInt32((sender as Button).Tag);
             string name = _proxy.GetItemProperty(id, EngServRef.ServerData.Book, EngServRef.PropertyData.Name);
@@ -77,11 +81,16 @@ namespace AppEnglish
             int? year = null;
             if (_proxy.GetItemProperty(id, EngServRef.ServerData.Book, EngServRef.PropertyData.Year) != null)
                 year = Convert.ToInt32(_proxy.GetItemProperty(id, EngServRef.ServerData.Book, EngServRef.PropertyData.Year));
-            List<int> lst = new List<int>(_proxy.GetItemData(id, EngServRef.ServerData.Book, EngServRef.ServerData.BookCategory));
+            List<int> cat = new List<int>(_proxy.GetItemData(id, EngServRef.ServerData.Book, EngServRef.ServerData.BookCategory));
             List<int> auth = new List<int>(_proxy.GetItemData(id, EngServRef.ServerData.Book, EngServRef.ServerData.Author));
-            AddBook form = new AddBook(_proxy, id, name, desc, year, path, copy, lst, auth, img);
+            AddBook form = new AddBook(_proxy, id, name, desc, year, path, copy, cat, auth, img);
             form.ShowDialog();
-            btnBooks_Click(null, null);
+            
+            stActions.Children.Clear();
+            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+
+            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Book);
+            await Task.Run(() => LoadList(lst, DataType.Book, true));
         }
         //Remove item and refresh the canvas.
         private void btnRemoveBook_Click(object sender, RoutedEventArgs e)
@@ -97,9 +106,13 @@ namespace AppEnglish
         #endregion
         #region Word actions.
         //Show a form for editting the word.
-        private void btnEditWord_Click(object sender, RoutedEventArgs e)
+        private async void btnEditWord_Click(object sender, RoutedEventArgs e)
         {
-            btnWords_Click(null, null);
+            stActions.Children.Clear();
+            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+
+            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Word);
+            await Task.Run(() => LoadList(lst, DataType.Word, true));
         }
         //Remove item and refresh the canvas.
         private void btnRemoveWord_Click(object sender, RoutedEventArgs e)

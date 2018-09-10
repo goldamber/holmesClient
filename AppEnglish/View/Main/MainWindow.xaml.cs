@@ -19,6 +19,7 @@ namespace AppEnglish
         public MainWindow()
         {
             InitializeComponent();
+            DeleteTemporary();
             _proxy = new EngServRef.EngServiceClient();
 
             try
@@ -159,30 +160,23 @@ namespace AppEnglish
 
             Task.Run(new Action(() =>
             {
-                Dispatcher.Invoke(new Action(() => {
-                    try
-                    {
-                        string ava = $"{txtRName.Text}{Path.GetExtension(lPath.Content.ToString())}";
-                        if (lPath.Content.ToString() != "...")
-                        {
-                            if (_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), ava, EngServRef.FilesType.Avatar))
-                            {
-                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
-                                return;
-                            }
-                        }
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    _proxy.AddUserAsync(txtRName.Text, txtRPswd.Password, "Wolf.png", "user", 0);
+                    int id = Convert.ToInt32(_proxy.GetUserId(txtRName.Text));
 
-                        _proxy.AddUserAsync(txtRName.Text, txtRPswd.Password, lPath.Content.ToString() == "..." ? "Wolf.png" : ava, "user", 0);
-                        btnReturn_Click(null, null);
-                    }
-                    catch (OutOfMemoryException memory)
+                    if (lPath.Content.ToString() != "...")
                     {
-                        MessageBox.Show($"This file is too large!\n{memory.Message}", "Choose another file", MessageBoxButton.OK, MessageBoxImage.Error);
+                        string ava = $"{id}{Path.GetExtension(lPath.Content.ToString())}";
+                        if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), ava, EngServRef.FilesType.Avatar))
+                        {
+                            MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                            return;
+                        }
+                        _proxy.EditData(id, ava, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath);
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+
+                    btnReturn_Click(null, null);
                 }));
             }));
         }
@@ -242,32 +236,48 @@ namespace AppEnglish
                 txtUserName.Tag = _proxy.GetUserIdAsync(txtUserName.Text).Result;
                 string roleId = _proxy.GetItemPropertyAsync(Convert.ToInt32(txtUserName.Tag), EngServRef.ServerData.User, EngServRef.PropertyData.Role).Result;
                 lRole.Content = roleId == null? "": _proxy.GetItemProperty(Convert.ToInt32(roleId), EngServRef.ServerData.Role, EngServRef.PropertyData.Name);
-                SetAvatar(Convert.ToInt32(txtUserName.Tag));
+                SetAvatar(Convert.ToInt32(txtUserName.Tag), false);
                 ButtonBack_Click(null, null);
             }
         }
-        void SetAvatar(int id)
+        void SetAvatar(int id, bool edit)
         {
             string path = _proxy.GetItemPropertyAsync(id, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath).Result ?? "Wolf.png";
             if (path == "Wolf.png")
                 imUserAvatar.Source = new BitmapImage(new Uri("pack://application:,,,/Images/Wolf.png"));
-            else if (!File.Exists($@"Temp\Avatars\{path}"))
+            else
             {
                 Task.Run(new Action(() => {
                     Dispatcher.Invoke(new Action(() =>
                     {
                         if (!Directory.Exists(@"Temp\Avatars"))
                             Directory.CreateDirectory(@"Temp\Avatars");
-                        if (_proxy.Download(path, EngServRef.FilesType.Avatar) != null)
+                        byte[] res = _proxy.Download(path, EngServRef.FilesType.Avatar);
+                        if (res != null)
                         {
-                            File.WriteAllBytes($@"Temp\Avatars\{path}", _proxy.Download(path, EngServRef.FilesType.Avatar));
+                            try
+                            {
+                                FileInfo file = new FileInfo($@"Temp\Avatars\{path}");
+                                file.Refresh();
+                                using (FileStream fs = file.OpenWrite())
+                                {
+                                    fs.Write(res, 0, res.Length);
+                                    fs.Dispose();
+                                }
+                            }
+                            catch (IOException)
+                            {
+                                if (edit)
+                                {
+                                    if (MessageBox.Show("The data have been uploaded to the server. It will be updated the next time you come.\nDo you want to restart now?", "Check next time", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                                        Close();
+                                }
+                            }
                             imUserAvatar.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
                         }
                     }));
                 }));
             }
-            else
-                imUserAvatar.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
         }
         //Go to the main menu and logout.
         private void btnLogout_Click(object sender, RoutedEventArgs e)
@@ -281,11 +291,32 @@ namespace AppEnglish
         }
         #endregion
 
+        //Deletes all temporary files.
+        void DeleteTemporary()
+        {
+            if (Directory.Exists("Temp"))
+            {
+                string[] arr = Directory.GetDirectories("Temp");
+                foreach (string item in arr)
+                {
+                    string[] files = Directory.GetFiles(item);
+                    foreach (string val in files)
+                    {
+                        try
+                        {
+                            File.Delete(val);
+                        }
+                        catch { }
+                    }
+                }
+            }
+        }
         //Close connection.
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_proxy.State == CommunicationState.Opened)
                 _proxy.Close();
+            DeleteTemporary();
         }
     }
 }

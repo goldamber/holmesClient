@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using AppEnglish.EngServRef;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +24,7 @@ namespace AppEnglish
         /// </summary>
         /// <param name="lst">List of items to be presented (videos, books, ...)</param>
         /// <param name="data">Type of items to be presented</param>
-        void LoadList(IEnumerable<int> lst, DataType data)
+        void LoadList(IEnumerable<int> lst, DataType data, bool edit)
         {
             Dispatcher.Invoke(() => {
                 grSearch.Visibility = Visibility.Visible;
@@ -102,13 +103,13 @@ namespace AppEnglish
                         switch (data)
                         {
                             case DataType.Video:
-                                AddVideoItem(item);
+                                AddVideoItem(item, edit);
                                 break;
                             case DataType.Book:
-                                AddBookItem(item);
+                                AddBookItem(item, edit);
                                 break;
                             case DataType.Word:
-                                AddWordItem(item, stActions);
+                                AddWordItem(item, edit, stActions);
                                 break;
                             case DataType.User:
                                 AddUserItem(item, stActions);
@@ -136,26 +137,26 @@ namespace AppEnglish
         /// Add a video item to the template.
         /// </summary>
         /// <param name="item">Id of video.</param>
-        private void AddVideoItem(int item)
+        private void AddVideoItem(int item, bool edit)
         {
             Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-            AddImage(item, "WolfV.png", "VideoImages", st, EngServRef.ServerData.Video);
+            AddImage(item, "WolfV.png", "VideoImages", st, ServerData.Video, edit);
+            AddFile(item, "Videos", ServerData.Video, edit);
+            AddStaticContent(item, st, ServerData.Video, PropertyData.Description);
+            AddStaticContent(item, st, ServerData.Video, PropertyData.Created);
+            AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, ServerData.Video);
+            AddHoverableData(item, ServerData.Video, PropertyData.Year, st);
 
-            AddStaticContent(item, st, EngServRef.ServerData.Video, EngServRef.PropertyData.Description);
-            AddStaticContent(item, st, EngServRef.ServerData.Video, EngServRef.PropertyData.Created);
-            AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, EngServRef.ServerData.Video);
-            AddHoverableData(item, EngServRef.ServerData.Video, EngServRef.PropertyData.Year, st);
-
-            AddExpanderData("Categories", item, st, EngServRef.ServerData.Video, EngServRef.ServerData.VideoCategory);
+            AddExpanderData("Categories", item, st, ServerData.Video, ServerData.VideoCategory);
             int id = _proxy.GetUserId(lUserName.Content.ToString()) ?? 0;
-            if (_proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Video).Result != null && _proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Video).Result.Length > 0)
+            if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result != null && _proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result.Length > 0)
             {
                 Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
                 StackPanel stack = new StackPanel();
-                foreach (int val in _proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Video).Result)
+                foreach (int val in _proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result)
                 {
-                    AddWordItem(val, stack);
+                    AddWordItem(val, edit, stack);
                 }
                 Button print = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Right, Background = Brushes.Blue, Foreground = Brushes.White, Tag = item, Content = "Print" };
                 print.Click += btnPrintWords_Click;
@@ -174,28 +175,28 @@ namespace AppEnglish
         /// Add a book item to the template.
         /// </summary>
         /// <param name="item">Id of book.</param>
-        private void AddBookItem(int item)
+        private void AddBookItem(int item, bool edit)
         {
-            Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Name) };
+            Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Book, PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-            AddImage(item, "WolfB.png", "BookImages", st, EngServRef.ServerData.Book);
+            AddImage(item, "WolfB.png", "BookImages", st, ServerData.Book, edit);
+            AddFile(item, "Books", ServerData.Book, edit);
+            AddStaticContent(item, st, ServerData.Book, PropertyData.Description);
+            AddStaticContent(item, st, ServerData.Book, PropertyData.Created);
+            AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, ServerData.Book);
+            AddHoverableData(item, ServerData.Book, PropertyData.Year, st);
 
-            AddStaticContent(item, st, EngServRef.ServerData.Book, EngServRef.PropertyData.Description);
-            AddStaticContent(item, st, EngServRef.ServerData.Book, EngServRef.PropertyData.Created);
-            AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, EngServRef.ServerData.Book);
-            AddHoverableData(item, EngServRef.ServerData.Book, EngServRef.PropertyData.Year, st);
-
-            AddExpanderData("Categories", item, st, EngServRef.ServerData.Book, EngServRef.ServerData.BookCategory);
-            AddExpanderData("Authors", item, st, EngServRef.ServerData.Book, EngServRef.ServerData.Author);
+            AddExpanderData("Categories", item, st, ServerData.Book, ServerData.BookCategory);
+            AddExpanderData("Authors", item, st, ServerData.Book, ServerData.Author);
 
             int id = _proxy.GetUserId(lUserName.Content.ToString())?? 0;
-            if (_proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Book).Result != null && _proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Book).Result.Length > 0)
+            if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Book).Result != null && _proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Book).Result.Length > 0)
             {
                 Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
                 StackPanel stack = new StackPanel();
-                foreach (int val in _proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Book).Result)
+                foreach (int val in _proxy.GetUserItemWordsAsync(id, item, ServerData.Book).Result)
                 {
-                    AddWordItem(val, stack);
+                    AddWordItem(val, edit, stack);
                 }
                 Button print = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Right, Background = Brushes.Blue, Foreground = Brushes.White, Tag = item, Content = "Print" };
                 print.Click += btnPrintWords_Click;
@@ -215,27 +216,27 @@ namespace AppEnglish
         /// </summary>
         /// <param name="item">Id of a word.</param>
         /// <param name="parent">The element in which a word is supposed to appear.</param>
-        private void AddWordItem(int item, Panel parent)
+        private void AddWordItem(int item, bool edit, Panel parent)
         {
-            Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.Word, EngServRef.PropertyData.Name) };
+            Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Word, PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-            AddImage(item, null, "WordImages", st, EngServRef.ServerData.Word);
+            AddImage(item, null, "WordImages", st, ServerData.Word, edit);
 
-            AddExpanderData("Categories", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.WordCategory);
-            AddExpanderData("Translations", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Translation);
-            AddExpanderData("Groups", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Group);
-            AddExpanderData("Definitions", item, st, EngServRef.ServerData.Word, EngServRef.ServerData.Definition);
+            AddExpanderData("Categories", item, st, ServerData.Word, ServerData.WordCategory);
+            AddExpanderData("Translations", item, st, ServerData.Word, ServerData.Translation);
+            AddExpanderData("Groups", item, st, ServerData.Word, ServerData.Group);
+            AddExpanderData("Definitions", item, st, ServerData.Word, ServerData.Definition);
 
             RoutedEventHandler delete;
-            RoutedEventHandler edit = null;
+            RoutedEventHandler editEvent = null;
             if (parent == stActions)
             {
                 delete = btnRemoveWord_Click;
-                edit = btnEditWord_Click;
+                editEvent = btnEditWord_Click;
             }
             else
                 delete = btnRemoveFromUser_Click;
-            AddButtons(item, st, delete, edit, null);
+            AddButtons(item, st, delete, editEvent, null);
 
             tmp.Content = st;
             parent.Children.Add(tmp);
@@ -249,7 +250,7 @@ namespace AppEnglish
         /// <param name="st">A panel where the data are supposed to be added.</param>
         /// <param name="data">A type of item.</param>
         /// <param name="res">A type of the inserted data.</param>
-        void AddExpanderData(string header, int item, Panel st, EngServRef.ServerData data, EngServRef.ServerData res)
+        void AddExpanderData(string header, int item, Panel st, ServerData data, ServerData res)
         {
             if (_proxy.GetItemDataAsync(item, data, res).Result == null || _proxy.GetItemDataAsync(item, data, res).Result.Length == 0)
                 return;
@@ -283,7 +284,7 @@ namespace AppEnglish
         /// <param name="st">The panel where to insert.</param>
         /// <param name="dataType">The type of an item.</param>
         /// <param name="property">The type of property.</param>
-        void AddStaticContent(int item, Panel st, EngServRef.ServerData dataType, EngServRef.PropertyData property)
+        void AddStaticContent(int item, Panel st, ServerData dataType, PropertyData property)
         {
             if (_proxy.GetItemPropertyAsync(item, dataType, property).Result != null)
             {
@@ -300,7 +301,7 @@ namespace AppEnglish
         /// <param name="dataType">A type of item.</param>
         /// <param name="property">A type of the inserted data.</param>
         /// <param name="st">A panel where the data are supposed to be added.</param>
-        void AddHoverableData(int item, EngServRef.ServerData dataType, EngServRef.PropertyData property, Panel st)
+        void AddHoverableData(int item, ServerData dataType, PropertyData property, Panel st)
         {
             if (_proxy.GetItemPropertyAsync(item, dataType, property).Result != null)
             {
@@ -355,16 +356,15 @@ namespace AppEnglish
         /// <param name="tempPath">The location of temporary files.</param>
         /// <param name="parent">The panel where an image is supposed to be added.</param>
         /// <param name="type">Data type.</param>
-        void AddImage(int id, string defaultPath, string tempPath, Panel parent, EngServRef.ServerData type)
+        void AddImage(int id, string defaultPath, string tempPath, Panel parent, ServerData type, bool edit)
         {
-            string img = _proxy.GetItemPropertyAsync(id, type, EngServRef.PropertyData.Imgpath).Result ?? defaultPath;
+            string img = _proxy.GetItemPropertyAsync(id, type, PropertyData.Imgpath).Result ?? defaultPath;
             if (img == null)
                 return;
-
-            string source = "";
+            
             if (img == defaultPath)
-                source = $"pack://application:,,,/Images/{defaultPath}";
-            else if (!File.Exists($@"Temp\{tempPath}\{img}"))
+                parent.Children.Add(new Image { Source = new BitmapImage(new Uri($"pack://application:,,,/Images/{defaultPath}")), Height = 110 });
+            else
             {
                 Task.Run(new Action(() => {
                     Dispatcher.Invoke(new Action(() =>
@@ -372,33 +372,99 @@ namespace AppEnglish
                         if (!Directory.Exists($@"Temp\{tempPath}"))
                             Directory.CreateDirectory($@"Temp\{tempPath}");
                         
-                        EngServRef.FilesType filesType = EngServRef.FilesType.Avatar;
+                        FilesType filesType = FilesType.Avatar;
                         switch (type)
                         {
-                            case EngServRef.ServerData.Video:
-                                filesType = EngServRef.FilesType.VideoImage;
+                            case ServerData.Video:
+                                filesType = FilesType.VideoImage;
                                 break;
-                            case EngServRef.ServerData.Book:
-                                filesType = EngServRef.FilesType.BookImage;
+                            case ServerData.Book:
+                                filesType = FilesType.BookImage;
                                 break;
-                            case EngServRef.ServerData.User:
-                                filesType = EngServRef.FilesType.Avatar;
+                            case ServerData.User:
+                                filesType = FilesType.Avatar;
                                 break;
-                            case EngServRef.ServerData.Word:
-                                filesType = EngServRef.FilesType.WordImage;
+                            case ServerData.Word:
+                                filesType = FilesType.WordImage;
                                 break;
                         }
-                        if (_proxy.Download(img, filesType) != null)
+                        byte[] res = _proxy.Download(img, filesType);
+                        if (res != null)
                         {
-                            File.WriteAllBytes($@"Temp\{tempPath}\{img}", _proxy.Download(img, filesType));
-                            source = $@"pack://siteoforigin:,,,/Temp\{tempPath}\{img}";
+                            try
+                            {
+                                using (FileStream fs = File.OpenWrite($@"Temp\{tempPath}\{img}"))
+                                {
+                                    fs.Write(res, 0, res.Length);
+                                    fs.Dispose();
+                                }
+                            }
+                            catch (IOException)
+                            {
+                                if (edit)
+                                {
+                                    if (MessageBox.Show("The data have been uploaded to the server. It will be updated the next time you come.\nDo you want to restart now?", "Check next time", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                                        Close();
+                                }
+                            }
+                            parent.Children.Insert(0, new Image { Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\{tempPath}\{img}")), Height = 110 });
                         }
                     }));
                 }));
             }
-            else
-                source = $@"pack://siteoforigin:,,,/Temp\{tempPath}\{img}";
-            parent.Children.Add(new Image { Source = new BitmapImage(new Uri(source)), Height = 110 });
+        }
+        /// <summary>
+        /// Downloads file.
+        /// </summary>
+        /// <param name="id">Files id.</param>
+        /// <param name="type">Path of temporary location.</param>
+        /// <param name="type">Files type.</param>
+        /// <param name="edit">Does file need to be edited?</param>
+        void AddFile(int id, string tempPath, ServerData type, bool edit)
+        {
+            string path = _proxy.GetItemPropertyAsync(id, type, PropertyData.Path).Result;
+            if (path == null)
+                return;
+
+            Task.Run(new Action(() =>
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    if (!Directory.Exists($@"Temp\{tempPath}"))
+                        Directory.CreateDirectory($@"Temp\{tempPath}");
+
+                    FilesType filesType = FilesType.Avatar;
+                    switch (type)
+                    {
+                        case ServerData.Video:
+                            filesType = FilesType.Video;
+                            break;
+                        case ServerData.Book:
+                            filesType = FilesType.Book;
+                            break;
+                    }
+                    byte[] res = _proxy.Download(path, filesType);
+                    if (res != null)
+                    {
+                        try
+                        {
+                            using (FileStream fs = File.OpenWrite($@"Temp\{tempPath}\{path}"))
+                            {
+                                fs.Write(res, 0, res.Length);
+                                fs.Dispose();
+                            }
+                        }
+                        catch (IOException)
+                        {
+                            if (edit)
+                            {
+                                if (MessageBox.Show("The data have been uploaded to the server. It will be updated the next time you come.\nDo you want to restart now?", "Check next time", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                                    Close();
+                            }
+                        }
+                    }
+                }));
+            }));
         }
         /// <summary>
         /// Inserts rating.
@@ -407,7 +473,7 @@ namespace AppEnglish
         /// <param name="userId">Id of user.</param>
         /// <param name="parent">The panel, where items are supposed to be added.</param>
         /// <param name="type">Type of item.</param>
-        void AddMarkingStars(int id, int? userId, Panel parent, EngServRef.ServerData type)
+        void AddMarkingStars(int id, int? userId, Panel parent, ServerData type)
         {
             int? stars = null;
             switch (type)

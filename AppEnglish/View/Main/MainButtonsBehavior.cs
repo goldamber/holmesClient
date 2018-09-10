@@ -93,7 +93,7 @@ namespace AppEnglish
             int id = Convert.ToInt32((sender as Button).Tag);
             EditAvatar form = new EditAvatar(_proxy, id);
             form.ShowDialog();
-            SetAvatar(id);
+            SetAvatar(id, true);
         }
 
         //Edit rating of book or video.
@@ -123,7 +123,7 @@ namespace AppEnglish
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
 
             int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Video);
-            await Task.Run(() => LoadList(lst, DataType.Video));
+            await Task.Run(() => LoadList(lst, DataType.Video, false));
         }
         //Show a form for adding a new video.
         private void btnAddVideo(object sender, RoutedEventArgs e)
@@ -145,7 +145,7 @@ namespace AppEnglish
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
 
             int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Book);
-            await Task.Run(() => LoadList(lst, DataType.Book));
+            await Task.Run(() => LoadList(lst, DataType.Book, false));
         }
         //Show a form for adding a new book.
         private void btnAddBook(object sender, RoutedEventArgs e)
@@ -169,7 +169,7 @@ namespace AppEnglish
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
 
             int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Word);
-            await Task.Run(() => LoadList(lst, DataType.Word));
+            await Task.Run(() => LoadList(lst, DataType.Word, false));
         }
         //Show a form for adding a new word.
         private void btnAddWord(object sender, RoutedEventArgs e)
@@ -285,22 +285,22 @@ namespace AppEnglish
             {
                 case "Book":
                     lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.Book, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.Book));
+                    await Task.Run(() => LoadList(lst, DataType.Book, false));
                     break;
 
                 case "Video":
                     lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.Video, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.Video));
+                    await Task.Run(() => LoadList(lst, DataType.Video, false));
                     break;
 
                 case "Word":
                     lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.Word, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.Word));
+                    await Task.Run(() => LoadList(lst, DataType.Word, false));
                     break;
 
                 case "User":
                     lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.User, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.User));
+                    await Task.Run(() => LoadList(lst, DataType.User, false));
                     break;
             }
         }
@@ -315,22 +315,22 @@ namespace AppEnglish
             {
                 case "Book":
                     lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.Book, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
-                    await Task.Run(() => LoadList(lst, DataType.Book));
+                    await Task.Run(() => LoadList(lst, DataType.Book, false));
                     break;
 
                 case "Video":
                     lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.Video, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
-                    await Task.Run(() => LoadList(lst, DataType.Video));
+                    await Task.Run(() => LoadList(lst, DataType.Video, false));
                     break;
 
                 case "Word":
                     lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.Word, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
-                    await Task.Run(() => LoadList(lst, DataType.Word));
+                    await Task.Run(() => LoadList(lst, DataType.Word, false));
                     break;
 
                 case "User":
                     lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.User, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
-                    await Task.Run(() => LoadList(lst, DataType.User));
+                    await Task.Run(() => LoadList(lst, DataType.User, false));
                     break;
             }
 
@@ -349,22 +349,22 @@ namespace AppEnglish
             {
                 case "Book":
                     lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.Book, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
-                    await Task.Run(() => LoadList(lst, DataType.Book));
+                    await Task.Run(() => LoadList(lst, DataType.Book, false));
                     break;
 
                 case "Video":
                     lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.Video, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
-                    await Task.Run(() => LoadList(lst, DataType.Video));
+                    await Task.Run(() => LoadList(lst, DataType.Video, false));
                     break;
 
                 case "Word":
                     lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.Word, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
-                    await Task.Run(() => LoadList(lst, DataType.Word));
+                    await Task.Run(() => LoadList(lst, DataType.Word, false));
                     break;
 
                 case "User":
                     lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.User, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
-                    await Task.Run(() => LoadList(lst, DataType.User));
+                    await Task.Run(() => LoadList(lst, DataType.User, false));
                     break;
             }
         }
