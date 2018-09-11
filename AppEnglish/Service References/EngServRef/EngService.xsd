@@ -24,6 +24,7 @@
   <xs:simpleType name="PropertyData">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Name" />
+      <xs:enumeration value="Surname" />
       <xs:enumeration value="Login" />
       <xs:enumeration value="Role" />
       <xs:enumeration value="RolesName" />
@@ -65,6 +66,7 @@
       <xs:enumeration value="WordImage" />
       <xs:enumeration value="VideoImage" />
       <xs:enumeration value="Book" />
+      <xs:enumeration value="Subtitles" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="FilesType" nillable="true" type="tns:FilesType" />

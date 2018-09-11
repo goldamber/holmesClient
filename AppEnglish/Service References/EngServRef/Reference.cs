@@ -73,94 +73,97 @@ namespace AppEnglish.EngServRef {
         Name = 0,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Login = 1,
+        Surname = 1,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Role = 2,
+        Login = 2,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        RolesName = 3,
+        Role = 3,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Description = 4,
+        RolesName = 4,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Path = 5,
+        Description = 5,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        IsAbsolute = 6,
+        Path = 6,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        SubPath = 7,
+        IsAbsolute = 7,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Imgpath = 8,
+        SubPath = 8,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Mark = 9,
+        Imgpath = 9,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Created = 10,
+        Mark = 10,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Date = 11,
+        Created = 11,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Position = 12,
+        Date = 12,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        ScoreCount = 13,
+        Position = 13,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Password = 14,
+        ScoreCount = 14,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Level = 15,
+        Password = 15,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Year = 16,
+        Level = 16,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PastForm = 17,
+        Year = 17,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PastThForm = 18,
+        PastForm = 18,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PluralForm = 19,
+        PastThForm = 19,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Category = 20,
+        PluralForm = 20,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Categories = 21,
+        Category = 21,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Author = 22,
+        Categories = 22,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Authors = 23,
+        Author = 23,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Synonyms = 24,
+        Authors = 24,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Translation = 25,
+        Synonyms = 25,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Translations = 26,
+        Translation = 26,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Definition = 27,
+        Translations = 27,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Definitions = 28,
+        Definition = 28,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Group = 29,
+        Definitions = 29,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Groups = 30,
+        Group = 30,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Groups = 31,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
@@ -184,6 +187,9 @@ namespace AppEnglish.EngServRef {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         Book = 5,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Subtitles = 6,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

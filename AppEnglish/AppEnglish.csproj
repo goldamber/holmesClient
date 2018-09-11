@@ -79,6 +79,9 @@
     <Compile Include="AddEdit\AddBook.xaml.cs">
       <DependentUpon>AddBook.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddEdit\AddCategory.xaml.cs">
+      <DependentUpon>AddCategory.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddEdit\AddWord.xaml.cs">
       <DependentUpon>AddWord.xaml</DependentUpon>
     </Compile>
@@ -109,6 +112,7 @@
     <Compile Include="Classes\SubTitle.cs" />
     <Compile Include="View\Main\MainButtonsAdmin.cs" />
     <Compile Include="View\Main\MainButtonsBehavior.cs" />
+    <Compile Include="View\Main\MainParts.cs" />
     <Compile Include="View\Main\MainWindow.cs" />
     <Compile Include="View\Main\MainWindowAdmin.cs" />
     <Compile Include="View\VideoPlayer.xaml.cs">
@@ -119,6 +123,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddEdit\AddBook.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEdit\AddCategory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

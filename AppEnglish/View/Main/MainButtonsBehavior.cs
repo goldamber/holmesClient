@@ -1,4 +1,5 @@
 ﻿using AppEnglish.AddEdit;
+using AppEnglish.EngServRef;
 using MahApps.Metro.Controls;
 using System;
 using System.IO;
@@ -117,13 +118,9 @@ namespace AppEnglish
         #endregion
         #region Video actions.
         //Show a list of all videos to the user.
-        private async void btnVideos_Click(object sender, RoutedEventArgs e)
+        private void btnVideos_Click(object sender, RoutedEventArgs e)
         {
-            stActions.Children.Clear();
-            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-
-            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Video);
-            await Task.Run(() => LoadList(lst, DataType.Video, false));
+            GenerateListTemplate(ServerData.Video, DataType.Video);
         }
         //Show a form for adding a new video.
         private void btnAddVideo(object sender, RoutedEventArgs e)
@@ -139,13 +136,9 @@ namespace AppEnglish
         #endregion
         #region Book actions.
         //Show a list of all books to the user.
-        private async void btnBooks_Click(object sender, RoutedEventArgs e)
+        private void btnBooks_Click(object sender, RoutedEventArgs e)
         {
-            stActions.Children.Clear();
-            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-
-            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Book);
-            await Task.Run(() => LoadList(lst, DataType.Book, false));
+            GenerateListTemplate(ServerData.Book, DataType.Book);
         }
         //Show a form for adding a new book.
         private void btnAddBook(object sender, RoutedEventArgs e)
@@ -163,13 +156,9 @@ namespace AppEnglish
         #endregion
         #region Word actions.
         //Show a list of all words to the user.
-        private async void btnWords_Click(object sender, RoutedEventArgs e)
+        private void btnWords_Click(object sender, RoutedEventArgs e)
         {
-            stActions.Children.Clear();
-            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-
-            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Word);
-            await Task.Run(() => LoadList(lst, DataType.Word, false));
+            GenerateListTemplate(ServerData.Word, DataType.Word);
         }
         //Show a form for adding a new word.
         private void btnAddWord(object sender, RoutedEventArgs e)
@@ -181,7 +170,7 @@ namespace AppEnglish
         {
             if (MessageBox.Show("Are you sure you want to remove this word?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                _proxy.RemoveItemWordAsync(Convert.ToInt32(lUserName.Tag), Convert.ToInt32((sender as Button).Tag), EngServRef.ServerData.User);
+                _proxy.RemoveItemWordAsync(Convert.ToInt32(lUserName.Tag), Convert.ToInt32((sender as Button).Tag), ServerData.User);
                 btnWords_Click(null, null);
             }
         }
@@ -275,68 +264,34 @@ namespace AppEnglish
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             if (txtSearch.Text == "")
-                _proxy.GetItems((EngServRef.ServerData)Enum.Parse(typeof(EngServRef.ServerData), btnSearch.Tag.ToString()));
+                _proxy.GetItems((ServerData)Enum.Parse(typeof(ServerData), btnSearch.Tag.ToString()));
 
             stActions.Children.Clear();
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-            int[] lst;
-
-            switch (btnSearch.Tag)
-            {
-                case "Book":
-                    lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.Book, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.Book, false));
-                    break;
-
-                case "Video":
-                    lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.Video, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.Video, false));
-                    break;
-
-                case "Word":
-                    lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.Word, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.Word, false));
-                    break;
-
-                case "User":
-                    lst = await _proxy.GetFItemsAsync(txtSearch.Text, EngServRef.ServerData.User, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text));
-                    await Task.Run(() => LoadList(lst, DataType.User, false));
-                    break;
-            }
+            
+            await Task.Run(new Action(() => {
+                Dispatcher.Invoke(new Action(() => {
+                    int[] lst = _proxy.GetFItems(txtSearch.Text, (ServerData)Enum.Parse(typeof(ServerData), btnSearch.Tag.ToString()), (PropertyData)Enum.Parse(typeof(PropertyData), cmbFilter.Text));
+                    LoadList(lst, (DataType)Enum.Parse(typeof(DataType), btnSearch.Tag.ToString()), false);
+                }));
+            }));
         }
         //Sort data.
         private async void btnSort_Click(object sender, RoutedEventArgs e)
         {
             stActions.Children.Clear();
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-            int[] lst;
 
-            switch (btnSort.Tag)
-            {
-                case "Book":
-                    lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.Book, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
-                    await Task.Run(() => LoadList(lst, DataType.Book, false));
-                    break;
+            await Task.Run(new Action(() => {
+                Dispatcher.Invoke(new Action(() => {
+                    int[] lst = _proxy.GetSortedItems((ServerData)Enum.Parse(typeof(ServerData), btnSearch.Tag.ToString()), (PropertyData)Enum.Parse(typeof(PropertyData), cmbFilter.Text), _desc);
+                    LoadList(lst, (DataType)Enum.Parse(typeof(DataType), btnSearch.Tag.ToString()), false);
 
-                case "Video":
-                    lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.Video, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
-                    await Task.Run(() => LoadList(lst, DataType.Video, false));
-                    break;
-
-                case "Word":
-                    lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.Word, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
-                    await Task.Run(() => LoadList(lst, DataType.Word, false));
-                    break;
-
-                case "User":
-                    lst = await _proxy.GetSortedItemsAsync(EngServRef.ServerData.User, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), cmbFilter.Text), _desc);
-                    await Task.Run(() => LoadList(lst, DataType.User, false));
-                    break;
-            }
-
-            _desc = !_desc;
-            string pic = _desc ? "SortR" : "Sort"; 
-            (sender as Button).Content = new Image { Source = new BitmapImage(new Uri($"pack://application:,,,/Images/{pic}.png")), Margin = new Thickness(5) };
+                    _desc = !_desc;
+                    string pic = _desc ? "SortR" : "Sort";
+                    (sender as Button).Content = new Image { Source = new BitmapImage(new Uri($"pack://application:,,,/Images/{pic}.png")), Margin = new Thickness(5) };
+                }));
+            }));
         }
         //Filter data via link.
         private async void ItemData_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -348,22 +303,22 @@ namespace AppEnglish
             switch (btnSearch.Tag)
             {
                 case "Book":
-                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.Book, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
+                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, ServerData.Book, (PropertyData)Enum.Parse(typeof(PropertyData), (sender as TextBlock).Tag.ToString()));
                     await Task.Run(() => LoadList(lst, DataType.Book, false));
                     break;
 
                 case "Video":
-                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.Video, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
+                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, ServerData.Video, (PropertyData)Enum.Parse(typeof(PropertyData), (sender as TextBlock).Tag.ToString()));
                     await Task.Run(() => LoadList(lst, DataType.Video, false));
                     break;
 
                 case "Word":
-                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.Word, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
+                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, ServerData.Word, (PropertyData)Enum.Parse(typeof(PropertyData), (sender as TextBlock).Tag.ToString()));
                     await Task.Run(() => LoadList(lst, DataType.Word, false));
                     break;
 
                 case "User":
-                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, EngServRef.ServerData.User, (EngServRef.PropertyData)Enum.Parse(typeof(EngServRef.PropertyData), (sender as TextBlock).Tag.ToString()));
+                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, ServerData.User, (PropertyData)Enum.Parse(typeof(PropertyData), (sender as TextBlock).Tag.ToString()));
                     await Task.Run(() => LoadList(lst, DataType.User, false));
                     break;
             }
@@ -378,27 +333,19 @@ namespace AppEnglish
             btn.Click += btnBooks_Click;
             stActions.Children.Add(btn);
 
-            /*btn = new Button { Name = "btnVideos", Content = "Videos", Style = TryFindResource("btnNormal") as Style };
-            btn.Click += btnVideos_Click;
-            stActions.Children.Add(btn);
-
-            btn = new Button { Name = "btnWords", Content = "Dictionary", Style = TryFindResource("btnNormal") as Style };
-            btn.Click += btnWords_Click;
-            stActions.Children.Add(btn);*/
-
             if (lRole.Content.ToString() == "admin")
             {
                 btn = new Button { Name = "btnUsersAct", Content = "Users", Style = TryFindResource("btnNormal") as Style };
                 btn.Click += btnUsersAct_Click;
                 stActions.Children.Add(btn);
-                /*btn = new Button { Name = "btnVideoCategories", Content = "Video Categories", Style = TryFindResource("btnNormal") as Style };
+
+                btn = new Button { Name = "btnAuthorsAct", Content = "Authors", Style = TryFindResource("btnNormal") as Style };
+                btn.Click += btnAuthorsAct_Click;
                 stActions.Children.Add(btn);
 
-                btn = new Button { Name = "btnBookCategories", Content = "Book Categories", Style = TryFindResource("btnNormal") as Style };
+                btn = new Button { Name = "btnBooksCategoriesAct", Content = "Books Categories", Style = TryFindResource("btnNormal") as Style };
+                btn.Click += btnBooksCategoriesAct_Click;
                 stActions.Children.Add(btn);
-
-                btn = new Button { Name = "btnUsers", Content = "Users", Style = TryFindResource("btnNormal") as Style };
-                stActions.Children.Add(btn);*/
             }
         }
     }

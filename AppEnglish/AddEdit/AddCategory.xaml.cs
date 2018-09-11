@@ -1,31 +1,33 @@
-﻿using System;
+﻿using AppEnglish.EngServRef;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace AppEnglish
+namespace AppEnglish.AddEdit
 {
-    public partial class AddAuthor : Window
+    public partial class AddCategory : Window
     {
-        EngServRef.EngServiceClient _proxy;
+        EngServiceClient _proxy;
+        ServerData dataType;
         int? id = null;
 
         #region Constructors.
         //Initialization.
-        public AddAuthor()
+        public AddCategory()
         {
             InitializeComponent();
         }
         //Initialize '_proxy'.
-        public AddAuthor(EngServRef.EngServiceClient tmp) : this()
+        public AddCategory(EngServiceClient tmp, ServerData type) : this()
         {
             _proxy = tmp;
+            dataType = type;
         }
         //Initialize '_proxy' and fields.
-        public AddAuthor(EngServRef.EngServiceClient tmp, int authId) : this(tmp)
+        public AddCategory(EngServiceClient tmp, ServerData type, int catId) : this(tmp, type)
         {
-            id = authId;
-            txtName.Text = _proxy.GetItemProperty(authId, EngServRef.ServerData.Author, EngServRef.PropertyData.Name);
-            txtSurname.Text = _proxy.GetItemProperty(authId, EngServRef.ServerData.Author, EngServRef.PropertyData.Surname);
+            id = catId;
+            txtName.Text = _proxy.GetItemProperty(catId, type, PropertyData.Name);
         }
         #endregion
 
@@ -79,22 +81,16 @@ namespace AppEnglish
         //Add an author.
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (!_proxy.CheckAuthor(txtName.Text, txtSurname.Text))
+            if (!_proxy.CheckExistence(txtName.Text, dataType))
             {
                 if (id == null)
-                {
-                    _proxy.AddAuthor(txtName.Text, txtSurname.Text);
-                    FormData.Author = $"{txtSurname.Text}, {txtName.Text}";
-                }
+                    _proxy.AddCategory(txtName.Text, dataType);
                 else
-                {
-                    _proxy.EditData(Convert.ToInt32(id), txtName.Text, EngServRef.ServerData.Author, EngServRef.PropertyData.Name);
-                    _proxy.EditData(Convert.ToInt32(id), txtName.Text, EngServRef.ServerData.Author, EngServRef.PropertyData.Surname);
-                }
+                    _proxy.EditData(Convert.ToInt32(id), txtName.Text, dataType, PropertyData.Name);
                 Close();
             }
             else
-                MessageBox.Show("This person is already taken!", "Wrong.", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("This category already exists!", "Wrong.", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         //Close the form.
         private void btnCancel_Click(object sender, RoutedEventArgs e)
