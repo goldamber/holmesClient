@@ -84,7 +84,13 @@ namespace AppEnglish.AddEdit
             if (!_proxy.CheckExistence(txtName.Text, dataType))
             {
                 if (id == null)
-                    _proxy.AddCategory(txtName.Text, dataType);
+                {
+                    if (_proxy.AddCategory(txtName.Text, dataType) == null)
+                    {
+                        MessageBox.Show("Something went wrong. This category was not addded.", "Wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                }
                 else
                     _proxy.EditData(Convert.ToInt32(id), txtName.Text, dataType, PropertyData.Name);
                 Close();

@@ -190,7 +190,7 @@ namespace AppEnglish
         {
             stActions.Children.Clear();
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-
+            
             int[] lst = await _proxy.GetItemsAsync(type);
             await Task.Run(() => LoadList(lst, clientType, false));
         }

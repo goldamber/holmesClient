@@ -50,6 +50,7 @@ namespace AppEnglish
         {
             Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, EngServRef.ServerData.BookCategory, EngServRef.PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+            AddExpanderData("Books", item, st, EngServRef.ServerData.BookCategory, EngServRef.ServerData.Book);
             AddButtons(item, st, btnRemoveBCategory_Click, btnEditBCategory_Click, null);
 
             tmp.Content = st;

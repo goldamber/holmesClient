@@ -298,30 +298,13 @@ namespace AppEnglish
         {
             stActions.Children.Clear();
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-            int[] lst;
 
-            switch (btnSearch.Tag)
-            {
-                case "Book":
-                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, ServerData.Book, (PropertyData)Enum.Parse(typeof(PropertyData), (sender as TextBlock).Tag.ToString()));
-                    await Task.Run(() => LoadList(lst, DataType.Book, false));
-                    break;
-
-                case "Video":
-                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, ServerData.Video, (PropertyData)Enum.Parse(typeof(PropertyData), (sender as TextBlock).Tag.ToString()));
-                    await Task.Run(() => LoadList(lst, DataType.Video, false));
-                    break;
-
-                case "Word":
-                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, ServerData.Word, (PropertyData)Enum.Parse(typeof(PropertyData), (sender as TextBlock).Tag.ToString()));
-                    await Task.Run(() => LoadList(lst, DataType.Word, false));
-                    break;
-
-                case "User":
-                    lst = await _proxy.GetFItemsAsync((sender as TextBlock).Text, ServerData.User, (PropertyData)Enum.Parse(typeof(PropertyData), (sender as TextBlock).Tag.ToString()));
-                    await Task.Run(() => LoadList(lst, DataType.User, false));
-                    break;
-            }
+            await Task.Run(new Action(() => {
+                Dispatcher.Invoke(new Action(() => {
+                    int[] lst = _proxy.GetFItems((sender as TextBlock).Text, (ServerData)Enum.Parse(typeof(ServerData), btnSearch.Tag.ToString()), (PropertyData)Enum.Parse(typeof(PropertyData), (sender as TextBlock).Tag.ToString()));
+                    LoadList(lst, (DataType)Enum.Parse(typeof(DataType), btnSearch.Tag.ToString()), false);
+                }));
+            }));
         }
         //Return to the list of actions.
         private void ButtonBack_Click(object sender, RoutedEventArgs e)

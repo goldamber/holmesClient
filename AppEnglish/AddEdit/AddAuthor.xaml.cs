@@ -83,13 +83,19 @@ namespace AppEnglish
             {
                 if (id == null)
                 {
-                    _proxy.AddAuthor(txtName.Text, txtSurname.Text);
+                    int? authId = _proxy.AddAuthor(txtName.Text, txtSurname.Text);
+                    if (authId == null)
+                    {
+                        MessageBox.Show("Something went wrong. This author was not added.", "Wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
                     FormData.Author = $"{txtSurname.Text}, {txtName.Text}";
+                    FormData.AuthorsID = Convert.ToInt32(authId);
                 }
                 else
                 {
                     _proxy.EditData(Convert.ToInt32(id), txtName.Text, EngServRef.ServerData.Author, EngServRef.PropertyData.Name);
-                    _proxy.EditData(Convert.ToInt32(id), txtName.Text, EngServRef.ServerData.Author, EngServRef.PropertyData.Surname);
+                    _proxy.EditData(Convert.ToInt32(id), txtSurname.Text, EngServRef.ServerData.Author, EngServRef.PropertyData.Surname);
                 }
                 Close();
             }

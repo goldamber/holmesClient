@@ -164,6 +164,18 @@ namespace AppEnglish.EngServRef {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         Groups = 31,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Book = 32,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Books = 33,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Video = 34,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Videos = 35,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
@@ -279,6 +291,12 @@ namespace AppEnglish.EngServRef {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetMark", ReplyAction="http://tempuri.org/IEngService/GetMarkResponse")]
         System.Threading.Tasks.Task<System.Nullable<int>> GetMarkAsync(int itemId, int userId, AppEnglish.EngServRef.ServerData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetLastId", ReplyAction="http://tempuri.org/IEngService/GetLastIdResponse")]
+        int GetLastId(AppEnglish.EngServRef.ServerData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetLastId", ReplyAction="http://tempuri.org/IEngService/GetLastIdResponse")]
+        System.Threading.Tasks.Task<int> GetLastIdAsync(AppEnglish.EngServRef.ServerData data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItems", ReplyAction="http://tempuri.org/IEngService/GetItemsResponse")]
         int[] GetItems(AppEnglish.EngServRef.ServerData data);
@@ -496,6 +514,14 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task<System.Nullable<int>> GetMarkAsync(int itemId, int userId, AppEnglish.EngServRef.ServerData data) {
             return base.Channel.GetMarkAsync(itemId, userId, data);
+        }
+        
+        public int GetLastId(AppEnglish.EngServRef.ServerData data) {
+            return base.Channel.GetLastId(data);
+        }
+        
+        public System.Threading.Tasks.Task<int> GetLastIdAsync(AppEnglish.EngServRef.ServerData data) {
+            return base.Channel.GetLastIdAsync(data);
         }
         
         public int[] GetItems(AppEnglish.EngServRef.ServerData data) {

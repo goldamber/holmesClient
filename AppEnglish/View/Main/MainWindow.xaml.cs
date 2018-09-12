@@ -162,8 +162,7 @@ namespace AppEnglish
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    _proxy.AddUserAsync(txtRName.Text, txtRPswd.Password, "Wolf.png", "user", 0);
-                    int id = Convert.ToInt32(_proxy.GetUserId(txtRName.Text));
+                    int id = _proxy.GetLastId(EngServRef.ServerData.User);
 
                     if (lPath.Content.ToString() != "...")
                     {
@@ -173,8 +172,8 @@ namespace AppEnglish
                             MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                             return;
                         }
-                        _proxy.EditData(id, ava, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath);
                     }
+                    _proxy.AddUserAsync(txtRName.Text, txtRPswd.Password, lPath.Content.ToString() == "..."? "Wolf.png": $"{id}{Path.GetExtension(lPath.Content.ToString())}", "user", 0);
 
                     btnReturn_Click(null, null);
                 }));

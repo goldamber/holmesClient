@@ -8,5 +8,6 @@ namespace AppEnglish
     static class FormData
     {
         public static string Author { get; set; } = "";
+        public static int AuthorsID { get; set; }
     }
 }

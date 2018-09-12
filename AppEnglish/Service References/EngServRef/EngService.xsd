@@ -55,6 +55,10 @@
       <xs:enumeration value="Definitions" />
       <xs:enumeration value="Group" />
       <xs:enumeration value="Groups" />
+      <xs:enumeration value="Book" />
+      <xs:enumeration value="Books" />
+      <xs:enumeration value="Video" />
+      <xs:enumeration value="Videos" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="PropertyData" nillable="true" type="tns:PropertyData" />

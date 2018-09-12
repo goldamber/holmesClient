@@ -222,7 +222,7 @@ namespace AppEnglish
 
             if (FormData.Author != "")
             {
-                lstAuthors.Items.Add(new CheckBox { Content = FormData.Author, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left, IsChecked = true });
+                lstAuthors.Items.Add(new CheckBox { Content = FormData.Author, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left, IsChecked = true, Tag = FormData.AuthorsID });
                 FormData.Author = "";
             }
         }
@@ -233,7 +233,7 @@ namespace AppEnglish
             List<int> lst = new List<int>(_proxy.GetItemsAsync(EngServRef.ServerData.Author).Result);
             foreach (int item in lst)
             {
-                lstAuthors.Items.Add(new CheckBox { VerticalAlignment = VerticalAlignment.Stretch, Tag = item, Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Author, EngServRef.PropertyData.Name).Result, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left });
+                lstAuthors.Items.Add(new CheckBox { VerticalAlignment = VerticalAlignment.Stretch, Tag = item, Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Author, EngServRef.PropertyData.Surname).Result + ", " + _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Author, EngServRef.PropertyData.Name).Result, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left });
             }
         }
         //Fill 'Authors' list-box with default values.
@@ -242,7 +242,7 @@ namespace AppEnglish
             List<int> lst = new List<int>(_proxy.GetItemsAsync(EngServRef.ServerData.Author).Result);
             foreach (int item in lst)
             {
-                lstAuthors.Items.Add(new CheckBox { VerticalAlignment = VerticalAlignment.Stretch, Tag = item, Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Author, EngServRef.PropertyData.Name).Result, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left, IsChecked = tmp.Contains(item) });
+                lstAuthors.Items.Add(new CheckBox { VerticalAlignment = VerticalAlignment.Stretch, Tag = item, Content = _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Author, EngServRef.PropertyData.Surname).Result + ", " + _proxy.GetItemPropertyAsync(item, EngServRef.ServerData.Author, EngServRef.PropertyData.Name).Result, Style = TryFindResource("chNormal") as Style, HorizontalAlignment = HorizontalAlignment.Left, IsChecked = tmp.Contains(item) });
             }
         }
         //Fill 'Categories' list-box.
@@ -289,9 +289,10 @@ namespace AppEnglish
 
                     if (name == null)
                     {
+                        int newId = _proxy.GetLastId(EngServRef.ServerData.Book);
                         if (lPath.Content.ToString() != "...")
                         {
-                            if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), $"{txtName.Text}{Path.GetExtension(lPath.Content.ToString())}", EngServRef.FilesType.BookImage))
+                            if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), $"{newId}{Path.GetExtension(lPath.Content.ToString())}", EngServRef.FilesType.BookImage))
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 stMain.Visibility = Visibility.Visible;
@@ -301,7 +302,7 @@ namespace AppEnglish
                         }
                         if (chCopy.IsChecked == true)
                         {
-                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{txtName.Text}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Book))
+                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{newId}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Book))
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 stMain.Visibility = Visibility.Visible;
@@ -309,7 +310,7 @@ namespace AppEnglish
                                 return;
                             }
                         }
-                        int? id = _proxy.AddBook(txtName.Text, txtDesc.Text == "" ? null : txtDesc.Text, txtPath.Text, "WolfB.png", chCopy.IsChecked == true ? false : true, mark, user, year, DateTime.Now);
+                        int? id = _proxy.AddBook(txtName.Text, txtDesc.Text == "" ? null : txtDesc.Text, chCopy.IsChecked == true ? $"{newId}{Path.GetExtension(txtPath.Text)}" : txtPath.Text, lPath.Content.ToString() == "..."? "WolfB.png" : $"{newId}{Path.GetExtension(lPath.Content.ToString())}", chCopy.IsChecked == true ? false : true, mark, user, year, DateTime.Now);
                         if (id == null)
                         {
                             MessageBox.Show("Something went wrong.", "Operation denied", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -318,10 +319,6 @@ namespace AppEnglish
                             return;
                         }
                         edit = Convert.ToInt32(id);
-                        if (chCopy.IsChecked == true)
-                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
-                        if (lPath.Content.ToString() != "...")
-                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(lPath.Content.ToString())}", EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
                     }
                     else
                     {

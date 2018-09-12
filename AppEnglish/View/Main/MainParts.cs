@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Diagnostics;
 
 namespace AppEnglish
 {
@@ -61,9 +62,9 @@ namespace AppEnglish
         {
             if (_proxy.GetItemPropertyAsync(item, dataType, property).Result != null)
             {
-                StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+                StackPanel hor = new StackPanel();
                 hor.Children.Add(new Label { Content = $"{property.ToString()}:", FontSize = 14, FontWeight = FontWeights.Bold });
-                hor.Children.Add(new Label { Content = _proxy.GetItemPropertyAsync(item, dataType, property).Result });
+                hor.Children.Add(new TextBlock { Text = _proxy.GetItemPropertyAsync(item, dataType, property).Result, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center, TextAlignment = TextAlignment.Justify, Margin = new Thickness(5) });
                 st.Children.Add(hor);
             }
         }
@@ -177,7 +178,7 @@ namespace AppEnglish
                                 if (edit)
                                 {
                                     if (MessageBox.Show("The data have been uploaded to the server. It will be updated the next time you come.\nDo you want to restart now?", "Check next time", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                                        Close();
+                                        Process.GetCurrentProcess().Kill();
                                 }
                             }
                             parent.Children.Insert(0, new Image { Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\{tempPath}\{img}")), Height = 110 });
