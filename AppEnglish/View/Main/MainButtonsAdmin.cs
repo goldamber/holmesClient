@@ -36,9 +36,10 @@ namespace AppEnglish
         private void btnRemoveUser_Click(object sender, RoutedEventArgs e)
         {
             int id = Convert.ToInt32((sender as Button).Tag);
+            string img = _proxy.GetItemProperty(id, ServerData.User, PropertyData.Imgpath);
             if (RemoveTemplate(id, "Are you sure you want to remove this user?", ServerData.User))
             {
-                _proxy.Delete(_proxy.GetItemProperty(id, ServerData.User, PropertyData.Imgpath), FilesType.Avatar);
+                _proxy.Delete(img, FilesType.Avatar);
                 btnUsersAct_Click(null, null);
             }
         }
@@ -114,11 +115,14 @@ namespace AppEnglish
         private void btnRemoveVideo_Click(object sender, RoutedEventArgs e)
         {
             int id = Convert.ToInt32((sender as Button).Tag);
+            string img = _proxy.GetItemProperty(id, ServerData.Video, PropertyData.Imgpath);
+            string path = _proxy.GetItemProperty(id, ServerData.Video, PropertyData.Path);
+            string sub = _proxy.GetItemProperty(id, ServerData.Video, PropertyData.SubPath);
             if (RemoveTemplate(id, "Are you sure you want to remove this video?", ServerData.Video))
             {
-                _proxy.Delete(_proxy.GetItemProperty(id, ServerData.Video, PropertyData.Imgpath), FilesType.VideoImage);
-                _proxy.Delete(_proxy.GetItemProperty(id, ServerData.Video, PropertyData.SubPath), FilesType.Subtitles);
-                _proxy.Delete(_proxy.GetItemProperty(id, ServerData.Video, PropertyData.Path), FilesType.Video);
+                _proxy.Delete(img, FilesType.VideoImage);
+                _proxy.Delete(sub, FilesType.Subtitles);
+                _proxy.Delete(path, FilesType.Video);
                 btnVideos_Click(null, null);
             }
         }
@@ -151,10 +155,12 @@ namespace AppEnglish
         private void btnRemoveBook_Click(object sender, RoutedEventArgs e)
         {
             int id = Convert.ToInt32((sender as Button).Tag);
+            string img = _proxy.GetItemProperty(id, ServerData.Book, PropertyData.Imgpath);
+            string path = _proxy.GetItemProperty(id, ServerData.Book, PropertyData.Path);
             if (RemoveTemplate(id, "Are you sure you want to remove this book?", ServerData.Book))
             {
-                _proxy.Delete(_proxy.GetItemProperty(id, ServerData.Book, PropertyData.Imgpath), FilesType.BookImage);
-                _proxy.Delete(_proxy.GetItemProperty(id, ServerData.Book, PropertyData.Path), FilesType.Book);
+                _proxy.Delete(img, FilesType.BookImage);
+                _proxy.Delete(path, FilesType.Book);
                 btnBooks_Click(null, null);
             }
         }
@@ -173,9 +179,10 @@ namespace AppEnglish
         private void btnRemoveWord_Click(object sender, RoutedEventArgs e)
         {
             int id = Convert.ToInt32((sender as Button).Tag);
+            string img = _proxy.GetItemProperty(id, ServerData.Word, PropertyData.Imgpath);
             if (RemoveTemplate(id, "Are you sure you want to remove this word?", ServerData.Word))
             {
-                _proxy.Delete(_proxy.GetItemProperty(id, ServerData.Word, PropertyData.Imgpath), FilesType.WordImage);
+                _proxy.Delete(img, FilesType.WordImage);
                 btnWords_Click(null, null);
             }
         }

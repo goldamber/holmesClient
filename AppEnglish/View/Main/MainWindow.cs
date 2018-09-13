@@ -219,7 +219,7 @@ namespace AppEnglish
                     AddExpanderData("Authors", item, st, ServerData.Book, ServerData.Author);
 
                     int id = _proxy.GetUserId(lUserName.Content.ToString()) ?? 0;
-                    if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Book).Result != null && _proxy.GetUserItemWordsAsync(id, item, EngServRef.ServerData.Book).Result.Length > 0)
+                    if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Book).Result != null && _proxy.GetUserItemWordsAsync(id, item, ServerData.Book).Result.Length > 0)
                     {
                         Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
                         StackPanel stack = new StackPanel();
