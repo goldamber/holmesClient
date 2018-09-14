@@ -17,6 +17,7 @@
       <xs:enumeration value="Game" />
       <xs:enumeration value="Example" />
       <xs:enumeration value="Bookmark" />
+      <xs:enumeration value="VideoBookmark" />
       <xs:enumeration value="Group" />
     </xs:restriction>
   </xs:simpleType>
@@ -64,12 +65,12 @@
   <xs:element name="PropertyData" nillable="true" type="tns:PropertyData" />
   <xs:simpleType name="FilesType">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Video" />
-      <xs:enumeration value="Avatar" />
-      <xs:enumeration value="BookImage" />
-      <xs:enumeration value="WordImage" />
-      <xs:enumeration value="VideoImage" />
-      <xs:enumeration value="Book" />
+      <xs:enumeration value="Videos" />
+      <xs:enumeration value="Avatars" />
+      <xs:enumeration value="BooksImages" />
+      <xs:enumeration value="WordsImages" />
+      <xs:enumeration value="VideosImages" />
+      <xs:enumeration value="Books" />
       <xs:enumeration value="Subtitles" />
     </xs:restriction>
   </xs:simpleType>

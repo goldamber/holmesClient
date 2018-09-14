@@ -3,6 +3,7 @@ using AppEnglish.EngServRef;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,7 +40,7 @@ namespace AppEnglish
             string img = _proxy.GetItemProperty(id, ServerData.User, PropertyData.Imgpath);
             if (RemoveTemplate(id, "Are you sure you want to remove this user?", ServerData.User))
             {
-                _proxy.Delete(img, FilesType.Avatar);
+                _proxy.Delete(img, FilesType.Avatars);
                 btnUsersAct_Click(null, null);
             }
         }
@@ -120,9 +121,9 @@ namespace AppEnglish
             string sub = _proxy.GetItemProperty(id, ServerData.Video, PropertyData.SubPath);
             if (RemoveTemplate(id, "Are you sure you want to remove this video?", ServerData.Video))
             {
-                _proxy.Delete(img, FilesType.VideoImage);
+                _proxy.Delete(img, FilesType.VideosImages);
                 _proxy.Delete(sub, FilesType.Subtitles);
-                _proxy.Delete(path, FilesType.Video);
+                _proxy.Delete(path, FilesType.Videos);
                 btnVideos_Click(null, null);
             }
         }
@@ -159,8 +160,8 @@ namespace AppEnglish
             string path = _proxy.GetItemProperty(id, ServerData.Book, PropertyData.Path);
             if (RemoveTemplate(id, "Are you sure you want to remove this book?", ServerData.Book))
             {
-                _proxy.Delete(img, FilesType.BookImage);
-                _proxy.Delete(path, FilesType.Book);
+                _proxy.Delete(img, FilesType.BooksImages);
+                _proxy.Delete(path, FilesType.Books);
                 btnBooks_Click(null, null);
             }
         }
@@ -172,7 +173,7 @@ namespace AppEnglish
             stActions.Children.Clear();
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
 
-            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Word);
+            int[] lst = await _proxy.GetItemsAsync(ServerData.Word);
             await Task.Run(() => LoadList(lst, DataType.Word, true));
         }
         //Remove item and refresh the canvas.
@@ -182,7 +183,7 @@ namespace AppEnglish
             string img = _proxy.GetItemProperty(id, ServerData.Word, PropertyData.Imgpath);
             if (RemoveTemplate(id, "Are you sure you want to remove this word?", ServerData.Word))
             {
-                _proxy.Delete(img, FilesType.WordImage);
+                _proxy.Delete(img, FilesType.WordsImages);
                 btnWords_Click(null, null);
             }
         }

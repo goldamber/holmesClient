@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace AppEnglish
 {
@@ -75,11 +74,11 @@ namespace AppEnglish
             chCopy.IsChecked = !this.isAbsolute;
             imgPath = img;
             if (imgPath == "WolfB.png")
-                imDrag.Source = new BitmapImage(new Uri("pack://application:,,,/Images/WolfB.png"));
+                FormData.SetImage("pack://application:,,,/Images/WolfB.png", imDrag);
             else
             {
                 if (File.Exists($@"Temp\BookImages\{imgPath}"))
-                    imDrag.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\BookImages\{imgPath}"));
+                    FormData.SetImage($@"pack://siteoforigin:,,,/Temp\BookImages\{imgPath}", imDrag);
                 else
                     MessageBox.Show("Image can not be found!", "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -160,7 +159,7 @@ namespace AppEnglish
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             lPath.Content = files[0];
-            imDrag.Source = new BitmapImage(new Uri(lPath.Content.ToString()));
+            FormData.SetImage(lPath.Content.ToString(), imDrag);
             brImage.Opacity = 0.4;
         }
         //Choose image (via OpenFileDialog).
@@ -171,7 +170,7 @@ namespace AppEnglish
             if (openFileDialog.ShowDialog() == true)
             {
                 lPath.Content = openFileDialog.FileName;
-                imDrag.Source = new BitmapImage(new Uri(lPath.Content.ToString()));
+                FormData.SetImage(lPath.Content.ToString(), imDrag);
             }
         }
         #endregion
@@ -292,7 +291,7 @@ namespace AppEnglish
                         int newId = _proxy.GetLastId(EngServRef.ServerData.Book);
                         if (lPath.Content.ToString() != "...")
                         {
-                            if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), $"{newId}{Path.GetExtension(lPath.Content.ToString())}", EngServRef.FilesType.BookImage))
+                            if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), $"{newId}{Path.GetExtension(lPath.Content.ToString())}", EngServRef.FilesType.BooksImages))
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 stMain.Visibility = Visibility.Visible;
@@ -302,7 +301,7 @@ namespace AppEnglish
                         }
                         if (chCopy.IsChecked == true)
                         {
-                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{newId}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Book))
+                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{newId}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Books))
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 stMain.Visibility = Visibility.Visible;
@@ -327,7 +326,7 @@ namespace AppEnglish
                         if (txtPath.Text != path && chCopy.IsChecked == true)
                         {
                             _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
-                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Book))
+                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Books))
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 stMain.Visibility = Visibility.Visible;
@@ -341,7 +340,7 @@ namespace AppEnglish
                         {
                             string file = $"{edit}{Path.GetExtension(lPath.Content.ToString())}";
                             _proxy.EditData(edit, file, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
-                            if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), file, EngServRef.FilesType.BookImage))
+                            if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), file, EngServRef.FilesType.BooksImages))
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 stMain.Visibility = Visibility.Visible;

@@ -1,4 +1,12 @@
-﻿using System;
+﻿using EpubSharp;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,36 +17,90 @@ namespace AppEnglish
     public partial class BookReader : Window
     {
         EngServRef.EngServiceClient _proxy;
+        int book;
+        int user;
 
         #region Constructors.
+        //Initialization.
         public BookReader()
         {
             InitializeComponent();
         }
-        public BookReader(string str, EngServRef.EngServiceClient proxy) : this()
+        /// <summary>
+        /// Initialization.
+        /// </summary>
+        /// <param name="proxy">Server.</param>
+        /// <param name="id">Books id.</param>
+        /// <param name="usersId">Users id.</param>
+        public BookReader(EngServRef.EngServiceClient proxy, int id, int usersId) : this()
         {
-            txtName.Text = str;
             _proxy = proxy;
+            book = id;
+            user = usersId;
         }
         #endregion
 
         #region Book initialization.
-        private void FillListBox()
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            /*List<string> _words = new List<string>();
-            string str = "";
+            bool isAbsolute = _proxy.CheckAbsolute(book, EngServRef.ServerData.Book) == true ? true : false;
+            string booksPath = _proxy.GetItemProperty(book, EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
 
-            using (FileStream fs = new FileStream(!_book.IsAbsolulute ? $"Books/{_book.Path}" : _book.Path, FileMode.Open))
+            List<string> _words = new List<string>();
+            string path = isAbsolute ? booksPath : $@"Temp\Books\{booksPath}";
+            if (!isAbsolute)
             {
-                using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
+                if (!Directory.Exists(@"Temp\Books"))
+                    Directory.CreateDirectory(@"Temp\Books");
+                byte[] res = _proxy.Download(booksPath, EngServRef.FilesType.Books);
+                if (res != null)
                 {
-                    str = sr.ReadToEnd();
+                    using (FileStream fs = File.OpenWrite(path))
+                    {
+                        Task.WaitAll(fs.WriteAsync(res, 0, res.Length));
+                        fs.Dispose();
+                    }
+                }
+            }
+            if (!File.Exists(path))
+            {
+                MessageBox.Show($"This file does not exist!\n({path})", "Wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
+                return;
+            }
+            string data = "";
+
+            if (System.IO.Path.GetExtension(path) == ".epub")
+            {
+                EpubBook book = EpubReader.Read(path);
+                data = book.ToPlainText();
+            }
+            else if (System.IO.Path.GetExtension(path) == ".pdf")
+            {
+                PdfReader reader = new PdfReader(path);
+                string text = string.Empty;
+                for (int page = 1; page <= reader.NumberOfPages; page++)
+                {
+                    text += PdfTextExtractor.GetTextFromPage(reader, page);
+                }
+                reader.Close();
+                data = text;
+            }
+            else
+            {
+                using (FileStream fs = new FileStream(path, FileMode.Open))
+                {
+                    using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
+                    {
+                        data = sr.ReadToEnd();
+                        sr.Dispose();
+                    }
                 }
             }
 
             Thread thd = new Thread(new ThreadStart(() =>
             {
-                foreach (string item in str.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (string item in data.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     _words.Add(item);
                 }
@@ -65,16 +127,17 @@ namespace AppEnglish
                         stWords.Items.Add(tmp);
                     }
 
-                    EngServRef.Bookmark _mark = _proxy.GetBookmark(txtName.Text, _user);
-                    if (_mark != null)
+                    int? bm = _proxy.GetLastMark(book, user, EngServRef.ServerData.Book);
+                    if (bm != null)
                     {
-                        stWords.SelectedItem = stWords.Items[_mark.Parent];
+                        int pos = Convert.ToInt32(_proxy.GetItemProperty(Convert.ToInt32(bm), EngServRef.ServerData.Bookmark, EngServRef.PropertyData.Position));
+                        stWords.SelectedItem = stWords.Items[pos];
                         stWords.ScrollIntoView(stWords.SelectedItem);
                     }
                 }));
             }));
             thd.IsBackground = true;
-            thd.Start();*/
+            thd.Start();
         }
         #endregion
 
@@ -85,26 +148,21 @@ namespace AppEnglish
             AddWord frm = new AddWord("", _proxy);
             frm.ShowDialog();
         }
-        //Add bookmark.
-        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            /*if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                try
-                {
-                    _proxy.AddBookmark(txtName.Text, _user, ((sender as FrameworkElement).Parent as Panel).Children.IndexOf(sender as UIElement), stWords.Items.IndexOf((sender as FrameworkElement).Parent));
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }*/
-        }
         //Add existing word.
         private void Lb_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             AddWord frm = new AddWord((sender as TextBox).Text.Split(" .,!?()8-_<>;:'\"\\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0], _proxy);
             frm.ShowDialog();
+        }
+
+        //Add bookmark.
+        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                int pos = stWords.Items.IndexOf((sender as FrameworkElement).Parent);
+                _proxy.AddBookmark(pos, book, user);
+            }
         }
         #endregion
         #region Visualization (tips).

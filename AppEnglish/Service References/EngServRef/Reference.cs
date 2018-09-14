@@ -62,7 +62,10 @@ namespace AppEnglish.EngServRef {
         Bookmark = 14,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Group = 15,
+        VideoBookmark = 15,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Group = 16,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
@@ -183,22 +186,22 @@ namespace AppEnglish.EngServRef {
     public enum FilesType : int {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Video = 0,
+        Videos = 0,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Avatar = 1,
+        Avatars = 1,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        BookImage = 2,
+        BooksImages = 2,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        WordImage = 3,
+        WordsImages = 3,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        VideoImage = 4,
+        VideosImages = 4,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Book = 5,
+        Books = 5,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         Subtitles = 6,
@@ -237,6 +240,12 @@ namespace AppEnglish.EngServRef {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddCategory", ReplyAction="http://tempuri.org/IEngService/AddCategoryResponse")]
         System.Threading.Tasks.Task<System.Nullable<int>> AddCategoryAsync(string name, AppEnglish.EngServRef.ServerData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddBookmark", ReplyAction="http://tempuri.org/IEngService/AddBookmarkResponse")]
+        void AddBookmark(int pos, int item, int user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddBookmark", ReplyAction="http://tempuri.org/IEngService/AddBookmarkResponse")]
+        System.Threading.Tasks.Task AddBookmarkAsync(int pos, int item, int user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddItemCategory", ReplyAction="http://tempuri.org/IEngService/AddItemCategoryResponse")]
         void AddItemCategory(int item, int cat, AppEnglish.EngServRef.ServerData data);
@@ -333,6 +342,12 @@ namespace AppEnglish.EngServRef {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetUserId", ReplyAction="http://tempuri.org/IEngService/GetUserIdResponse")]
         System.Threading.Tasks.Task<System.Nullable<int>> GetUserIdAsync(string login);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetLastMark", ReplyAction="http://tempuri.org/IEngService/GetLastMarkResponse")]
+        System.Nullable<int> GetLastMark(int item, int user, AppEnglish.EngServRef.ServerData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetLastMark", ReplyAction="http://tempuri.org/IEngService/GetLastMarkResponse")]
+        System.Threading.Tasks.Task<System.Nullable<int>> GetLastMarkAsync(int item, int user, AppEnglish.EngServRef.ServerData data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/CheckExistence", ReplyAction="http://tempuri.org/IEngService/CheckExistenceResponse")]
         bool CheckExistence(string name, AppEnglish.EngServRef.ServerData data);
@@ -442,6 +457,14 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task<System.Nullable<int>> AddCategoryAsync(string name, AppEnglish.EngServRef.ServerData data) {
             return base.Channel.AddCategoryAsync(name, data);
+        }
+        
+        public void AddBookmark(int pos, int item, int user) {
+            base.Channel.AddBookmark(pos, item, user);
+        }
+        
+        public System.Threading.Tasks.Task AddBookmarkAsync(int pos, int item, int user) {
+            return base.Channel.AddBookmarkAsync(pos, item, user);
         }
         
         public void AddItemCategory(int item, int cat, AppEnglish.EngServRef.ServerData data) {
@@ -570,6 +593,14 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task<System.Nullable<int>> GetUserIdAsync(string login) {
             return base.Channel.GetUserIdAsync(login);
+        }
+        
+        public System.Nullable<int> GetLastMark(int item, int user, AppEnglish.EngServRef.ServerData data) {
+            return base.Channel.GetLastMark(item, user, data);
+        }
+        
+        public System.Threading.Tasks.Task<System.Nullable<int>> GetLastMarkAsync(int item, int user, AppEnglish.EngServRef.ServerData data) {
+            return base.Channel.GetLastMarkAsync(item, user, data);
         }
         
         public bool CheckExistence(string name, AppEnglish.EngServRef.ServerData data) {

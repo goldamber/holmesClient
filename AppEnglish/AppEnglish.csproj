@@ -39,6 +39,12 @@
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EpubSharp, Version=1.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EpubSharp.dll.1.1.5\lib\net451\EpubSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.3\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -28,11 +27,11 @@ namespace AppEnglish.AddEdit
 
             string path = _proxy.GetItemProperty(id, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath)?? "Wolf.png";
             if (path == "Wolf.png")
-                imDrag.Source = new BitmapImage(new Uri("pack://application:,,,/Images/Wolf.png"));
+                FormData.SetImage("pack://application:,,,/Images/Wolf.png", imDrag);
             else
             {
                 if (File.Exists($@"Temp\Avatars\{path}"))
-                    imDrag.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
+                    FormData.SetImage($@"pack://siteoforigin:,,,/Temp\Avatars\{path}", imDrag);
                 else
                     MessageBox.Show("Your avatar can not be found!", "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -53,7 +52,7 @@ namespace AppEnglish.AddEdit
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             lPath.Content = files[0];
             btnOK.IsEnabled = true;
-            imDrag.Source = new BitmapImage(new Uri(lPath.Content.ToString()));
+            FormData.SetImage(lPath.Content.ToString(), imDrag);
             brImage.Opacity = 0.4;
         }
         //Click.
@@ -65,7 +64,7 @@ namespace AppEnglish.AddEdit
             {
                 lPath.Content = openFileDialog.FileName;
                 btnOK.IsEnabled = true;
-                imDrag.Source = new BitmapImage(new Uri(lPath.Content.ToString()));
+                FormData.SetImage(lPath.Content.ToString(), imDrag);
             }
         }
         #endregion
@@ -77,7 +76,7 @@ namespace AppEnglish.AddEdit
                 Dispatcher.Invoke(new Action(() =>
                 {
                     string file = $"{id}{Path.GetExtension(lPath.Content.ToString())}";
-                    if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), file, EngServRef.FilesType.Avatar))
+                    if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), file, EngServRef.FilesType.Avatars))
                     {
                         MessageBox.Show($"The file is too large!", "Choose another file", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;

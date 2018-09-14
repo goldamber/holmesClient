@@ -67,6 +67,12 @@
   <wsdl:message name="IEngService_AddCategory_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddCategoryResponse" />
   </wsdl:message>
+  <wsdl:message name="IEngService_AddBookmark_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddBookmark" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddBookmark_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddBookmarkResponse" />
+  </wsdl:message>
   <wsdl:message name="IEngService_AddItemCategory_InputMessage">
     <wsdl:part name="parameters" element="tns:AddItemCategory" />
   </wsdl:message>
@@ -163,6 +169,12 @@
   <wsdl:message name="IEngService_GetUserId_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetUserIdResponse" />
   </wsdl:message>
+  <wsdl:message name="IEngService_GetLastMark_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLastMark" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetLastMark_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLastMarkResponse" />
+  </wsdl:message>
   <wsdl:message name="IEngService_CheckExistence_InputMessage">
     <wsdl:part name="parameters" element="tns:CheckExistence" />
   </wsdl:message>
@@ -225,6 +237,10 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddCategory">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddCategory" message="tns:IEngService_AddCategory_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddCategoryResponse" message="tns:IEngService_AddCategory_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddBookmark">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddBookmark" message="tns:IEngService_AddBookmark_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddBookmarkResponse" message="tns:IEngService_AddBookmark_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddItemCategory">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddItemCategory" message="tns:IEngService_AddItemCategory_InputMessage" />
@@ -289,6 +305,10 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetUserId">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetUserId" message="tns:IEngService_GetUserId_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetUserIdResponse" message="tns:IEngService_GetUserId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetLastMark">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetLastMark" message="tns:IEngService_GetLastMark_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetLastMarkResponse" message="tns:IEngService_GetLastMark_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CheckExistence">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/CheckExistence" message="tns:IEngService_CheckExistence_InputMessage" />
@@ -360,6 +380,15 @@
     </wsdl:operation>
     <wsdl:operation name="AddCategory">
       <soap12:operation soapAction="http://tempuri.org/IEngService/AddCategory" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddBookmark">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddBookmark" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -504,6 +533,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetUserId">
       <soap12:operation soapAction="http://tempuri.org/IEngService/GetUserId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastMark">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetLastMark" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

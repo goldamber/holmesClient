@@ -27,29 +27,37 @@ namespace AppEnglish
         {
             Thread thd = new Thread(new ThreadStart(() =>
             {
-                Dispatcher.Invoke(new Action(() => {
-                    if (_proxy.GetItemDataAsync(item, data, res).Result == null || _proxy.GetItemDataAsync(item, data, res).Result.Length == 0)
+                Dispatcher.InvokeAsync(new Action(() => {
+                    if (_proxy.GetItemData(item, data, res) == null || _proxy.GetItemData(item, data, res).Length == 0)
                         return;
 
                     Expander hor = new Expander { Header = header, Background = Brushes.Azure };
                     StackPanel ver = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
                     int count = 1;
-                    foreach (int val in _proxy.GetItemDataAsync(item, data, res).Result)
+                    foreach (int val in _proxy.GetItemData(item, data, res))
                     {
-                        StackPanel panel = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch, Background = Brushes.Azure };
-                        panel.MouseEnter += ExpanderItem_MouseEnter;
-                        panel.MouseLeave += ExpanderItem_MouseLeave;
+                        object obj = new object();
+                        Task.Run(() => {
+                            lock (obj)
+                            {
+                                Dispatcher.InvokeAsync(() => {
+                                    StackPanel panel = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch, Background = Brushes.Azure };
+                                    panel.MouseEnter += ExpanderItem_MouseEnter;
+                                    panel.MouseLeave += ExpanderItem_MouseLeave;
 
-                        panel.Children.Add(new Border { CornerRadius = new CornerRadius(22, 22, 20, 20), BorderBrush = Brushes.Gray, BorderThickness = new Thickness(2), Child = new Label { Content = count, Padding = new Thickness(2), FontSize = 9, FontWeight = FontWeights.Bold }, Padding = new Thickness(7, 5, 7, 5), Margin = new Thickness(5) });
-                        TextBlock label = new TextBlock { Padding = new Thickness(5), Foreground = Brushes.DarkBlue, TextDecorations = TextDecorations.Underline, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left, Tag = header, Text = _proxy.GetItemPropertyAsync(val, res, PropertyData.Name).Result, FontSize = 12, FontWeight = FontWeights.Normal };
-                        if (res == ServerData.Author)
-                            label.Text = _proxy.GetItemPropertyAsync(val, res, PropertyData.Name).Result + " " + _proxy.GetItemPropertyAsync(val, res, PropertyData.Surname).Result;
-                        label.MouseDown += ItemData_MouseDown;
-                        label.MouseEnter += ItemData_MouseEnter;
-                        label.MouseLeave += ItemData_MouseLeave;
-                        panel.Children.Add(label);
-                        ver.Children.Add(panel);
-                        count++;
+                                    panel.Children.Add(new Border { CornerRadius = new CornerRadius(22, 22, 20, 20), BorderBrush = Brushes.Gray, BorderThickness = new Thickness(2), Child = new Label { Content = count, Padding = new Thickness(2), FontSize = 9, FontWeight = FontWeights.Bold }, Padding = new Thickness(7, 5, 7, 5), Margin = new Thickness(5) });
+                                    TextBlock label = new TextBlock { Padding = new Thickness(5), Foreground = Brushes.DarkBlue, TextDecorations = TextDecorations.Underline, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left, Tag = header, Text = _proxy.GetItemProperty(val, res, PropertyData.Name), FontSize = 12, FontWeight = FontWeights.Normal };
+                                    if (res == ServerData.Author)
+                                        label.Text = _proxy.GetItemPropertyAsync(val, res, PropertyData.Name).Result + " " + _proxy.GetItemProperty(val, res, PropertyData.Surname);
+                                    label.MouseDown += ItemData_MouseDown;
+                                    label.MouseEnter += ItemData_MouseEnter;
+                                    label.MouseLeave += ItemData_MouseLeave;
+                                    panel.Children.Add(label);
+                                    ver.Children.Add(panel);
+                                    count++;
+                                });
+                            }
+                        });
                     }
                     hor.Content = ver;
                     st.Children.Add(hor);
@@ -70,7 +78,7 @@ namespace AppEnglish
         {
             Thread thd = new Thread(new ThreadStart(() =>
             {
-                Dispatcher.Invoke(new Action(() => {
+                Dispatcher.InvokeAsync(new Action(() => {
                     if (_proxy.GetItemPropertyAsync(item, dataType, property).Result != null)
                     {
                         StackPanel hor = new StackPanel();
@@ -94,7 +102,7 @@ namespace AppEnglish
         {
             Thread thd = new Thread(new ThreadStart(() =>
             {
-                Dispatcher.Invoke(new Action(() => {
+                Dispatcher.InvokeAsync(new Action(() => {
                     if (_proxy.GetItemPropertyAsync(item, dataType, property).Result != null)
                     {
                         StackPanel hor = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
@@ -124,7 +132,7 @@ namespace AppEnglish
         {
             Thread thd = new Thread(new ThreadStart(() =>
             {
-                Dispatcher.Invoke(new Action(() => {
+                Dispatcher.InvokeAsync(new Action(() => {
                     StackPanel stButtons = new StackPanel { Orientation = Orientation.Horizontal };
                     Button btn;
                     if (delete != null && lRole.Content.ToString().Equals("admin"))
@@ -163,7 +171,7 @@ namespace AppEnglish
         {
             Thread thd = new Thread(new ThreadStart(() =>
             {
-                Dispatcher.Invoke(new Action(() => {
+                Dispatcher.InvokeAsync(new Action(() => {
                     string img = _proxy.GetItemPropertyAsync(id, type, PropertyData.Imgpath).Result ?? defaultPath;
                     if (img == null)
                         return;
@@ -175,20 +183,20 @@ namespace AppEnglish
                         if (!Directory.Exists($@"Temp\{tempPath}"))
                             Directory.CreateDirectory($@"Temp\{tempPath}");
 
-                        FilesType filesType = FilesType.Avatar;
+                        FilesType filesType = FilesType.Avatars;
                         switch (type)
                         {
                             case ServerData.Video:
-                                filesType = FilesType.VideoImage;
+                                filesType = FilesType.VideosImages;
                                 break;
                             case ServerData.Book:
-                                filesType = FilesType.BookImage;
+                                filesType = FilesType.BooksImages;
                                 break;
                             case ServerData.User:
-                                filesType = FilesType.Avatar;
+                                filesType = FilesType.Avatars;
                                 break;
                             case ServerData.Word:
-                                filesType = FilesType.WordImage;
+                                filesType = FilesType.WordsImages;
                                 break;
                         }
                         byte[] res = _proxy.Download(img, filesType);
@@ -210,7 +218,10 @@ namespace AppEnglish
                                         Process.GetCurrentProcess().Kill();
                                 }
                             }
-                            parent.Children.Insert(0, new Image { Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\{tempPath}\{img}")), Height = 110 });
+
+                            Image tmp = new Image { Height = 110 };
+                            FormData.SetImage($@"pack://siteoforigin:,,,/Temp\{tempPath}\{img}", tmp);
+                            parent.Children.Insert(0, tmp);
                         }
                     }
                 }));
@@ -229,7 +240,7 @@ namespace AppEnglish
         {
             Thread thd = new Thread(new ThreadStart(() =>
             {
-                Dispatcher.Invoke(new Action(() =>
+                Dispatcher.InvokeAsync(new Action(() =>
                 {
                     string path = _proxy.GetItemPropertyAsync(id, type, PropertyData.Path).Result;
                     if (path == null)
@@ -238,14 +249,14 @@ namespace AppEnglish
                     if (!Directory.Exists($@"Temp\{tempPath}"))
                         Directory.CreateDirectory($@"Temp\{tempPath}");
 
-                    FilesType filesType = FilesType.Avatar;
+                    FilesType filesType = FilesType.Avatars;
                     switch (type)
                     {
                         case ServerData.Video:
-                            filesType = FilesType.Video;
+                            filesType = FilesType.Videos;
                             break;
                         case ServerData.Book:
-                            filesType = FilesType.Book;
+                            filesType = FilesType.Books;
                             break;
                     }
                     byte[] res = _proxy.DownloadAsync(path, filesType).Result;
@@ -284,7 +295,8 @@ namespace AppEnglish
         {
             Thread thd = new Thread(new ThreadStart(() =>
             {
-                Dispatcher.Invoke(new Action(() => {
+                Dispatcher.InvokeAsync(new Action(() =>
+                {
                     int? stars = null;
                     switch (type)
                     {

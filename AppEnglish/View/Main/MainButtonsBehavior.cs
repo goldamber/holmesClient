@@ -25,7 +25,7 @@ namespace AppEnglish
             stActions.Children.Clear();
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
             Task.Run(() => {
-                Dispatcher.Invoke(() => {
+                Dispatcher.InvokeAsync(() => {
                     WrapPanel tmp = new WrapPanel();
                     tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontWeight = FontWeights.Bold, Content = "Login:" });
                     tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontSize = 14, Content = lUserName.Content });
@@ -150,7 +150,8 @@ namespace AppEnglish
         //Show a book reader.
         private void btnViewBook_Click(object sender, RoutedEventArgs e)
         {
-            BookReader frm = new BookReader((sender as Button).Tag.ToString(), _proxy);
+            int user = Convert.ToInt32(_proxy.GetUserId(lUserName.Content.ToString()));
+            BookReader frm = new BookReader(_proxy, Convert.ToInt32((sender as Button).Tag), user);
             frm.ShowDialog();
         }
         #endregion
@@ -270,7 +271,7 @@ namespace AppEnglish
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
             
             await Task.Run(new Action(() => {
-                Dispatcher.Invoke(new Action(() => {
+                Dispatcher.InvokeAsync(new Action(() => {
                     int[] lst = _proxy.GetFItems(txtSearch.Text, (ServerData)Enum.Parse(typeof(ServerData), btnSearch.Tag.ToString()), (PropertyData)Enum.Parse(typeof(PropertyData), cmbFilter.Text));
                     LoadList(lst, (DataType)Enum.Parse(typeof(DataType), btnSearch.Tag.ToString()), false);
                 }));
@@ -284,12 +285,14 @@ namespace AppEnglish
 
             await Task.Run(new Action(() => {
                 Dispatcher.Invoke(new Action(() => {
-                    int[] lst = _proxy.GetSortedItems((ServerData)Enum.Parse(typeof(ServerData), btnSearch.Tag.ToString()), (PropertyData)Enum.Parse(typeof(PropertyData), cmbFilter.Text), _desc);
+                    int[] lst = _proxy.GetSortedItems((ServerData)Enum.Parse(typeof(ServerData), btnSearch.Tag.ToString()), (PropertyData)Enum.Parse(typeof(PropertyData), cmbSort.Text), _desc);
                     LoadList(lst, (DataType)Enum.Parse(typeof(DataType), btnSearch.Tag.ToString()), false);
 
                     _desc = !_desc;
                     string pic = _desc ? "SortR" : "Sort";
-                    (sender as Button).Content = new Image { Source = new BitmapImage(new Uri($"pack://application:,,,/Images/{pic}.png")), Margin = new Thickness(5) };
+                    Image tmp = new Image { Margin = new Thickness(5) };
+                    FormData.SetImage($"pack://application:,,,/Images/{pic}.png", tmp);
+                    (sender as Button).Content = tmp;
                 }));
             }));
         }

@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using AppEnglish.EngServRef;
+using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using System;
 using System.IO;
@@ -6,21 +7,20 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 
 namespace AppEnglish
 {
     //Register, visual settings.
     public partial class MainWindow : MetroWindow
     {
-        EngServRef.EngServiceClient _proxy;
+        EngServiceClient _proxy;
 
         //Check connection.
         public MainWindow()
         {
             InitializeComponent();
             DeleteTemporary();
-            _proxy = new EngServRef.EngServiceClient();
+            _proxy = new EngServiceClient();
 
             try
             {
@@ -78,7 +78,7 @@ namespace AppEnglish
             txtRPswd.Password = "";
             txtRCfrPswd.Password = "";
             lPath.Content = "...";
-            imDrag.Source = new BitmapImage(new Uri("pack://application:,,,/Images/ImageDrop.png"));
+            FormData.SetImage("pack://application:,,,/Images/ImageDrop.png", imDrag);
 
             stFirst.Visibility = Visibility.Collapsed;
             stRegister.Visibility = Visibility.Visible;
@@ -98,7 +98,7 @@ namespace AppEnglish
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             lPath.Content = files[0];
-            imDrag.Source = new BitmapImage(new Uri(lPath.Content.ToString()));
+            FormData.SetImage(lPath.Content.ToString(), imDrag);
             brImage.Opacity = 0.4;
         }
         //Click.
@@ -109,7 +109,7 @@ namespace AppEnglish
             if (openFileDialog.ShowDialog() == true)
             {
                 lPath.Content = openFileDialog.FileName;
-                imDrag.Source = new BitmapImage(new Uri(lPath.Content.ToString()));
+                FormData.SetImage(lPath.Content.ToString(), imDrag);
             }
         }
         #endregion
@@ -167,7 +167,7 @@ namespace AppEnglish
                     if (lPath.Content.ToString() != "...")
                     {
                         string ava = $"{id}{Path.GetExtension(lPath.Content.ToString())}";
-                        if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), ava, EngServRef.FilesType.Avatar))
+                        if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), ava, EngServRef.FilesType.Avatars))
                         {
                             MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                             return;
@@ -243,15 +243,16 @@ namespace AppEnglish
         {
             string path = _proxy.GetItemPropertyAsync(id, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath).Result ?? "Wolf.png";
             if (path == "Wolf.png")
-                imUserAvatar.Source = new BitmapImage(new Uri("pack://application:,,,/Images/Wolf.png"));
+                FormData.SetImage("pack://application:,,,/Images/Wolf.png", imUserAvatar);
             else
             {
-                Task.Run(new Action(() => {
+                Task.Run(new Action(() =>
+                {
                     Dispatcher.Invoke(new Action(() =>
                     {
                         if (!Directory.Exists(@"Temp\Avatars"))
                             Directory.CreateDirectory(@"Temp\Avatars");
-                        byte[] res = _proxy.Download(path, EngServRef.FilesType.Avatar);
+                        byte[] res = _proxy.Download(path, EngServRef.FilesType.Avatars);
                         if (res != null)
                         {
                             try
@@ -272,7 +273,8 @@ namespace AppEnglish
                                         Close();
                                 }
                             }
-                            imUserAvatar.Source = new BitmapImage(new Uri($@"pack://siteoforigin:,,,/Temp\Avatars\{path}"));
+
+                            FormData.SetImage($@"pack://siteoforigin:,,,/Temp\Avatars\{path}", imUserAvatar);
                         }
                     }));
                 }));

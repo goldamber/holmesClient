@@ -25,7 +25,7 @@ namespace AppEnglish
         void LoadList(IEnumerable<int> lst, DataType data, bool edit)
         {
             Thread thd = new Thread(new ThreadStart(() => {
-                Dispatcher.Invoke(() => {
+                Dispatcher.InvokeAsync(() => {
                     grSearch.Visibility = Visibility.Visible;
 
                     grSearch.Children.Remove(FindName("btnAdd") as Button);
@@ -166,37 +166,45 @@ namespace AppEnglish
         /// <param name="item">Id of video.</param>
         private void AddVideoItem(int item, bool edit)
         {
-            Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Video, PropertyData.Name) };
-            StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-            AddImage(item, "WolfV.png", "VideoImages", st, ServerData.Video, edit);
-            AddFile(item, "Videos", ServerData.Video, edit);
-            AddStaticContent(item, st, ServerData.Video, PropertyData.Description);
-            AddStaticContent(item, st, ServerData.Video, PropertyData.Created);
-            AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, ServerData.Video);
-            AddHoverableData(item, ServerData.Video, PropertyData.Year, st);
-
-            AddExpanderData("Categories", item, st, ServerData.Video, ServerData.VideoCategory);
-            int id = _proxy.GetUserId(lUserName.Content.ToString()) ?? 0;
-            if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result != null && _proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result.Length > 0)
+            Thread thd = new Thread(new ThreadStart(() =>
             {
-                Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
-                StackPanel stack = new StackPanel();
-                foreach (int val in _proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result)
+                Dispatcher.InvokeAsync(new Action(() =>
                 {
-                    AddWordItem(val, edit, stack);
-                }
-                Button print = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Right, Background = Brushes.Blue, Foreground = Brushes.White, Tag = item, Content = "Print" };
-                print.Click += btnPrintWords_Click;
-                stack.Children.Add(print);
+                    Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Video, PropertyData.Name) };
+                    StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+                    AddImage(item, "WolfV.png", "VideoImages", st, ServerData.Video, edit);
+                    //AddFile(item, "Videos", ServerData.Video, edit);
+                    AddStaticContent(item, st, ServerData.Video, PropertyData.Description);
+                    AddStaticContent(item, st, ServerData.Video, PropertyData.Created);
+                    AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, ServerData.Video);
+                    AddHoverableData(item, ServerData.Video, PropertyData.Year, st);
 
-                words.Content = stack;
-                st.Children.Add(words);
-            }
+                    AddExpanderData("Categories", item, st, ServerData.Video, ServerData.VideoCategory);
+                    int id = _proxy.GetUserId(lUserName.Content.ToString()) ?? 0;
+                    if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result != null && _proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result.Length > 0)
+                    {
+                        Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
+                        StackPanel stack = new StackPanel();
+                        foreach (int val in _proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result)
+                        {
+                            AddWordItem(val, edit, stack);
+                        }
+                        Button print = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Right, Background = Brushes.Blue, Foreground = Brushes.White, Tag = item, Content = "Print" };
+                        print.Click += btnPrintWords_Click;
+                        stack.Children.Add(print);
 
-            AddButtons(item, st, btnRemoveVideo_Click, btnEditVideo_Click, btnViewVideo_Click);
+                        words.Content = stack;
+                        st.Children.Add(words);
+                    }
 
-            tmp.Content = st;
-            stActions.Children.Add(tmp);
+                    AddButtons(item, st, btnRemoveVideo_Click, btnEditVideo_Click, btnViewVideo_Click);
+
+                    tmp.Content = st;
+                    stActions.Children.Add(tmp);
+                }));
+            }));
+            thd.IsBackground = true;
+            thd.Start();
         }
         /// <summary>
         /// Add a book item to the template.
@@ -205,11 +213,11 @@ namespace AppEnglish
         private void AddBookItem(int item, bool edit)
         {
             Thread thd = new Thread(new ThreadStart(() => {
-                Dispatcher.Invoke(new Action(() => {
+                Dispatcher.InvokeAsync(new Action(() => {
                     Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Book, PropertyData.Name) };
                     StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
                     AddImage(item, "WolfB.png", "BookImages", st, ServerData.Book, edit);
-                    AddFile(item, "Books", ServerData.Book, edit);
+                    //AddFile(item, "Books", ServerData.Book, edit);
                     AddStaticContent(item, st, ServerData.Book, PropertyData.Description);
                     AddStaticContent(item, st, ServerData.Book, PropertyData.Created);
                     AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, ServerData.Book);
