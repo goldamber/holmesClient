@@ -230,61 +230,6 @@ namespace AppEnglish
             thd.Start();
         }
         /// <summary>
-        /// Downloads file.
-        /// </summary>
-        /// <param name="id">Files id.</param>
-        /// <param name="type">Path of temporary location.</param>
-        /// <param name="type">Files type.</param>
-        /// <param name="edit">Does file need to be edited?</param>
-        void AddFile(int id, string tempPath, ServerData type, bool edit)
-        {
-            Thread thd = new Thread(new ThreadStart(() =>
-            {
-                Dispatcher.InvokeAsync(new Action(() =>
-                {
-                    string path = _proxy.GetItemPropertyAsync(id, type, PropertyData.Path).Result;
-                    if (path == null)
-                        return;
-
-                    if (!Directory.Exists($@"Temp\{tempPath}"))
-                        Directory.CreateDirectory($@"Temp\{tempPath}");
-
-                    FilesType filesType = FilesType.Avatars;
-                    switch (type)
-                    {
-                        case ServerData.Video:
-                            filesType = FilesType.Videos;
-                            break;
-                        case ServerData.Book:
-                            filesType = FilesType.Books;
-                            break;
-                    }
-                    byte[] res = _proxy.DownloadAsync(path, filesType).Result;
-                    if (res != null)
-                    {
-                        try
-                        {
-                            using (FileStream fs = File.OpenWrite($@"Temp\{tempPath}\{path}"))
-                            {
-                                Task.WaitAll(fs.WriteAsync(res, 0, res.Length));
-                                fs.Dispose();
-                            }
-                        }
-                        catch (IOException)
-                        {
-                            if (edit)
-                            {
-                                if (MessageBox.Show("The data have been uploaded to the server. It will be updated the next time you come.\nDo you want to restart now?", "Check next time", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                                    Close();
-                            }
-                        }
-                    }
-                }));
-            }))
-            { IsBackground = true };
-            thd.Start();
-        }
-        /// <summary>
         /// Inserts rating.
         /// </summary>
         /// <param name="id">Id of item.</param>

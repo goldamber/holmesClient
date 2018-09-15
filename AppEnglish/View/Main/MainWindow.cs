@@ -120,22 +120,34 @@ namespace AppEnglish
                             switch (data)
                             {
                                 case DataType.Video:
-                                    AddVideoItem(item, edit);
+                                    Expander expVideo = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Video, PropertyData.Name), Tag = item, IsEnabled = !FormData.EditVideos.Contains(item) };
+                                    expVideo.Expanded += expVideo_Expanded;
+                                    stActions.Children.Add(expVideo);
                                     break;
                                 case DataType.Book:
-                                    AddBookItem(item, edit);
+                                    Expander expBook = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Book, PropertyData.Name), Tag = item, IsEnabled = !FormData.EditBooks.Contains(item) };
+                                    expBook.Expanded += expBook_Expanded;
+                                    stActions.Children.Add(expBook);
                                     break;
                                 case DataType.Word:
-                                    AddWordItem(item, edit, stActions);
+                                    Expander expWord = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Word, PropertyData.Name), Tag = item, IsEnabled = !FormData.EditWords.Contains(item) };
+                                    expWord.Expanded += expWord_Expanded;
+                                    stActions.Children.Add(expWord);
                                     break;
                                 case DataType.User:
-                                    AddUserItem(item, stActions);
+                                    Expander expUser = new Expander { Header = _proxy.GetItemProperty(item, ServerData.User, PropertyData.Login), Tag = item, IsEnabled = !FormData.EditUsers.Contains(item) };
+                                    expUser.Expanded += expUser_Expanded;
+                                    stActions.Children.Add(expUser);
                                     break;
                                 case DataType.Author:
-                                    AddAuthorItem(item, stActions);
+                                    Expander expAuthor = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Author, PropertyData.Name) + " " + _proxy.GetItemProperty(item, ServerData.Author, PropertyData.Surname), Tag = item };
+                                    expAuthor.Expanded += expAuthor_Expanded;
+                                    stActions.Children.Add(expAuthor);
                                     break;
                                 case DataType.BookCategory:
-                                    AddBCategoryItem(item, stActions);
+                                    Expander expBC = new Expander { Header = _proxy.GetItemProperty(item, ServerData.BookCategory, PropertyData.Name), Tag = item };
+                                    expBC.Expanded += expBookCategory_Expanded;
+                                    stActions.Children.Add(expBC);
                                     break;
                             }
                         }
@@ -159,21 +171,37 @@ namespace AppEnglish
             thd.IsBackground = true;
             thd.Start();
         }
+        
+        private void expBook_Expanded(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Expander).Content == null)
+                AddBookItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), false);
+        }
+        private void expVideo_Expanded(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Expander).Content == null)
+                AddVideoItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), false);
+        }
+        private void expWord_Expanded(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Expander).Content == null)
+                AddWordItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), false);
+        }
 
         /// <summary>
         /// Add a video item to the template.
         /// </summary>
         /// <param name="item">Id of video.</param>
-        private void AddVideoItem(int item, bool edit)
+        /// <param name="exp">The expander where the data are supposed to be added.</param>
+        /// <param name="edit">If this item is editable.</param>
+        private void AddVideoItem(int item, Expander exp, bool edit)
         {
             Thread thd = new Thread(new ThreadStart(() =>
             {
                 Dispatcher.InvokeAsync(new Action(() =>
                 {
-                    Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Video, PropertyData.Name) };
                     StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
                     AddImage(item, "WolfV.png", "VideoImages", st, ServerData.Video, edit);
-                    //AddFile(item, "Videos", ServerData.Video, edit);
                     AddStaticContent(item, st, ServerData.Video, PropertyData.Description);
                     AddStaticContent(item, st, ServerData.Video, PropertyData.Created);
                     AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, ServerData.Video);
@@ -181,7 +209,7 @@ namespace AppEnglish
 
                     AddExpanderData("Categories", item, st, ServerData.Video, ServerData.VideoCategory);
                     int id = _proxy.GetUserId(lUserName.Content.ToString()) ?? 0;
-                    if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result != null && _proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result.Length > 0)
+                    /*if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result != null && _proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result.Length > 0)
                     {
                         Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
                         StackPanel stack = new StackPanel();
@@ -195,12 +223,11 @@ namespace AppEnglish
 
                         words.Content = stack;
                         st.Children.Add(words);
-                    }
+                    }*/
 
                     AddButtons(item, st, btnRemoveVideo_Click, btnEditVideo_Click, btnViewVideo_Click);
 
-                    tmp.Content = st;
-                    stActions.Children.Add(tmp);
+                    exp.Content = st;
                 }));
             }));
             thd.IsBackground = true;
@@ -210,14 +237,14 @@ namespace AppEnglish
         /// Add a book item to the template.
         /// </summary>
         /// <param name="item">Id of book.</param>
-        private void AddBookItem(int item, bool edit)
+        /// <param name="exp">The expander where the data are supposed to be added.</param>
+        /// <param name="edit">If this item is editable.</param>
+        private void AddBookItem(int item, Expander exp, bool edit)
         {
             Thread thd = new Thread(new ThreadStart(() => {
                 Dispatcher.InvokeAsync(new Action(() => {
-                    Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Book, PropertyData.Name) };
                     StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
                     AddImage(item, "WolfB.png", "BookImages", st, ServerData.Book, edit);
-                    //AddFile(item, "Books", ServerData.Book, edit);
                     AddStaticContent(item, st, ServerData.Book, PropertyData.Description);
                     AddStaticContent(item, st, ServerData.Book, PropertyData.Created);
                     AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, ServerData.Book);
@@ -233,7 +260,9 @@ namespace AppEnglish
                         StackPanel stack = new StackPanel();
                         foreach (int val in _proxy.GetUserItemWordsAsync(id, item, ServerData.Book).Result)
                         {
-                            AddWordItem(val, edit, stack);
+                            Expander tmp = new Expander { Header = _proxy.GetItemProperty(val, ServerData.Word, PropertyData.Name), Tag = item, IsEnabled = !FormData.EditWords.Contains(item) };
+                            tmp.Expanded += expWord_Expanded;
+                            stack.Children.Add(tmp);
                         }
                         Button print = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Right, Background = Brushes.Blue, Foreground = Brushes.White, Tag = item, Content = "Print" };
                         print.Click += btnPrintWords_Click;
@@ -245,21 +274,20 @@ namespace AppEnglish
 
                     AddButtons(item, st, btnRemoveBook_Click, btnEditBook_Click, btnViewBook_Click);
 
-                    tmp.Content = st;
-                    stActions.Children.Add(tmp);
+                    exp.Content = st;
                 }));
             }));
             thd.IsBackground = true;
             thd.Start();
         }
+
         /// <summary>
         /// Add a word to template.
         /// </summary>
         /// <param name="item">Id of a word.</param>
-        /// <param name="parent">The element in which a word is supposed to appear.</param>
-        private void AddWordItem(int item, bool edit, Panel parent)
+        /// <param name="exp">The element in which a word is supposed to appear.</param>
+        private void AddWordItem(int item, Expander exp, bool edit)
         {
-            Expander tmp = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Word, PropertyData.Name) };
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
             AddImage(item, null, "WordImages", st, ServerData.Word, edit);
 
@@ -270,7 +298,7 @@ namespace AppEnglish
 
             RoutedEventHandler delete;
             RoutedEventHandler editEvent = null;
-            if (parent == stActions)
+            if (exp.Parent == stActions)
             {
                 delete = btnRemoveWord_Click;
                 editEvent = btnEditWord_Click;
@@ -279,8 +307,7 @@ namespace AppEnglish
                 delete = btnRemoveFromUser_Click;
             AddButtons(item, st, delete, editEvent, null);
 
-            tmp.Content = st;
-            parent.Children.Add(tmp);
+            exp.Content = st;
         }
         #endregion
     }

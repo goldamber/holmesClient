@@ -81,6 +81,7 @@ namespace AppEnglish.AddEdit
                         MessageBox.Show($"The file is too large!", "Choose another file", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
+                    FormData.EditUsers.Add(id);
                     _proxy.EditData(id, file, EngServRef.ServerData.User, EngServRef.PropertyData.Imgpath);
                     Close();
                 }));

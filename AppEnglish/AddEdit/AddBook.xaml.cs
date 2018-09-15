@@ -338,6 +338,7 @@ namespace AppEnglish
                             _proxy.EditData(edit, txtPath.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
                         if (lPath.Content.ToString() != "...")
                         {
+                            FormData.EditBooks.Add(edit);
                             string file = $"{edit}{Path.GetExtension(lPath.Content.ToString())}";
                             _proxy.EditData(edit, file, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
                             if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), file, EngServRef.FilesType.BooksImages))
