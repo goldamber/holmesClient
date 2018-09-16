@@ -2,6 +2,7 @@
 using AppEnglish.EngServRef;
 using MahApps.Metro.Controls;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -166,79 +167,92 @@ namespace AppEnglish
         {
             btnWords_Click(null, null);
         }
-        //Remove a word from specific user.
-        private void btnRemoveFromUser_Click(object sender, RoutedEventArgs e)
+        //Remove a word from the list of pecific user.
+        private void btnRemoveUsersItemsWord_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to remove this word?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            int id = Convert.ToInt32((sender as Button).Tag);
+            int user = Convert.ToInt32(_proxy.GetUserId(lUserName.Content.ToString()));
+            string type = (((((sender as Button).Parent as Panel).Parent as Expander).Parent as Panel).Parent as Expander).Header.ToString();
+            if (MessageBox.Show("Are you sure you want to remove this word from your list?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                _proxy.RemoveItemWordAsync(Convert.ToInt32(lUserName.Tag), Convert.ToInt32((sender as Button).Tag), ServerData.User);
-                btnWords_Click(null, null);
+                _proxy.RemoveItemWord(user, id, ServerData.User);
+                if (type.StartsWith("Book"))
+                    btnBooks_Click(null, null);
+                else if (type.StartsWith("Video"))
+                    btnVideos_Click(null, null);
             }
         }
 
         //Generate a file to be printed.
         private void btnPrintWords_Click(object sender, RoutedEventArgs e)
         {
+            string[] data = (sender as Button).Tag.ToString().Split(':');
+            ServerData type = (ServerData)Enum.Parse(typeof(ServerData), data[0]);
+            int parent = Convert.ToInt32(data[1]);
+            int user = Convert.ToInt32(_proxy.GetUserId(lUserName.Content.ToString()));
+            WordsPrintFilter form = new WordsPrintFilter(_proxy, user, parent, type);
+            form.ShowDialog();
+            if (FormData.WordsToPrint.Count == 0)
+                return;
             try
             {
                 using (StreamWriter sw = File.CreateText("Print.html"))
                 {
-                    sw.WriteLine($"<h2 style=\"color: #506DE9\">{(((((e.Source as Button).Parent as Panel).Parent as Expander).Parent as Panel).Parent as Expander).Header}</h2>");
+                    sw.WriteLine($"<h2 style=\"color: #506DE9\">{_proxy.GetItemProperty(parent, type, PropertyData.Name)}</h2>");
                     sw.WriteLine("<h3 style=\"color: #6E7BB2\">Words:</h3>");
 
                     StringBuilder str = new StringBuilder();
                     sw.WriteLine("<ol>");
-                    foreach (var item in ((e.Source as Button).Parent as Panel).Children)
+                    foreach (int item in FormData.WordsToPrint)
                     {
-                        if (item is Expander)
+                        str.Append($"<li><dt><b>{_proxy.GetItemProperty(item, ServerData.Word, PropertyData.Name)}</b> - ");
+                        List<int> categories = new List<int>(_proxy.GetItemData(item, ServerData.Word, ServerData.WordCategory));
+                        if (categories != null && categories.Count > 0)
                         {
-                            str = new StringBuilder();
-                            string word = (item as Expander).Header.ToString();
-                            str.Append($"<li><dt><b>{word[0].ToString().ToUpper() + word.Substring(1)}</b> - ");
-                            foreach (var val in ((item as Expander).Content as Panel).Children)
+                            foreach (int cat in categories)
                             {
-                                if (val is Expander)
-                                {
-                                    if ((val as Expander).Header.ToString().Contains("Categories"))
-                                    {
-                                        foreach (var i in ((val as Expander).Content as Panel).Children)
-                                        {
-                                            if (i is Panel)
-                                                str.Append(((i as Panel).Children[1] as Label).Content + ", ");
-                                        }
-                                    }
-                                    if ((val as Expander).Header.ToString().Contains("Translation"))
-                                    {
-                                        str.Append("<i style=\"color: #BBC2E0\">");
-                                        foreach (var i in ((val as Expander).Content as Panel).Children)
-                                        {
-                                            if (i is Panel)
-                                                str.Append(((i as Panel).Children[1] as Label).Content + ", ");
-                                        }
-                                        str.Append("</i>;");
-                                    }
-                                    if ((val as Expander).Header.ToString().Contains("Definition"))
-                                    {
-                                        foreach (var i in ((val as Expander).Content as Panel).Children)
-                                        {
-                                            if (i is Panel)
-                                                str.Append(((i as Panel).Children[1] as Label).Content + ", ");
-                                        }
-                                        str.Append("</dt>");
-                                    }
-                                    if ((val as Expander).Header.ToString().Contains("Example"))
-                                    {
-                                        foreach (var i in ((val as Expander).Content as Panel).Children)
-                                        {
-                                            if (i is Panel)
-                                                str.Append($"<dd><i>{((i as Panel).Children[1] as Label).Content }</i></dd>");
-                                        }
-                                    }
-                                }
+                                str.Append($"<i style=\"color: #3082c9\">{_proxy.GetItemProperty(cat, ServerData.WordCategory, PropertyData.Abbreviation)};</i> ");
                             }
-                            str.Append("</li>");
-                            sw.WriteLine(str);
                         }
+                        List<int> translations = new List<int>(_proxy.GetItemData(item, ServerData.Word, ServerData.Translation));
+                        if (translations != null && translations.Count > 0)
+                        {
+                            foreach (int tr in translations)
+                            {
+                                str.Append($"<i style=\"color: #8c99a4\">{_proxy.GetItemProperty(tr, ServerData.Translation, PropertyData.Name)},</i> ");
+                            }
+                        }
+                        string plural = _proxy.GetItemProperty(item, ServerData.Word, PropertyData.PluralForm);
+                        if (plural != null)
+                            str.Append($"<br/><dd><i style=\"color: #5e6871\"><u>Plural:</u></i> {plural}</dd>");
+                        string past = _proxy.GetItemProperty(item, ServerData.Word, PropertyData.PastForm);
+                        if (past != null)
+                            str.Append($"<br/><dd><i style=\"color: #5e6871\"><u>Past form:</u></i> {past}</dd>");
+                        string pastTh = _proxy.GetItemProperty(item, ServerData.Word, PropertyData.PastThForm);
+                        if (pastTh != null)
+                            str.Append($"<br/><dd><i style=\"color: #5e6871\"><u>Past participle:</u></i> {pastTh}</dd>");
+                        List<int> defintions = new List<int>(_proxy.GetItemData(item, ServerData.Word, ServerData.Definition));
+                        if (defintions != null && defintions.Count > 0)
+                        {
+                            str.Append("<br/><i style=\"color: #5e6871\"><u>Definitions:</u></i>");
+                            foreach (int def in defintions)
+                            {
+                                str.Append($"<dd>{_proxy.GetItemProperty(def, ServerData.Definition, PropertyData.Name)}</dd>");
+                            }
+                            str.Append("</dt>");
+                        }
+                        List<int> examples = new List<int>(_proxy.GetItemData(item, ServerData.Word, ServerData.Example));
+                        if (examples != null && examples.Count > 0)
+                        {
+                            str.Append("<br/><i style=\"color: #5e6871\"><u>Examples:</u></i>");
+                            foreach (int exp in examples)
+                            {
+                                str.Append($"<dd>{_proxy.GetItemProperty(exp, ServerData.Example, PropertyData.Name)}</dd>");
+                            }
+                            str.Append("</dt>");
+                        }
+                        str.Append("</dt></li><hr/>");
+                        sw.WriteLine(str);
                     }
                     sw.WriteLine("</ol>");
 

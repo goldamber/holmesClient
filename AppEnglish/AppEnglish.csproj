@@ -106,6 +106,9 @@
     <Compile Include="AddEdit\EditUsername.xaml.cs">
       <DependentUpon>EditUsername.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddEdit\WordsPrintFilter.xaml.cs">
+      <DependentUpon>WordsPrintFilter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\BookReader.xaml.cs">
       <DependentUpon>BookReader.xaml</DependentUpon>
     </Compile>
@@ -157,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddEdit\EditUsername.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEdit\WordsPrintFilter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

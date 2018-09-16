@@ -209,21 +209,23 @@ namespace AppEnglish
 
                     AddExpanderData("Categories", item, st, ServerData.Video, ServerData.VideoCategory);
                     int id = _proxy.GetUserId(lUserName.Content.ToString()) ?? 0;
-                    /*if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result != null && _proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result.Length > 0)
+                    if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result != null)
                     {
-                        Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
+                        Expander words = new Expander { Header = "Videos words", Background = Brushes.Azure };
                         StackPanel stack = new StackPanel();
                         foreach (int val in _proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result)
                         {
-                            AddWordItem(val, edit, stack);
+                            Expander tmp = new Expander { Header = _proxy.GetItemProperty(val, ServerData.Word, PropertyData.Name), Tag = val, IsEnabled = !FormData.EditWords.Contains(val) };
+                            tmp.Expanded += expWord_Expanded;
+                            stack.Children.Add(tmp);
                         }
-                        Button print = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Right, Background = Brushes.Blue, Foreground = Brushes.White, Tag = item, Content = "Print" };
+                        Button print = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Right, Background = Brushes.Blue, Foreground = Brushes.White, Tag = $"Video:{item}", Content = "Print" };
                         print.Click += btnPrintWords_Click;
                         stack.Children.Add(print);
 
                         words.Content = stack;
                         st.Children.Add(words);
-                    }*/
+                    }
 
                     AddButtons(item, st, btnRemoveVideo_Click, btnEditVideo_Click, btnViewVideo_Click);
 
@@ -253,18 +255,18 @@ namespace AppEnglish
                     AddExpanderData("Categories", item, st, ServerData.Book, ServerData.BookCategory);
                     AddExpanderData("Authors", item, st, ServerData.Book, ServerData.Author);
 
-                    int id = _proxy.GetUserId(lUserName.Content.ToString()) ?? 0;
-                    if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Book).Result != null && _proxy.GetUserItemWordsAsync(id, item, ServerData.Book).Result.Length > 0)
+                    int user = Convert.ToInt32(_proxy.GetUserId(lUserName.Content.ToString()));
+                    if (_proxy.GetUserItemWordsAsync(user, item, ServerData.Book).Result != null)
                     {
-                        Expander words = new Expander { Header = "Words", Background = Brushes.Azure };
+                        Expander words = new Expander { Header = "Books words", Background = Brushes.Azure };
                         StackPanel stack = new StackPanel();
-                        foreach (int val in _proxy.GetUserItemWordsAsync(id, item, ServerData.Book).Result)
+                        foreach (int val in _proxy.GetUserItemWordsAsync(user, item, ServerData.Book).Result)
                         {
-                            Expander tmp = new Expander { Header = _proxy.GetItemProperty(val, ServerData.Word, PropertyData.Name), Tag = item, IsEnabled = !FormData.EditWords.Contains(item) };
+                            Expander tmp = new Expander { Header = _proxy.GetItemProperty(val, ServerData.Word, PropertyData.Name), Tag = val, IsEnabled = !FormData.EditWords.Contains(val) };
                             tmp.Expanded += expWord_Expanded;
                             stack.Children.Add(tmp);
                         }
-                        Button print = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Right, Background = Brushes.Blue, Foreground = Brushes.White, Tag = item, Content = "Print" };
+                        Button print = new Button { Margin = new Thickness(5), MinWidth = 100, FontSize = 10, Padding = new Thickness(5), HorizontalAlignment = HorizontalAlignment.Right, Background = Brushes.Blue, Foreground = Brushes.White, Tag = $"Book:{item}", Content = "Print" };
                         print.Click += btnPrintWords_Click;
                         stack.Children.Add(print);
 
@@ -280,33 +282,40 @@ namespace AppEnglish
             thd.IsBackground = true;
             thd.Start();
         }
-
         /// <summary>
         /// Add a word to template.
         /// </summary>
         /// <param name="item">Id of a word.</param>
         /// <param name="exp">The element in which a word is supposed to appear.</param>
+        /// <param name="edit">Is this item editable?</param>
         private void AddWordItem(int item, Expander exp, bool edit)
         {
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
             AddImage(item, null, "WordImages", st, ServerData.Word, edit);
+            bool hover = (exp.Parent == stActions);
+            AddStaticContent(item, st, ServerData.Word, PropertyData.PluralForm);
+            AddStaticContent(item, st, ServerData.Word, PropertyData.PastForm);
+            AddStaticContent(item, st, ServerData.Word, PropertyData.PastThForm);
 
-            AddExpanderData("Categories", item, st, ServerData.Word, ServerData.WordCategory);
-            AddExpanderData("Translations", item, st, ServerData.Word, ServerData.Translation);
-            AddExpanderData("Groups", item, st, ServerData.Word, ServerData.Group);
-            AddExpanderData("Definitions", item, st, ServerData.Word, ServerData.Definition);
-
-            RoutedEventHandler delete;
+            AddExpanderData("Examples", item, st, ServerData.Word, ServerData.Example, hover);
+            AddExpanderData("Categories", item, st, ServerData.Word, ServerData.WordCategory, hover);
+            AddExpanderData("Groups", item, st, ServerData.Word, ServerData.Group, hover);
+            AddExpanderData("Translations", item, st, ServerData.Word, ServerData.Translation, hover);
+            AddExpanderData("Definitions", item, st, ServerData.Word, ServerData.Definition, hover);
+            
             RoutedEventHandler editEvent = null;
             if (exp.Parent == stActions)
             {
-                delete = btnRemoveWord_Click;
                 editEvent = btnEditWord_Click;
+                AddButtons(item, st, btnRemoveWord_Click, editEvent, null);
             }
             else
-                delete = btnRemoveFromUser_Click;
-            AddButtons(item, st, delete, editEvent, null);
-
+            {
+                Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Delete.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.Red, Tag = item, ToolTip = "Delete" };
+                btn.Click += btnRemoveUsersItemsWord_Click;
+                st.Children.Add(btn);
+            }
+            
             exp.Content = st;
         }
         #endregion

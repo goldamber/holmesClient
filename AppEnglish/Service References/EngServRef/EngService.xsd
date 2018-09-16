@@ -27,6 +27,7 @@
       <xs:enumeration value="Name" />
       <xs:enumeration value="Surname" />
       <xs:enumeration value="Login" />
+      <xs:enumeration value="Abbreviation" />
       <xs:enumeration value="Role" />
       <xs:enumeration value="RolesName" />
       <xs:enumeration value="Description" />
@@ -60,6 +61,8 @@
       <xs:enumeration value="Books" />
       <xs:enumeration value="Video" />
       <xs:enumeration value="Videos" />
+      <xs:enumeration value="Example" />
+      <xs:enumeration value="Examples" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="PropertyData" nillable="true" type="tns:PropertyData" />

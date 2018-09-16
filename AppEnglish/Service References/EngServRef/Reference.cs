@@ -82,103 +82,112 @@ namespace AppEnglish.EngServRef {
         Login = 2,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Role = 3,
+        Abbreviation = 3,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        RolesName = 4,
+        Role = 4,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Description = 5,
+        RolesName = 5,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Path = 6,
+        Description = 6,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        IsAbsolute = 7,
+        Path = 7,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        SubPath = 8,
+        IsAbsolute = 8,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Imgpath = 9,
+        SubPath = 9,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Mark = 10,
+        Imgpath = 10,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Created = 11,
+        Mark = 11,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Date = 12,
+        Created = 12,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Position = 13,
+        Date = 13,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        ScoreCount = 14,
+        Position = 14,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Password = 15,
+        ScoreCount = 15,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Level = 16,
+        Password = 16,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Year = 17,
+        Level = 17,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PastForm = 18,
+        Year = 18,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PastThForm = 19,
+        PastForm = 19,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        PluralForm = 20,
+        PastThForm = 20,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Category = 21,
+        PluralForm = 21,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Categories = 22,
+        Category = 22,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Author = 23,
+        Categories = 23,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Authors = 24,
+        Author = 24,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Synonyms = 25,
+        Authors = 25,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Translation = 26,
+        Synonyms = 26,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Translations = 27,
+        Translation = 27,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Definition = 28,
+        Translations = 28,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Definitions = 29,
+        Definition = 29,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Group = 30,
+        Definitions = 30,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Groups = 31,
+        Group = 31,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Book = 32,
+        Groups = 32,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Books = 33,
+        Book = 33,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Video = 34,
+        Books = 34,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Videos = 35,
+        Video = 35,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Videos = 36,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Example = 37,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Examples = 38,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]

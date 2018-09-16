@@ -23,7 +23,8 @@ namespace AppEnglish
         /// <param name="st">A panel where the data are supposed to be added.</param>
         /// <param name="data">A type of item.</param>
         /// <param name="res">A type of the inserted data.</param>
-        void AddExpanderData(string header, int item, Panel st, ServerData data, ServerData res)
+        /// <param name="hoverable">Can items be sorted or not.</param>
+        void AddExpanderData(string header, int item, Panel st, ServerData data, ServerData res, bool hoverable = true)
         {
             Thread thd = new Thread(new ThreadStart(() =>
             {
@@ -46,12 +47,17 @@ namespace AppEnglish
                                     panel.MouseLeave += ExpanderItem_MouseLeave;
 
                                     panel.Children.Add(new Border { CornerRadius = new CornerRadius(22, 22, 20, 20), BorderBrush = Brushes.Gray, BorderThickness = new Thickness(2), Child = new Label { Content = count, Padding = new Thickness(2), FontSize = 9, FontWeight = FontWeights.Bold }, Padding = new Thickness(7, 5, 7, 5), Margin = new Thickness(5) });
-                                    TextBlock label = new TextBlock { Padding = new Thickness(5), Foreground = Brushes.DarkBlue, TextDecorations = TextDecorations.Underline, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left, Tag = header, Text = _proxy.GetItemProperty(val, res, PropertyData.Name), FontSize = 12, FontWeight = FontWeights.Normal };
+                                    TextBlock label = new TextBlock { Padding = new Thickness(5), VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left, Tag = header, Text = _proxy.GetItemProperty(val, res, PropertyData.Name), FontSize = 12, FontWeight = FontWeights.Normal };
                                     if (res == ServerData.Author)
                                         label.Text = _proxy.GetItemPropertyAsync(val, res, PropertyData.Name).Result + " " + _proxy.GetItemProperty(val, res, PropertyData.Surname);
-                                    label.MouseDown += ItemData_MouseDown;
-                                    label.MouseEnter += ItemData_MouseEnter;
-                                    label.MouseLeave += ItemData_MouseLeave;
+                                    if (hoverable)
+                                    {
+                                        label.MouseDown += ItemData_MouseDown;
+                                        label.MouseEnter += ItemData_MouseEnter;
+                                        label.MouseLeave += ItemData_MouseLeave;
+                                        label.TextDecorations = TextDecorations.Underline;
+                                        label.Foreground = Brushes.DarkBlue;
+                                    }
                                     panel.Children.Add(label);
                                     ver.Children.Add(panel);
                                     count++;
@@ -82,7 +88,20 @@ namespace AppEnglish
                     if (_proxy.GetItemPropertyAsync(item, dataType, property).Result != null)
                     {
                         StackPanel hor = new StackPanel();
-                        hor.Children.Add(new Label { Content = $"{property.ToString()}:", FontSize = 14, FontWeight = FontWeights.Bold });
+                        string header = property.ToString();
+                        switch (property)
+                        {
+                            case PropertyData.PastForm:
+                                header = "Past form";
+                                break;
+                            case PropertyData.PastThForm:
+                                header = "Past participle";
+                                break;
+                            case PropertyData.PluralForm:
+                                header = "Plural";
+                                break;
+                        }
+                        hor.Children.Add(new Label { Content = $"{header}:", FontSize = 14, FontWeight = FontWeights.Bold });
                         hor.Children.Add(new TextBlock { Text = _proxy.GetItemPropertyAsync(item, dataType, property).Result, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center, TextAlignment = TextAlignment.Justify, Margin = new Thickness(5) });
                         st.Children.Add(hor);
                     }

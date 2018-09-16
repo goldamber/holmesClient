@@ -13,6 +13,8 @@ namespace AppEnglish
         public static string Author { get; set; } = "";
         public static int AuthorsID { get; set; }
 
+        public static List<int> WordsToPrint { get; set; } = new List<int>();
+
         #region Types that contains images. They can be updated only upon restart.
         public static List<int> EditBooks { get; set; } = new List<int>();
         public static List<int> EditVideos { get; set; } = new List<int>();
