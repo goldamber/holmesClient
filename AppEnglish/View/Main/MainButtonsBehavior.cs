@@ -206,6 +206,9 @@ namespace AppEnglish
                     foreach (int item in FormData.WordsToPrint)
                     {
                         str.Append($"<li><dt><b>{_proxy.GetItemProperty(item, ServerData.Word, PropertyData.Name)}</b> - ");
+                        int trans = Convert.ToInt32(_proxy.GetItemProperty(item, ServerData.Word, PropertyData.Transcription));
+                        if (trans != 0)
+                            str.Append($"/{_proxy.GetItemProperty(trans, ServerData.Transcription, PropertyData.British)}/ ");
                         List<int> categories = new List<int>(_proxy.GetItemData(item, ServerData.Word, ServerData.WordCategory));
                         if (categories != null && categories.Count > 0)
                         {
@@ -332,19 +335,26 @@ namespace AppEnglish
             Button btn = new Button { Name = "btnBooks", Content = "Books", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnBooks_Click;
             stActions.Children.Add(btn);
+            btn = new Button { Name = "btnWords", Content = "Dictionary", Style = TryFindResource("btnNormal") as Style };
+            btn.Click += btnWords_Click;
+            stActions.Children.Add(btn);
 
             if (lRole.Content.ToString() == "admin")
             {
                 btn = new Button { Name = "btnUsersAct", Content = "Users", Style = TryFindResource("btnNormal") as Style };
                 btn.Click += btnUsersAct_Click;
                 stActions.Children.Add(btn);
-
                 btn = new Button { Name = "btnAuthorsAct", Content = "Authors", Style = TryFindResource("btnNormal") as Style };
                 btn.Click += btnAuthorsAct_Click;
                 stActions.Children.Add(btn);
-
                 btn = new Button { Name = "btnBooksCategoriesAct", Content = "Books Categories", Style = TryFindResource("btnNormal") as Style };
                 btn.Click += btnBooksCategoriesAct_Click;
+                stActions.Children.Add(btn);
+                btn = new Button { Name = "btnWordsCategoriesAct", Content = "Words Categories", Style = TryFindResource("btnNormal") as Style };
+                btn.Click += btnWordsCategoriesAct_Click;
+                stActions.Children.Add(btn);
+                btn = new Button { Name = "btnWordsGroupsAct", Content = "Words Groups", Style = TryFindResource("btnNormal") as Style };
+                btn.Click += btnWordsGroupsAct_Click;
                 stActions.Children.Add(btn);
             }
         }

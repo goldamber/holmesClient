@@ -3,7 +3,6 @@ using AppEnglish.EngServRef;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -101,6 +100,62 @@ namespace AppEnglish
             btnBooksCategoriesAct_Click(null, null);
         }
         #endregion
+        #region Words Categories actions.
+        //Show a list of all categories to the admin.
+        private void btnWordsCategoriesAct_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateListTemplate(ServerData.WordCategory, DataType.WordCategory);
+        }
+        //Remove item and refresh the canvas.
+        private void btnRemoveWCategory_Click(object sender, RoutedEventArgs e)
+        {
+            if (RemoveTemplate(Convert.ToInt32((sender as Button).Tag), "Are you sure you want to remove this category?", ServerData.WordCategory))
+                btnWordsCategoriesAct_Click(null, null);
+        }
+        //Show a form for adding a new category.
+        private void btnAddWCategory_Click(object sender, RoutedEventArgs e)
+        {
+            AddWordsCategory form = new AddWordsCategory(_proxy);
+            form.ShowDialog();
+            btnWordsCategoriesAct_Click(null, null);
+        }
+        //Show a form for editting category.
+        private void btnEditWCategory_Click(object sender, RoutedEventArgs e)
+        {
+            int id = Convert.ToInt32((sender as Button).Tag);
+            AddWordsCategory form = new AddWordsCategory(_proxy, id);
+            form.ShowDialog();
+            btnWordsCategoriesAct_Click(null, null);
+        }
+        #endregion
+        #region Words Groups actions.
+        //Show a list of all categories to the admin.
+        private void btnWordsGroupsAct_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateListTemplate(ServerData.Group, DataType.Group);
+        }
+        //Remove item and refresh the canvas.
+        private void btnRemoveWGroup_Click(object sender, RoutedEventArgs e)
+        {
+            if (RemoveTemplate(Convert.ToInt32((sender as Button).Tag), "Are you sure you want to remove this group?", ServerData.Group))
+                btnWordsGroupsAct_Click(null, null);
+        }
+        //Show a form for adding a new category.
+        private void btnAddWGroup_Click(object sender, RoutedEventArgs e)
+        {
+            AddCategory form = new AddCategory(_proxy, ServerData.Group);
+            form.ShowDialog();
+            btnWordsGroupsAct_Click(null, null);
+        }
+        //Show a form for editting category.
+        private void btnEditWGroup_Click(object sender, RoutedEventArgs e)
+        {
+            int id = Convert.ToInt32((sender as Button).Tag);
+            AddCategory form = new AddCategory(_proxy, ServerData.Group, id);
+            form.ShowDialog();
+            btnWordsGroupsAct_Click(null, null);
+        }
+        #endregion
 
         #region Video actions.
         //Show a form for editting the video.
@@ -168,13 +223,9 @@ namespace AppEnglish
         #endregion
         #region Word actions.
         //Show a form for editting the word.
-        private async void btnEditWord_Click(object sender, RoutedEventArgs e)
+        private void btnEditWord_Click(object sender, RoutedEventArgs e)
         {
-            stActions.Children.Clear();
-            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
-
-            int[] lst = await _proxy.GetItemsAsync(ServerData.Word);
-            await Task.Run(() => LoadList(lst, DataType.Word, true));
+            btnWords_Click(null, null);
         }
         //Remove item and refresh the canvas.
         private void btnRemoveWord_Click(object sender, RoutedEventArgs e)

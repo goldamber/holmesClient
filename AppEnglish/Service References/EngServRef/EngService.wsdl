@@ -67,6 +67,12 @@
   <wsdl:message name="IEngService_AddCategory_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddCategoryResponse" />
   </wsdl:message>
+  <wsdl:message name="IEngService_AddWordsCategory_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddWordsCategory" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddWordsCategory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddWordsCategoryResponse" />
+  </wsdl:message>
   <wsdl:message name="IEngService_AddBookmark_InputMessage">
     <wsdl:part name="parameters" element="tns:AddBookmark" />
   </wsdl:message>
@@ -238,6 +244,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddCategory" message="tns:IEngService_AddCategory_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddCategoryResponse" message="tns:IEngService_AddCategory_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddWordsCategory">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddWordsCategory" message="tns:IEngService_AddWordsCategory_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddWordsCategoryResponse" message="tns:IEngService_AddWordsCategory_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddBookmark">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddBookmark" message="tns:IEngService_AddBookmark_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddBookmarkResponse" message="tns:IEngService_AddBookmark_OutputMessage" />
@@ -380,6 +390,15 @@
     </wsdl:operation>
     <wsdl:operation name="AddCategory">
       <soap12:operation soapAction="http://tempuri.org/IEngService/AddCategory" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddWordsCategory">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddWordsCategory" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

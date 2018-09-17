@@ -66,6 +66,9 @@ namespace AppEnglish.EngServRef {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         Group = 16,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Transcription = 17,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
@@ -178,16 +181,37 @@ namespace AppEnglish.EngServRef {
         Books = 34,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Video = 35,
+        Word = 35,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Videos = 36,
+        Words = 36,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Example = 37,
+        Video = 37,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Examples = 38,
+        Videos = 38,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Example = 39,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Examples = 40,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Transcription = 41,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        British = 42,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        American = 43,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Australian = 44,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Canadian = 45,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
@@ -249,6 +273,12 @@ namespace AppEnglish.EngServRef {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddCategory", ReplyAction="http://tempuri.org/IEngService/AddCategoryResponse")]
         System.Threading.Tasks.Task<System.Nullable<int>> AddCategoryAsync(string name, AppEnglish.EngServRef.ServerData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddWordsCategory", ReplyAction="http://tempuri.org/IEngService/AddWordsCategoryResponse")]
+        System.Nullable<int> AddWordsCategory(string name, string abbr);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddWordsCategory", ReplyAction="http://tempuri.org/IEngService/AddWordsCategoryResponse")]
+        System.Threading.Tasks.Task<System.Nullable<int>> AddWordsCategoryAsync(string name, string abbr);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddBookmark", ReplyAction="http://tempuri.org/IEngService/AddBookmarkResponse")]
         void AddBookmark(int pos, int item, int user);
@@ -466,6 +496,14 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task<System.Nullable<int>> AddCategoryAsync(string name, AppEnglish.EngServRef.ServerData data) {
             return base.Channel.AddCategoryAsync(name, data);
+        }
+        
+        public System.Nullable<int> AddWordsCategory(string name, string abbr) {
+            return base.Channel.AddWordsCategory(name, abbr);
+        }
+        
+        public System.Threading.Tasks.Task<System.Nullable<int>> AddWordsCategoryAsync(string name, string abbr) {
+            return base.Channel.AddWordsCategoryAsync(name, abbr);
         }
         
         public void AddBookmark(int pos, int item, int user) {

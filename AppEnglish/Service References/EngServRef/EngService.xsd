@@ -19,6 +19,7 @@
       <xs:enumeration value="Bookmark" />
       <xs:enumeration value="VideoBookmark" />
       <xs:enumeration value="Group" />
+      <xs:enumeration value="Transcription" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="ServerData" nillable="true" type="tns:ServerData" />
@@ -59,10 +60,17 @@
       <xs:enumeration value="Groups" />
       <xs:enumeration value="Book" />
       <xs:enumeration value="Books" />
+      <xs:enumeration value="Word" />
+      <xs:enumeration value="Words" />
       <xs:enumeration value="Video" />
       <xs:enumeration value="Videos" />
       <xs:enumeration value="Example" />
       <xs:enumeration value="Examples" />
+      <xs:enumeration value="Transcription" />
+      <xs:enumeration value="British" />
+      <xs:enumeration value="American" />
+      <xs:enumeration value="Australian" />
+      <xs:enumeration value="Canadian" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="PropertyData" nillable="true" type="tns:PropertyData" />

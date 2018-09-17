@@ -325,7 +325,6 @@ namespace AppEnglish
 
                         if (txtPath.Text != path && chCopy.IsChecked == true)
                         {
-                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
                             if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Books))
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -333,6 +332,23 @@ namespace AppEnglish
                                 stPreloader.Visibility = Visibility.Collapsed;
                                 return;
                             }
+                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
+                        }
+                        else if (txtPath.Text == path && chCopy.IsChecked == true)
+                        {
+                            if (!File.Exists(txtPath.Text))
+                            {
+                                MessageBox.Show("This file does not exist!", "Wrong", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                return;
+                            }
+                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Books))
+                            {
+                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                stMain.Visibility = Visibility.Visible;
+                                stPreloader.Visibility = Visibility.Collapsed;
+                                return;
+                            }
+                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
                         }
                         else if (chCopy.IsChecked == false)
                             _proxy.EditData(edit, txtPath.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
@@ -340,7 +356,6 @@ namespace AppEnglish
                         {
                             FormData.EditBooks.Add(edit);
                             string file = $"{edit}{Path.GetExtension(lPath.Content.ToString())}";
-                            _proxy.EditData(edit, file, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
                             if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), file, EngServRef.FilesType.BooksImages))
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -348,6 +363,7 @@ namespace AppEnglish
                                 stPreloader.Visibility = Visibility.Collapsed;
                                 return;
                             }
+                            _proxy.EditData(edit, file, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
                         }
                         _proxy.EditData(edit, chCopy.IsChecked != true ? "True" : null, EngServRef.ServerData.Book, EngServRef.PropertyData.IsAbsolute);
                         _proxy.EditData(edit, txtYear.Text == "" ? null : txtYear.Text, EngServRef.ServerData.Book, EngServRef.PropertyData.Year);

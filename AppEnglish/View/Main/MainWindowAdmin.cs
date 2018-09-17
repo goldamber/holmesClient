@@ -54,15 +54,38 @@ namespace AppEnglish
         /// </summary>
         /// <param name="item">Id of category.</param>
         /// <param name="exp">The element in which an item is supposed to appear.</param>
-        private void AddBCategoryItem(int item, Expander exp)
+        /// <param name="type">Categories type.</param>
+        /// <param name="innerData">Type of related elements.</param>
+        /// <param name="delete">'Delete' action.</param>
+        /// <param name="edit">'Edit' action.</param>
+        private void AddCategoryItem(int item, Expander exp, EngServRef.ServerData type, EngServRef.ServerData innerData, RoutedEventHandler delete, RoutedEventHandler edit)
         {
             Task.Run(() =>
             {
                 Dispatcher.Invoke(() =>
                 {
                     StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-                    AddExpanderData("Books", item, st, EngServRef.ServerData.BookCategory, EngServRef.ServerData.Book);
-                    AddButtons(item, st, btnRemoveBCategory_Click, btnEditBCategory_Click, null);
+                    AddExpanderData($"{innerData}s", item, st, type, innerData);
+                    AddButtons(item, st, delete, edit, null);
+                    exp.Content = st;
+                });
+            });
+        }
+        /// <summary>
+        /// Add a words categoty to template.
+        /// </summary>
+        /// <param name="item">Id of category.</param>
+        /// <param name="exp">The element in which an item is supposed to appear.</param>
+        private void AddWCategoryItem(int item, Expander exp)
+        {
+            Task.Run(() =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+                    AddStaticContent(item, st, EngServRef.ServerData.WordCategory, EngServRef.PropertyData.Abbreviation);
+                    AddExpanderData("Words", item, st, EngServRef.ServerData.WordCategory, EngServRef.ServerData.Word);
+                    AddButtons(item, st, btnRemoveWCategory_Click, btnEditWCategory_Click, null);
                     exp.Content = st;
                 });
             });
@@ -81,7 +104,17 @@ namespace AppEnglish
         private void expBookCategory_Expanded(object sender, RoutedEventArgs e)
         {
             if ((sender as Expander).Content == null)
-                AddBCategoryItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander));
+                AddCategoryItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), EngServRef.ServerData.BookCategory, EngServRef.ServerData.Book, btnRemoveBCategory_Click, btnEditBCategory_Click);
+        }
+        private void expWordCategory_Expanded(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Expander).Content == null)
+                AddWCategoryItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander));
+        }
+        private void expWordGroup_Expanded(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Expander).Content == null)
+                AddCategoryItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), EngServRef.ServerData.Group, EngServRef.ServerData.Word, btnRemoveWGroup_Click, btnEditWGroup_Click);
         }
     }
 }

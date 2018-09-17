@@ -14,7 +14,7 @@ namespace AppEnglish
     public partial class MainWindow : MetroWindow
     {
         //Types of data to be presented.
-        enum DataType { Video, Book, Word, User, Author, BookCategory }
+        enum DataType { Video, Book, Word, User, Author, BookCategory, WordCategory, Group }
         
         #region Render a template for list.
         /// <summary>
@@ -72,7 +72,6 @@ namespace AppEnglish
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Translation", Foreground = Brushes.Black });
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Definition", Foreground = Brushes.Black });
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Category", Foreground = Brushes.Black });
-                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Group", Foreground = Brushes.Black });
 
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
 
@@ -108,6 +107,24 @@ namespace AppEnglish
 
                             btnSearch.Tag = "Author";
                             btnSort.Tag = "Author";
+                            break;
+                        case DataType.WordCategory:
+                            btnGrid.Click += btnAddWCategory_Click;
+                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Abbreviation", Foreground = Brushes.Black });
+                            cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                            cmbSort.Items.Add(new ComboBoxItem { Content = "Abbreviation", Foreground = Brushes.Black });
+                            btnGrid.ToolTip = "Add words category";
+                            btnSearch.Tag = "WordCategory";
+                            btnSort.Tag = "WordCategory";
+                            break;
+                        case DataType.Group:
+                            btnGrid.Click += btnAddWGroup_Click;
+                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                            cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                            btnGrid.ToolTip = "Add words group";
+                            btnSearch.Tag = "Group";
+                            btnSort.Tag = "Group";
                             break;
                     }
                     if (data != DataType.User)
@@ -148,6 +165,16 @@ namespace AppEnglish
                                     Expander expBC = new Expander { Header = _proxy.GetItemProperty(item, ServerData.BookCategory, PropertyData.Name), Tag = item };
                                     expBC.Expanded += expBookCategory_Expanded;
                                     stActions.Children.Add(expBC);
+                                    break;
+                                case DataType.WordCategory:
+                                    Expander expWC = new Expander { Header = _proxy.GetItemProperty(item, ServerData.WordCategory, PropertyData.Name), Tag = item };
+                                    expWC.Expanded += expWordCategory_Expanded;
+                                    stActions.Children.Add(expWC);
+                                    break;
+                                case DataType.Group:
+                                    Expander expWG = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Group, PropertyData.Name), Tag = item };
+                                    expWG.Expanded += expWordGroup_Expanded;
+                                    stActions.Children.Add(expWG);
                                     break;
                             }
                         }
@@ -293,6 +320,20 @@ namespace AppEnglish
             StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
             AddImage(item, null, "WordImages", st, ServerData.Word, edit);
             bool hover = (exp.Parent == stActions);
+            int trans = Convert.ToInt32(_proxy.GetItemProperty(item, ServerData.Word, PropertyData.Transcription));
+            if (trans != 0)
+            {
+                StackPanel hor = new StackPanel();
+                hor.Children.Add(new Label { Content = $"British:", FontSize = 14, FontWeight = FontWeights.Bold });
+                hor.Children.Add(new TextBlock { Text = _proxy.GetItemPropertyAsync(trans, ServerData.Transcription, PropertyData.British).Result, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center, TextAlignment = TextAlignment.Justify, Margin = new Thickness(5) });
+                hor.Children.Add(new Label { Content = $"Canadian:", FontSize = 14, FontWeight = FontWeights.Bold });
+                hor.Children.Add(new TextBlock { Text = _proxy.GetItemPropertyAsync(trans, ServerData.Transcription, PropertyData.Canadian).Result, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center, TextAlignment = TextAlignment.Justify, Margin = new Thickness(5) });
+                hor.Children.Add(new Label { Content = $"Australian:", FontSize = 14, FontWeight = FontWeights.Bold });
+                hor.Children.Add(new TextBlock { Text = _proxy.GetItemPropertyAsync(trans, ServerData.Transcription, PropertyData.Australian).Result, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center, TextAlignment = TextAlignment.Justify, Margin = new Thickness(5) });
+                hor.Children.Add(new Label { Content = $"American:", FontSize = 14, FontWeight = FontWeights.Bold });
+                hor.Children.Add(new TextBlock { Text = _proxy.GetItemPropertyAsync(trans, ServerData.Transcription, PropertyData.American).Result, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center, TextAlignment = TextAlignment.Justify, Margin = new Thickness(5) });
+                st.Children.Add(hor);
+            }
             AddStaticContent(item, st, ServerData.Word, PropertyData.PluralForm);
             AddStaticContent(item, st, ServerData.Word, PropertyData.PastForm);
             AddStaticContent(item, st, ServerData.Word, PropertyData.PastThForm);

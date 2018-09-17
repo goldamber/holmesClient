@@ -91,6 +91,9 @@
     <Compile Include="AddEdit\AddWord.xaml.cs">
       <DependentUpon>AddWord.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddEdit\AddWordsCategory.xaml.cs">
+      <DependentUpon>AddWordsCategory.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddEdit\EditAvatar.xaml.cs">
       <DependentUpon>EditAvatar.xaml</DependentUpon>
     </Compile>
@@ -140,6 +143,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddEdit\AddWord.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEdit\AddWordsCategory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
