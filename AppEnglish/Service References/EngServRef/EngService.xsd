@@ -52,6 +52,7 @@
       <xs:enumeration value="Author" />
       <xs:enumeration value="Authors" />
       <xs:enumeration value="Synonyms" />
+      <xs:enumeration value="Homophones" />
       <xs:enumeration value="Translation" />
       <xs:enumeration value="Translations" />
       <xs:enumeration value="Definition" />

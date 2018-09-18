@@ -157,61 +157,64 @@ namespace AppEnglish.EngServRef {
         Synonyms = 26,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Translation = 27,
+        Homophones = 27,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Translations = 28,
+        Translation = 28,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Definition = 29,
+        Translations = 29,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Definitions = 30,
+        Definition = 30,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Group = 31,
+        Definitions = 31,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Groups = 32,
+        Group = 32,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Book = 33,
+        Groups = 33,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Books = 34,
+        Book = 34,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Word = 35,
+        Books = 35,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Words = 36,
+        Word = 36,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Video = 37,
+        Words = 37,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Videos = 38,
+        Video = 38,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Example = 39,
+        Videos = 39,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Examples = 40,
+        Example = 40,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Transcription = 41,
+        Examples = 41,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        British = 42,
+        Transcription = 42,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        American = 43,
+        British = 43,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Australian = 44,
+        American = 44,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Canadian = 45,
+        Australian = 45,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Canadian = 46,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]

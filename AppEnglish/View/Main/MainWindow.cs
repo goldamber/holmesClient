@@ -69,6 +69,8 @@ namespace AppEnglish
                         case DataType.Word:
                             btnGrid.Click += btnAddWord;
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Synonyms", Foreground = Brushes.Black });
+                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Homophones", Foreground = Brushes.Black });
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Translation", Foreground = Brushes.Black });
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Definition", Foreground = Brushes.Black });
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Category", Foreground = Brushes.Black });

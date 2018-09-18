@@ -4,19 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Book Reader" Height="500" Width="700" Icon="..\Images\Eye.png" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+        Title="Book Reader" Height="500" Width="700" Icon="..\Images\Eye.png" WindowStartupLocation="CenterScreen" WindowState="Maximized" Loaded="Window_Loaded">
 
-    <StackPanel>
-        <TextBlock Name="txtName" Margin="10 5" FontWeight="Bold" FontSize="16" Foreground="#FF2887D6" />
+    <ScrollViewer>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
 
-        <ListBox Name="stWords" Margin="10" Height="370" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MinWidth="250" />
+            <TextBlock Grid.Row="0" Name="txtName" Margin="10 5" FontWeight="Bold" FontSize="16" Foreground="#FF2887D6" />
+            <ProgressBar Grid.Row="1" Name="prgPreloader" Template="{StaticResource Preloader}" Visibility="Collapsed" />
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" MouseDown="StackPanel_MouseDown">
-            <TextBlock FontSize="15" VerticalAlignment="Center">Add word</TextBlock>
+            <ListBox Grid.Row="1" Name="stWords" Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MinWidth="250" />
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                <Button Name="btnFirst" Style="{StaticResource btnNormal}" Width="35" Margin="5" FontSize="12" Height="30" Padding="2" Click="btnFirst_Click" />
+                <Button Name="btnPrev" Style="{StaticResource btnNormal}" Width="30" Margin="5" FontSize="12" Height="30" Padding="2" Click="btnPrev_Click" />
 
-            <Border Style="{StaticResource WinDrawBorder}" Padding="0 5" Margin="2,5,5,5">
-                <Label Name="lAddWord" Style="{StaticResource WinDrawText}" FontWeight="Bold" FontSize="15">+</Label>
-            </Border>
-        </StackPanel>
-    </StackPanel>
+                <TextBlock VerticalAlignment="Center" Margin="5" Text="Page" />
+                <TextBox Name="txtPage" Height="20" Text="1" IsReadOnly="True" TextChanged="txtPage_TextChanged" />
+                <TextBlock Name="txtMax" VerticalAlignment="Center" Margin="5" Text="of 10" />
+
+                <Button Name="btnNext" Style="{StaticResource btnNormal}" Width="30" Margin="5" FontSize="12" Height="30" Padding="2" Click="btnNext_Click" />
+                <Button Name="btnLast" Style="{StaticResource btnNormal}" Width="35" Margin="5" FontSize="12" Height="30" Padding="2" Click="btnLast_Click" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Window>
