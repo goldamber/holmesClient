@@ -21,8 +21,7 @@ namespace AppEnglish
         int user;
         #region Pagination.
         List<string> _words = new List<string>();   //All words.
-        const int _maxWordsPerPage = 1000;      //The limit of words per page.
-        int maxBook = 1;         //Index of the last word.
+        const int _maxWordsPerPage = 250;      //The limit of words per page.
         int _min = 1;           //First page.
         int _max = 1;           //The total number of pages.
         int _totalWords = 1;    //The total number of words.
@@ -122,21 +121,27 @@ namespace AppEnglish
                     }
                     _max = (_totalWords / _maxWordsPerPage) + 1;
                     txtMax.Text = $"of {_max}";
-                    
+                    slPages.Maximum = _max;
+
                     int? bm = _proxy.GetLastMarkAsync(book, user, EngServRef.ServerData.Book).Result;
                     if (bm != null)
                     {
                         txtPage.Text = _proxy.GetItemProperty(Convert.ToInt32(bm), EngServRef.ServerData.Bookmark, EngServRef.PropertyData.Position);
-                        maxBook = ChangePage(_maxWordsPerPage * Convert.ToInt32(txtPage.Text) - _maxWordsPerPage + 1, _maxWordsPerPage * Convert.ToInt32(txtPage.Text));
+                        ChangePage(Convert.ToInt32(txtPage.Text));
                     }
                     else
-                        maxBook = ChangePage(1, _maxWordsPerPage);
+                        ChangePage(1);
                     if (Convert.ToInt32(txtPage.Text) == _max)
+                    {
                         btnLast.IsEnabled = btnNext.IsEnabled = false;
+                        slPages.IsEnabled = false;
+                    }
                     prgPreloader.Visibility = Visibility.Collapsed;
                 }));
-            }));
-            thd.IsBackground = true;
+            }))
+            {
+                IsBackground = true
+            };
             thd.Start();
         }
         #endregion
@@ -148,7 +153,7 @@ namespace AppEnglish
             AddWord frm = new AddWord((sender as TextBox).Text.Split(" .,!?()8-_<>;:'\"\\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0], _proxy);
             frm.ShowDialog();
         }
-        //Add bookmark.
+        //Add bookmark, change current page.
         private void txtPage_TextChanged(object sender, TextChangedEventArgs e)
         {
             int pos = Convert.ToInt32((sender as TextBox).Text);
@@ -156,7 +161,14 @@ namespace AppEnglish
                 btnFirst.IsEnabled = btnPrev.IsEnabled = (pos != _min);
             if (btnNext != null && btnLast != null)
                 btnNext.IsEnabled = btnLast.IsEnabled = (pos != _max);
-            _proxy?.AddBookmark(pos, book, user);
+            if (slPages != null)
+                slPages.Value = pos;
+            
+            if (_proxy != null)
+            {
+                ChangePage(pos);
+                _proxy.AddBookmark(pos, book, user);
+            }
         }
         #endregion
         #region Visualization (tips).
@@ -217,67 +229,61 @@ namespace AppEnglish
         private void btnFirst_Click(object sender, RoutedEventArgs e)
         {
             txtPage.Text = _min.ToString();
-            maxBook = ChangePage(1, _maxWordsPerPage);
         }
         private void btnPrev_Click(object sender, RoutedEventArgs e)
         {
             if (Convert.ToInt32(txtPage.Text) > _min)
-            {
                 txtPage.Text = (Convert.ToInt32(txtPage.Text) - 1).ToString();
-                int mw = maxBook - _maxWordsPerPage <= 0 ? 1 : maxBook - _maxWordsPerPage;
-                ChangePage(mw, maxBook);
-                maxBook = mw;
-            }
         }
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
             if (Convert.ToInt32(txtPage.Text) < _max)
-            {
                 txtPage.Text = (Convert.ToInt32(txtPage.Text) + 1).ToString();
-                maxBook = ChangePage(maxBook, _maxWordsPerPage * Convert.ToInt32(txtPage.Text));
-            }
         }
         private void btnLast_Click(object sender, RoutedEventArgs e)
         {
             txtPage.Text = _max.ToString();
-            maxBook = ChangePage(_totalWords - _maxWordsPerPage <= 0 ? 1 : _totalWords - _maxWordsPerPage, _totalWords + 1);
+        }
+        private void slPages_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            txtPage.Text = Convert.ToInt32((sender as Slider).Value).ToString();
         }
         /// <summary>
         /// Flip the page.
         /// </summary>
-        /// <param name="from">The first word.</param>
-        /// <param name="to">The last word.</param>
-        /// <returns>Index of the last word.</returns>
-        int ChangePage(int from, int to)
+        /// <param name="page">The number of page.</param>
+        void ChangePage(int page)
         {
             int wordsCount = 1;
-            stWords.Items.Clear();
+            int from = (page - 1) * _maxWordsPerPage;
+            int to = page * _maxWordsPerPage;
 
+            stWords.Items.Clear();
             foreach (string item in _words)
             {
-                if (wordsCount < to)
+                WrapPanel tmp = new WrapPanel { Margin = new Thickness(2) };
+                foreach (string word in item.Split(" \\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
                 {
-                    wordsCount += item.Split(" \\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Length;
-                    if (wordsCount >= from)
+                    if (wordsCount >= from && wordsCount < to)
                     {
-                        WrapPanel tmp = new WrapPanel { Margin = new Thickness(2) };
-                        foreach (string word in item.Split(" \\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            TextBox lb = new TextBox { Text = word, Style = TryFindResource("txtSub") as Style };
-                            lb.PreviewMouseRightButtonDown += Lb_MouseButtonDown;
-                            lb.MouseEnter += Lb_MouseEnter;
-                            tmp.Children.Add(lb);
-                        }
-
-                        tmp.Background = Brushes.White;
-                        tmp.MouseEnter += Label_MouseEnter;
-                        tmp.MouseLeave += Label_MouseLeave;
-
-                        stWords.Items.Add(tmp);
+                        TextBox lb = new TextBox { Text = word, Style = TryFindResource("txtSub") as Style };
+                        lb.PreviewMouseRightButtonDown += Lb_MouseButtonDown;
+                        lb.MouseEnter += Lb_MouseEnter;
+                        tmp.Children.Add(lb);
                     }
+                    wordsCount++;
+                    if (wordsCount > to)
+                        break;
+                }
+
+                if (tmp.Children.Count > 0)
+                {
+                    tmp.Background = Brushes.White;
+                    tmp.MouseEnter += Label_MouseEnter;
+                    tmp.MouseLeave += Label_MouseLeave;
+                    stWords.Items.Add(tmp);
                 }
             }
-            return wordsCount;
         }
         #endregion
     }
