@@ -16,9 +16,8 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Name="txtName" Margin="10 5" FontWeight="Bold" FontSize="16" Foreground="#FF2887D6" />
-            <ProgressBar Grid.Row="1" Name="prgPreloader" Template="{StaticResource Preloader}" Visibility="Collapsed" />
-
             <ListBox Grid.Row="1" Name="stWords" Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MinWidth="250" />
+            <ProgressBar Grid.Row="1" Name="prgPreloader" Template="{StaticResource Preloader}" />
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                 <Button Name="btnFirst" Style="{StaticResource btnNormal}" Width="35" Margin="5" FontSize="12" Height="30" Padding="2" Click="btnFirst_Click" />
                 <Button Name="btnPrev" Style="{StaticResource btnNormal}" Width="30" Margin="5" FontSize="12" Height="30" Padding="2" Click="btnPrev_Click" />

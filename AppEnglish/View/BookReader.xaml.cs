@@ -258,6 +258,7 @@ namespace AppEnglish
             int from = (page - 1) * _maxWordsPerPage;
             int to = page * _maxWordsPerPage;
 
+            prgPreloader.Visibility = Visibility.Visible;
             stWords.Items.Clear();
             foreach (string item in _words)
             {
@@ -284,6 +285,7 @@ namespace AppEnglish
                     stWords.Items.Add(tmp);
                 }
             }
+            prgPreloader.Visibility = Visibility.Collapsed;
         }
         #endregion
     }
