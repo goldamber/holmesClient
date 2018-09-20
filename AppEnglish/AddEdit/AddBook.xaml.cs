@@ -209,7 +209,7 @@ namespace AppEnglish
         private void btnPath_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Text files (*.txt)|*.txt|PDF files (*.pdf)|*.pdf|DOCX-files (*.doc, *.docx)|*.doc;*.docx|All files (*.*)|*.*";
+            ofd.Filter = "Text files (*.txt, *.pdf, *.epub, *.doc, *.docx)|*.txt;*.pdf;*.epub;*.doc;*.docx|All files (*.*)|*.*";
             if (ofd.ShowDialog() == true)
                 txtPath.Text = ofd.FileName;
         }
@@ -334,7 +334,7 @@ namespace AppEnglish
                             }
                             _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
                         }
-                        else if (txtPath.Text == path && chCopy.IsChecked == true)
+                        else if (txtPath.Text == path && txtPath.Text.Contains(":") && chCopy.IsChecked == true)
                         {
                             if (!File.Exists(txtPath.Text))
                             {

@@ -14,7 +14,7 @@ namespace AppEnglish
     public partial class MainWindow : MetroWindow
     {
         //Types of data to be presented.
-        enum DataType { Video, Book, Word, User, Author, BookCategory, WordCategory, Group }
+        enum DataType { Video, Book, Word, User, Author, BookCategory, WordCategory, VideoCategory, Group }
         
         #region Render a template for list.
         /// <summary>
@@ -41,14 +41,10 @@ namespace AppEnglish
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Description", Foreground = Brushes.Black });
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Category", Foreground = Brushes.Black });
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
-                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Mark", Foreground = Brushes.Black });
 
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Date", Foreground = Brushes.Black });
-
-                            btnSearch.Tag = "Video";
-                            btnSort.Tag = "Video";
                             break;
                         case DataType.Book:
                             btnGrid.Click += btnAddBook;
@@ -57,14 +53,10 @@ namespace AppEnglish
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Category", Foreground = Brushes.Black });
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Author", Foreground = Brushes.Black });
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
-                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Mark", Foreground = Brushes.Black });
 
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Year", Foreground = Brushes.Black });
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Date", Foreground = Brushes.Black });
-
-                            btnSearch.Tag = "Book";
-                            btnSort.Tag = "Book";
                             break;
                         case DataType.Word:
                             btnGrid.Click += btnAddWord;
@@ -76,9 +68,6 @@ namespace AppEnglish
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Category", Foreground = Brushes.Black });
 
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
-
-                            btnSearch.Tag = "Word";
-                            btnSort.Tag = "Word";
                             break;
                         case DataType.User:
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Login", IsSelected = true, Foreground = Brushes.Black });
@@ -88,17 +77,18 @@ namespace AppEnglish
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Login", IsSelected = true, Foreground = Brushes.Black });
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Role", Foreground = Brushes.Black });
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Level", Foreground = Brushes.Black });
-
-                            btnSearch.Tag = "User";
-                            btnSort.Tag = "User";
                             break;
                         case DataType.BookCategory:
                             btnGrid.Click += btnAddBCategory_Click;
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                             btnGrid.ToolTip = "Add books category";
-                            btnSearch.Tag = "BookCategory";
-                            btnSort.Tag = "BookCategory";
+                            break;
+                        case DataType.VideoCategory:
+                            btnGrid.Click += btnAddVCategory_Click;
+                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                            cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                            btnGrid.ToolTip = "Add video category";
                             break;
                         case DataType.Author:
                             btnGrid.Click += btnAddAuthor_Click;
@@ -106,9 +96,6 @@ namespace AppEnglish
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Surname", Foreground = Brushes.Black });
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Surname", Foreground = Brushes.Black });
-
-                            btnSearch.Tag = "Author";
-                            btnSort.Tag = "Author";
                             break;
                         case DataType.WordCategory:
                             btnGrid.Click += btnAddWCategory_Click;
@@ -117,21 +104,21 @@ namespace AppEnglish
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Abbreviation", Foreground = Brushes.Black });
                             btnGrid.ToolTip = "Add words category";
-                            btnSearch.Tag = "WordCategory";
-                            btnSort.Tag = "WordCategory";
                             break;
                         case DataType.Group:
                             btnGrid.Click += btnAddWGroup_Click;
                             cmbFilter.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                             btnGrid.ToolTip = "Add words group";
-                            btnSearch.Tag = "Group";
-                            btnSort.Tag = "Group";
                             break;
                     }
+                    btnSort.Tag = btnSearch.Tag = data.ToString();
                     if (data != DataType.User)
                         stActions.Children.Add(btnGrid);
-
+                    if (cmbFilter.Items.Count > FormData.FilterPosition)
+                        cmbFilter.SelectedIndex = FormData.FilterPosition;
+                    if (cmbSort.Items.Count > FormData.SortPosition)
+                        cmbSort.SelectedIndex = FormData.SortPosition;
                     if (lst != null)
                     {
                         foreach (int item in lst)
@@ -167,6 +154,11 @@ namespace AppEnglish
                                     Expander expBC = new Expander { Header = _proxy.GetItemProperty(item, ServerData.BookCategory, PropertyData.Name), Tag = item };
                                     expBC.Expanded += expBookCategory_Expanded;
                                     stActions.Children.Add(expBC);
+                                    break;
+                                case DataType.VideoCategory:
+                                    Expander expVC = new Expander { Header = _proxy.GetItemProperty(item, ServerData.VideoCategory, PropertyData.Name), Tag = item };
+                                    expVC.Expanded += expVideoCategory_Expanded;
+                                    stActions.Children.Add(expVC);
                                     break;
                                 case DataType.WordCategory:
                                     Expander expWC = new Expander { Header = _proxy.GetItemProperty(item, ServerData.WordCategory, PropertyData.Name), Tag = item };
@@ -216,7 +208,7 @@ namespace AppEnglish
             if ((sender as Expander).Content == null)
                 AddWordItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), false);
         }
-
+        
         /// <summary>
         /// Add a video item to the template.
         /// </summary>

@@ -15,6 +15,9 @@ namespace AppEnglish
 
         public static List<int> WordsToPrint { get; set; } = new List<int>();
 
+        public static int FilterPosition { get; set; } = 0;     //The postion of 'Filter' comboBox.
+        public static int SortPosition { get; set; } = 0;       //The postion of 'Sort' comboBox.
+
         #region Types that contains images. They can be updated only upon restart.
         public static List<int> EditBooks { get; set; } = new List<int>();
         public static List<int> EditVideos { get; set; } = new List<int>();

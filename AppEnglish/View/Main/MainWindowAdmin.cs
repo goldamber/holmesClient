@@ -106,6 +106,11 @@ namespace AppEnglish
             if ((sender as Expander).Content == null)
                 AddCategoryItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), EngServRef.ServerData.BookCategory, EngServRef.ServerData.Book, btnRemoveBCategory_Click, btnEditBCategory_Click);
         }
+        private void expVideoCategory_Expanded(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Expander).Content == null)
+                AddCategoryItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), EngServRef.ServerData.VideoCategory, EngServRef.ServerData.Video, btnRemoveVCategory_Click, btnEditVCategory_Click);
+        }
         private void expWordCategory_Expanded(object sender, RoutedEventArgs e)
         {
             if ((sender as Expander).Content == null)

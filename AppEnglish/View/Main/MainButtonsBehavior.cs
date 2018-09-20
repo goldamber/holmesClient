@@ -283,7 +283,7 @@ namespace AppEnglish
         {
             if (txtSearch.Text == "")
                 _proxy.GetItems((ServerData)Enum.Parse(typeof(ServerData), btnSearch.Tag.ToString()));
-
+            FormData.FilterPosition = cmbFilter.SelectedIndex;
             stActions.Children.Clear();
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
             
@@ -297,6 +297,7 @@ namespace AppEnglish
         //Sort data.
         private async void btnSort_Click(object sender, RoutedEventArgs e)
         {
+            FormData.SortPosition = cmbSort.SelectedIndex;
             stActions.Children.Clear();
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
 
@@ -329,6 +330,9 @@ namespace AppEnglish
         //Return to the list of actions.
         private void ButtonBack_Click(object sender, RoutedEventArgs e)
         {
+            FormData.FilterPosition = 0;
+            FormData.SortPosition = 0;
+            txtSearch.Text = "";
             grSearch.Visibility = Visibility.Collapsed;
             stActions.Children.Clear();
 
@@ -349,6 +353,9 @@ namespace AppEnglish
                 stActions.Children.Add(btn);
                 btn = new Button { Name = "btnBooksCategoriesAct", Content = "Books Categories", Style = TryFindResource("btnNormal") as Style };
                 btn.Click += btnBooksCategoriesAct_Click;
+                stActions.Children.Add(btn);
+                btn = new Button { Name = "btnVideoCategoriesAct", Content = "Video Categories", Style = TryFindResource("btnNormal") as Style };
+                btn.Click += btnVideoCategoriesAct_Click;
                 stActions.Children.Add(btn);
                 btn = new Button { Name = "btnWordsCategoriesAct", Content = "Words Categories", Style = TryFindResource("btnNormal") as Style };
                 btn.Click += btnWordsCategoriesAct_Click;

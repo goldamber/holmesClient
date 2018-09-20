@@ -100,6 +100,34 @@ namespace AppEnglish
             btnBooksCategoriesAct_Click(null, null);
         }
         #endregion
+        #region Video Categories actions.
+        //Show a list of all categories to the admin.
+        private void btnVideoCategoriesAct_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateListTemplate(ServerData.VideoCategory, DataType.VideoCategory);
+        }
+        //Remove item and refresh the canvas.
+        private void btnRemoveVCategory_Click(object sender, RoutedEventArgs e)
+        {
+            if (RemoveTemplate(Convert.ToInt32((sender as Button).Tag), "Are you sure you want to remove this category?", ServerData.VideoCategory))
+                btnVideoCategoriesAct_Click(null, null);
+        }
+        //Show a form for adding a new category.
+        private void btnAddVCategory_Click(object sender, RoutedEventArgs e)
+        {
+            AddCategory form = new AddCategory(_proxy, ServerData.VideoCategory);
+            form.ShowDialog();
+            btnVideoCategoriesAct_Click(null, null);
+        }
+        //Show a form for editting category.
+        private void btnEditVCategory_Click(object sender, RoutedEventArgs e)
+        {
+            int id = Convert.ToInt32((sender as Button).Tag);
+            AddCategory form = new AddCategory(_proxy, ServerData.VideoCategory, id);
+            form.ShowDialog();
+            btnVideoCategoriesAct_Click(null, null);
+        }
+        #endregion
         #region Words Categories actions.
         //Show a list of all categories to the admin.
         private void btnWordsCategoriesAct_Click(object sender, RoutedEventArgs e)

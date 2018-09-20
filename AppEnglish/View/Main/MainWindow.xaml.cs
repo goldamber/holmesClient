@@ -284,6 +284,9 @@ namespace AppEnglish
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
             imUserAvatar.Source = null;
+            FormData.FilterPosition = 0;
+            FormData.SortPosition = 0;
+            txtSearch.Text = "";
             lUserName.Content = "";
             lRole.Content = "";
 
