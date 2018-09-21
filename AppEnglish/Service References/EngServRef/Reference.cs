@@ -271,11 +271,29 @@ namespace AppEnglish.EngServRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddAuthor", ReplyAction="http://tempuri.org/IEngService/AddAuthorResponse")]
         System.Threading.Tasks.Task<System.Nullable<int>> AddAuthorAsync(string name, string surname);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddCategory", ReplyAction="http://tempuri.org/IEngService/AddCategoryResponse")]
-        System.Nullable<int> AddCategory(string name, AppEnglish.EngServRef.ServerData data);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddWord", ReplyAction="http://tempuri.org/IEngService/AddWordResponse")]
+        System.Nullable<int> AddWord(string name, string img, int user);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddCategory", ReplyAction="http://tempuri.org/IEngService/AddCategoryResponse")]
-        System.Threading.Tasks.Task<System.Nullable<int>> AddCategoryAsync(string name, AppEnglish.EngServRef.ServerData data);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddWord", ReplyAction="http://tempuri.org/IEngService/AddWordResponse")]
+        System.Threading.Tasks.Task<System.Nullable<int>> AddWordAsync(string name, string img, int user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddWordsForm", ReplyAction="http://tempuri.org/IEngService/AddWordsFormResponse")]
+        System.Nullable<int> AddWordsForm(int word, string past, string plural, string pastTh);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddWordsForm", ReplyAction="http://tempuri.org/IEngService/AddWordsFormResponse")]
+        System.Threading.Tasks.Task<System.Nullable<int>> AddWordsFormAsync(int word, string past, string plural, string pastTh);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddWordsTranscription", ReplyAction="http://tempuri.org/IEngService/AddWordsTranscriptionResponse")]
+        System.Nullable<int> AddWordsTranscription(int word, string british, string canadian, string american, string australian);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddWordsTranscription", ReplyAction="http://tempuri.org/IEngService/AddWordsTranscriptionResponse")]
+        System.Threading.Tasks.Task<System.Nullable<int>> AddWordsTranscriptionAsync(int word, string british, string canadian, string american, string australian);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddData", ReplyAction="http://tempuri.org/IEngService/AddDataResponse")]
+        System.Nullable<int> AddData(string name, AppEnglish.EngServRef.ServerData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddData", ReplyAction="http://tempuri.org/IEngService/AddDataResponse")]
+        System.Threading.Tasks.Task<System.Nullable<int>> AddDataAsync(string name, AppEnglish.EngServRef.ServerData data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddWordsCategory", ReplyAction="http://tempuri.org/IEngService/AddWordsCategoryResponse")]
         System.Nullable<int> AddWordsCategory(string name, string abbr);
@@ -289,11 +307,17 @@ namespace AppEnglish.EngServRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddBookmark", ReplyAction="http://tempuri.org/IEngService/AddBookmarkResponse")]
         System.Threading.Tasks.Task AddBookmarkAsync(int pos, int item, int user);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddItemCategory", ReplyAction="http://tempuri.org/IEngService/AddItemCategoryResponse")]
-        void AddItemCategory(int item, int cat, AppEnglish.EngServRef.ServerData data);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddItemsWord", ReplyAction="http://tempuri.org/IEngService/AddItemsWordResponse")]
+        void AddItemsWord(int word, int item, AppEnglish.EngServRef.ServerData type);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddItemCategory", ReplyAction="http://tempuri.org/IEngService/AddItemCategoryResponse")]
-        System.Threading.Tasks.Task AddItemCategoryAsync(int item, int cat, AppEnglish.EngServRef.ServerData data);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddItemsWord", ReplyAction="http://tempuri.org/IEngService/AddItemsWordResponse")]
+        System.Threading.Tasks.Task AddItemsWordAsync(int word, int item, AppEnglish.EngServRef.ServerData type);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddItemData", ReplyAction="http://tempuri.org/IEngService/AddItemDataResponse")]
+        void AddItemData(int item, int cat, AppEnglish.EngServRef.ServerData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddItemData", ReplyAction="http://tempuri.org/IEngService/AddItemDataResponse")]
+        System.Threading.Tasks.Task AddItemDataAsync(int item, int cat, AppEnglish.EngServRef.ServerData data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddBookAuthor", ReplyAction="http://tempuri.org/IEngService/AddBookAuthorResponse")]
         void AddBookAuthor(int bookId, int author);
@@ -343,11 +367,11 @@ namespace AppEnglish.EngServRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetMark", ReplyAction="http://tempuri.org/IEngService/GetMarkResponse")]
         System.Threading.Tasks.Task<System.Nullable<int>> GetMarkAsync(int itemId, int userId, AppEnglish.EngServRef.ServerData data);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetLastId", ReplyAction="http://tempuri.org/IEngService/GetLastIdResponse")]
-        int GetLastId(AppEnglish.EngServRef.ServerData data);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetWord", ReplyAction="http://tempuri.org/IEngService/GetWordResponse")]
+        System.Nullable<int> GetWord(string data);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetLastId", ReplyAction="http://tempuri.org/IEngService/GetLastIdResponse")]
-        System.Threading.Tasks.Task<int> GetLastIdAsync(AppEnglish.EngServRef.ServerData data);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetWord", ReplyAction="http://tempuri.org/IEngService/GetWordResponse")]
+        System.Threading.Tasks.Task<System.Nullable<int>> GetWordAsync(string data);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItems", ReplyAction="http://tempuri.org/IEngService/GetItemsResponse")]
         int[] GetItems(AppEnglish.EngServRef.ServerData data);
@@ -379,11 +403,11 @@ namespace AppEnglish.EngServRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItemData", ReplyAction="http://tempuri.org/IEngService/GetItemDataResponse")]
         System.Threading.Tasks.Task<int[]> GetItemDataAsync(int id, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.ServerData res);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetUserId", ReplyAction="http://tempuri.org/IEngService/GetUserIdResponse")]
-        System.Nullable<int> GetUserId(string login);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItemsId", ReplyAction="http://tempuri.org/IEngService/GetItemsIdResponse")]
+        System.Nullable<int> GetItemsId(string name, AppEnglish.EngServRef.ServerData type);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetUserId", ReplyAction="http://tempuri.org/IEngService/GetUserIdResponse")]
-        System.Threading.Tasks.Task<System.Nullable<int>> GetUserIdAsync(string login);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItemsId", ReplyAction="http://tempuri.org/IEngService/GetItemsIdResponse")]
+        System.Threading.Tasks.Task<System.Nullable<int>> GetItemsIdAsync(string name, AppEnglish.EngServRef.ServerData type);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetLastMark", ReplyAction="http://tempuri.org/IEngService/GetLastMarkResponse")]
         System.Nullable<int> GetLastMark(int item, int user, AppEnglish.EngServRef.ServerData data);
@@ -432,6 +456,12 @@ namespace AppEnglish.EngServRef {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/RemoveItemWord", ReplyAction="http://tempuri.org/IEngService/RemoveItemWordResponse")]
         System.Threading.Tasks.Task RemoveItemWordAsync(int item, int word, AppEnglish.EngServRef.ServerData data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/ClearResources", ReplyAction="http://tempuri.org/IEngService/ClearResourcesResponse")]
+        void ClearResources();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/ClearResources", ReplyAction="http://tempuri.org/IEngService/ClearResourcesResponse")]
+        System.Threading.Tasks.Task ClearResourcesAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -493,12 +523,36 @@ namespace AppEnglish.EngServRef {
             return base.Channel.AddAuthorAsync(name, surname);
         }
         
-        public System.Nullable<int> AddCategory(string name, AppEnglish.EngServRef.ServerData data) {
-            return base.Channel.AddCategory(name, data);
+        public System.Nullable<int> AddWord(string name, string img, int user) {
+            return base.Channel.AddWord(name, img, user);
         }
         
-        public System.Threading.Tasks.Task<System.Nullable<int>> AddCategoryAsync(string name, AppEnglish.EngServRef.ServerData data) {
-            return base.Channel.AddCategoryAsync(name, data);
+        public System.Threading.Tasks.Task<System.Nullable<int>> AddWordAsync(string name, string img, int user) {
+            return base.Channel.AddWordAsync(name, img, user);
+        }
+        
+        public System.Nullable<int> AddWordsForm(int word, string past, string plural, string pastTh) {
+            return base.Channel.AddWordsForm(word, past, plural, pastTh);
+        }
+        
+        public System.Threading.Tasks.Task<System.Nullable<int>> AddWordsFormAsync(int word, string past, string plural, string pastTh) {
+            return base.Channel.AddWordsFormAsync(word, past, plural, pastTh);
+        }
+        
+        public System.Nullable<int> AddWordsTranscription(int word, string british, string canadian, string american, string australian) {
+            return base.Channel.AddWordsTranscription(word, british, canadian, american, australian);
+        }
+        
+        public System.Threading.Tasks.Task<System.Nullable<int>> AddWordsTranscriptionAsync(int word, string british, string canadian, string american, string australian) {
+            return base.Channel.AddWordsTranscriptionAsync(word, british, canadian, american, australian);
+        }
+        
+        public System.Nullable<int> AddData(string name, AppEnglish.EngServRef.ServerData data) {
+            return base.Channel.AddData(name, data);
+        }
+        
+        public System.Threading.Tasks.Task<System.Nullable<int>> AddDataAsync(string name, AppEnglish.EngServRef.ServerData data) {
+            return base.Channel.AddDataAsync(name, data);
         }
         
         public System.Nullable<int> AddWordsCategory(string name, string abbr) {
@@ -517,12 +571,20 @@ namespace AppEnglish.EngServRef {
             return base.Channel.AddBookmarkAsync(pos, item, user);
         }
         
-        public void AddItemCategory(int item, int cat, AppEnglish.EngServRef.ServerData data) {
-            base.Channel.AddItemCategory(item, cat, data);
+        public void AddItemsWord(int word, int item, AppEnglish.EngServRef.ServerData type) {
+            base.Channel.AddItemsWord(word, item, type);
         }
         
-        public System.Threading.Tasks.Task AddItemCategoryAsync(int item, int cat, AppEnglish.EngServRef.ServerData data) {
-            return base.Channel.AddItemCategoryAsync(item, cat, data);
+        public System.Threading.Tasks.Task AddItemsWordAsync(int word, int item, AppEnglish.EngServRef.ServerData type) {
+            return base.Channel.AddItemsWordAsync(word, item, type);
+        }
+        
+        public void AddItemData(int item, int cat, AppEnglish.EngServRef.ServerData data) {
+            base.Channel.AddItemData(item, cat, data);
+        }
+        
+        public System.Threading.Tasks.Task AddItemDataAsync(int item, int cat, AppEnglish.EngServRef.ServerData data) {
+            return base.Channel.AddItemDataAsync(item, cat, data);
         }
         
         public void AddBookAuthor(int bookId, int author) {
@@ -589,12 +651,12 @@ namespace AppEnglish.EngServRef {
             return base.Channel.GetMarkAsync(itemId, userId, data);
         }
         
-        public int GetLastId(AppEnglish.EngServRef.ServerData data) {
-            return base.Channel.GetLastId(data);
+        public System.Nullable<int> GetWord(string data) {
+            return base.Channel.GetWord(data);
         }
         
-        public System.Threading.Tasks.Task<int> GetLastIdAsync(AppEnglish.EngServRef.ServerData data) {
-            return base.Channel.GetLastIdAsync(data);
+        public System.Threading.Tasks.Task<System.Nullable<int>> GetWordAsync(string data) {
+            return base.Channel.GetWordAsync(data);
         }
         
         public int[] GetItems(AppEnglish.EngServRef.ServerData data) {
@@ -637,12 +699,12 @@ namespace AppEnglish.EngServRef {
             return base.Channel.GetItemDataAsync(id, data, res);
         }
         
-        public System.Nullable<int> GetUserId(string login) {
-            return base.Channel.GetUserId(login);
+        public System.Nullable<int> GetItemsId(string name, AppEnglish.EngServRef.ServerData type) {
+            return base.Channel.GetItemsId(name, type);
         }
         
-        public System.Threading.Tasks.Task<System.Nullable<int>> GetUserIdAsync(string login) {
-            return base.Channel.GetUserIdAsync(login);
+        public System.Threading.Tasks.Task<System.Nullable<int>> GetItemsIdAsync(string name, AppEnglish.EngServRef.ServerData type) {
+            return base.Channel.GetItemsIdAsync(name, type);
         }
         
         public System.Nullable<int> GetLastMark(int item, int user, AppEnglish.EngServRef.ServerData data) {
@@ -707,6 +769,14 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task RemoveItemWordAsync(int item, int word, AppEnglish.EngServRef.ServerData data) {
             return base.Channel.RemoveItemWordAsync(item, word, data);
+        }
+        
+        public void ClearResources() {
+            base.Channel.ClearResources();
+        }
+        
+        public System.Threading.Tasks.Task ClearResourcesAsync() {
+            return base.Channel.ClearResourcesAsync();
         }
     }
 }

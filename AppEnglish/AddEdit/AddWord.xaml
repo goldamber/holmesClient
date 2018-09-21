@@ -1,62 +1,165 @@
-﻿<Window x:Class="AppEnglish.AddWord"
+﻿<Window x:Class="AppEnglish.AddEdit.AddWord"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Add Word" Height="300" Width="400" Icon="..\Images\Eye.png">
+        Title="Add word" Height="500" Width="450" Icon="..\Images\Eye.png" Loaded="Window_Loaded">
     
     <ScrollViewer>
-        <StackPanel Name="stMain" SizeChanged="StackPanel_SizeChanged">
+        <StackPanel Name="stMain" VerticalAlignment="Center" SizeChanged="StackPanel_SizeChanged">
             <StackPanel Orientation="Horizontal">
                 <Label Style="{StaticResource lbFormNormal}">Word:</Label>
-                <TextBox Style="{StaticResource txtNormal}" TextChanged="txtWord_TextChanged" Name="txtWord" />
-                <Label Style="{StaticResource lbFormNormal}" Padding="0">*</Label>
+                <TextBox Style="{StaticResource txtNormal}" TextChanged="txtName_TextChanged" Name="txtName" />
+                <Label Style="{StaticResource lbFormNormal}" Padding="2" FontSize="12" VerticalAlignment="Top">*</Label>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <Label Style="{StaticResource lbFormNormal}">Translation:</Label>
-                <TextBox Style="{StaticResource txtNormal}" Name="txtTranlation" TextChanged="txtWord_TextChanged"  />
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Label Style="{StaticResource lbFormNormal}">Description:</Label>
-                <TextBox Style="{StaticResource txtNormal}" Name="txtDescription" TextChanged="txtWord_TextChanged" />
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Label Style="{StaticResource lbFormNormal}">Type:</Label>
-                <ComboBox Name="cmbType" Margin="7" />
-            </StackPanel>
+            <GroupBox Header="Transcription">
+                <StackPanel SizeChanged="StackPanel_SizeChanged">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource lbFormNormal}" FontSize="14">British:</Label>
+                        <TextBox Style="{StaticResource txtNormal}" Name="txtBritish" FontSize="14" TextChanged="txtName_TextChanged" />
+                        <Label Style="{StaticResource lbFormNormal}" Padding="2" FontSize="12" VerticalAlignment="Top">*</Label>
+                    </StackPanel>
+                    <WrapPanel Name="stBritishButtons">
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">æ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ʌ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ʊ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ɒ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ə</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ɜ:</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ɔ:</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">θ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ð</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ʃ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ʒ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ŋ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ɫ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnBritish_Click">ɛ</Button>
+                    </WrapPanel>
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource lbFormNormal}" FontSize="14">Canadian:</Label>
+                        <TextBox Style="{StaticResource txtNormal}" Name="txtCanadian" FontSize="14" TextChanged="txtName_TextChanged" />
+                        <Label Style="{StaticResource lbFormNormal}" Padding="2" FontSize="12" VerticalAlignment="Top">*</Label>
+                    </StackPanel>
+                    <WrapPanel Name="stCanadianButtons">
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">æ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ʌ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ʊ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ɒ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ə</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ɜ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ɔ:</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">θ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ð</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ʃ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ʒ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ŋ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ɫ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnCanadian_Click">ɛ</Button>
+                    </WrapPanel>
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource lbFormNormal}" FontSize="14">American:</Label>
+                        <TextBox Style="{StaticResource txtNormal}" Name="txtAmerican" FontSize="14" TextChanged="txtName_TextChanged" />
+                        <Label Style="{StaticResource lbFormNormal}" Padding="2" FontSize="12" VerticalAlignment="Top">*</Label>
+                    </StackPanel>
+                    <WrapPanel Name="stAmericanButtons">
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">æ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ʌ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ʊ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ɒ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ə</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ɜ:</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ɔ:</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">θ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ð</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ʃ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ʒ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ŋ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ɫ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAmerican_Click">ɛ</Button>
+                    </WrapPanel>
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource lbFormNormal}" FontSize="14">Australian:</Label>
+                        <TextBox Style="{StaticResource txtNormal}" Name="txtAustralian" FontSize="14" TextChanged="txtName_TextChanged" />
+                        <Label Style="{StaticResource lbFormNormal}" Padding="2" FontSize="12" VerticalAlignment="Top">*</Label>
+                    </StackPanel>
+                    <WrapPanel Name="stAustralianButtons">
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">æ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ʌ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ʊ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ɒ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ə</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ɜ:</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ɔ:</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">θ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ð</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ʃ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ʒ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ŋ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ɫ</Button>
+                        <Button Style="{StaticResource btnPlaySquare}" Click="btnAustralian_Click">ɛ</Button>
+                    </WrapPanel>
+                </StackPanel>
+            </GroupBox>
 
             <Label Style="{StaticResource lbFormNormal}">Image:</Label>
             <Border Name="brImage" Style="{StaticResource brdDragDrop}" DragEnter="Border_DragEnter" DragLeave="Border_DragLeave" Drop="Border_Drop" MouseDown="Border_MouseDown">
                 <Image Name="imDrag" Source="..\Images\ImageDrop.png" />
             </Border>
             <Label Name="lPath" Margin="10">...</Label>
+            
+            <StackPanel>
+                <Label Style="{StaticResource lbFormNormal}">Category:</Label>
+                <ListBox Name="lstCategory" Margin="7" MaxHeight="150" />
+            </StackPanel>
 
-            <Expander Header="Extra" Visibility="Collapsed">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Style="{StaticResource lbFormNormal}" FontSize="12">Past form:</Label>
-                        <TextBox Style="{StaticResource txtNormal}" Name="txtPast" />
+            <GroupBox Name="grForm" Header="Words form" Visibility="Collapsed">
+                <StackPanel SizeChanged="StackPanel_SizeChanged">
+                    <StackPanel Name="stPlural" Orientation="Horizontal" Visibility="Collapsed">
+                        <Label Style="{StaticResource lbFormNormal}" FontSize="14">Plural:</Label>
+                        <TextBox Style="{StaticResource txtNormal}" Name="txtPlural" FontSize="14" />
+                        <Label Style="{StaticResource lbFormNormal}" Padding="2" FontSize="12" VerticalAlignment="Top">*</Label>
                     </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <Label Style="{StaticResource lbFormNormal}" FontSize="12">Past participle:</Label>
-                        <TextBox Style="{StaticResource txtNormal}" Name="txtPastTh" />
+                    <StackPanel Name="stPast" Orientation="Horizontal" Visibility="Collapsed">
+                        <Label Style="{StaticResource lbFormNormal}" FontSize="14">Past:</Label>
+                        <TextBox Style="{StaticResource txtNormal}" Name="txtPast" FontSize="14" />
+                        <Label Style="{StaticResource lbFormNormal}" Padding="2" FontSize="12" VerticalAlignment="Top">*</Label>
                     </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
-                        <Label Style="{StaticResource lbFormNormal}" FontSize="12">Plural form:</Label>
-                        <TextBox Style="{StaticResource txtNormal}" Name="txtPlural" />
+                    <StackPanel Name="stPastParticiple" Orientation="Horizontal" Visibility="Collapsed">
+                        <Label Style="{StaticResource lbFormNormal}" FontSize="14">Past participle:</Label>
+                        <TextBox Style="{StaticResource txtNormal}" FontSize="14" Name="txtPastTh" />
                     </StackPanel>
                 </StackPanel>
-            </Expander>
+            </GroupBox>
 
-            <ListBox Name="lstSynonyms" />
+            <StackPanel>
+                <Label Style="{StaticResource lbFormNormal}">Translation:</Label>
+                <ListBox Name="lstTranslations" Margin="7" MaxHeight="150" />
+                <Button Style="{DynamicResource MetroCircleButtonStyle}" Background="LightGreen" FontWeight="Bold" Foreground="White" Width="35" Height="35" Name="btnAddTranslation" Click="btnAddTranslation_Click"  ToolTip="Add translation">+</Button>
+            </StackPanel>
+            
+            <StackPanel>
+                <Label Style="{StaticResource lbFormNormal}">Definitions:</Label>
+                <ListBox Name="lstDefinitions" Margin="7" MaxHeight="150" />
+                <Button Style="{DynamicResource MetroCircleButtonStyle}" Background="LightGreen" FontWeight="Bold" Foreground="White" Width="35" Height="35" Name="btnAddDefinition" Click="btnAddDefinition_Click"  ToolTip="Add definition">+</Button>
+            </StackPanel>
+            
+            <StackPanel>
+                <Label Style="{StaticResource lbFormNormal}">Examples:</Label>
+                <ListBox Name="lstExamples" Margin="7" MaxHeight="150" />
+                <Button Style="{DynamicResource MetroCircleButtonStyle}" Background="LightGreen" FontWeight="Bold" Foreground="White" Width="35" Height="35" Name="btnAddExample" Click="btnAddExample_Click"  ToolTip="Add example">+</Button>
+            </StackPanel>
+            
+            <StackPanel Name="stGroups" Visibility="Collapsed">
+                <Label Style="{StaticResource lbFormNormal}">Groups:</Label>
+                <ListBox Name="lstGroups" Margin="7" MaxHeight="150" />
+            </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="10">
                 <Button Name="btnOK" HorizontalAlignment="Left" Width="100" Margin="5" Click="btnOK_Click">OK</Button>
                 <Button Name="btnCancel" HorizontalAlignment="Right" Width="100" Margin="5" Click="btnCancel_Click">Cancel</Button>
             </StackPanel>

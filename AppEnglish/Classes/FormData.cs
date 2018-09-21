@@ -12,6 +12,12 @@ namespace AppEnglish
     {
         public static string Author { get; set; } = "";
         public static int AuthorsID { get; set; }
+        #region Words extra data.
+        public static int? TranslationID { get; set; } = null;
+        public static int? DefinitionID { get; set; } = null;
+        public static int? ExampleID { get; set; } = null;
+        public static int? GroupID { get; set; } = null;
+        #endregion
 
         public static List<int> WordsToPrint { get; set; } = new List<int>();
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppEnglish.AddEdit;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
@@ -21,11 +22,11 @@ namespace AppEnglish
         bool _play = true;      //Play video.
         bool _sub = false;      //Show subs.
         bool _scroll = true;    //Scroll to subs.
-        bool _justWords = false;    //Show only words(without video.).
+        bool _justWords = false;    //Show only words (without video).
         bool _isOver = false;       //Is a pointer over the screen.
         bool _fullScreen = false;   //Fullscreen mode.
         DateTime _start = DateTime.Now;
-        //bool _prev = true;
+        bool _prev = true;          //Previous postion of scroll.
 
         #region Constructors.
         public VideoPlayer()
@@ -357,7 +358,7 @@ namespace AppEnglish
                     scvVideo.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
                     Background = Brushes.White;
                     _fullScreen = false;
-                    //_scroll = _prev;
+                    _scroll = _prev;
 
                     grMedia.MinHeight = 400;
                     grMedia.Height = 400;
@@ -387,22 +388,13 @@ namespace AppEnglish
                 }
             }
         }
-        //'Add word' click.
-        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            AddWord frm = new AddWord("", _proxy);
-            _play = true;
-            btnPlay_Click(null, null);
-            frm.ShowDialog();
-            btnPlay_Click(null, null);
-        }
         //Add an existing word.
         private void Lb_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            AddWord frm = new AddWord((sender as Label).Content.ToString(), _proxy);
+            //AddWord frm = new AddWord((sender as Label).Content.ToString(), _proxy);
             _play = true;
             btnPlay_Click(null, null);
-            frm.ShowDialog();
+            //frm.ShowDialog();
             btnPlay_Click(null, null);
         }
         //Move to a word.

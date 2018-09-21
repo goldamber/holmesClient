@@ -67,15 +67,6 @@
 
                 <!--Subtitles.-->
                 <ListBox Name="stWords" Margin="10" Height="300" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MinWidth="250" />
-
-                <!--Add word.-->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" MouseDown="StackPanel_MouseDown">
-                    <TextBlock FontSize="15" VerticalAlignment="Center">Add word</TextBlock>
-                    
-                    <Border Style="{StaticResource WinDrawBorder}" Padding="0 5" Margin="2,5,5,5">
-                        <Label Name="lAddWord" Style="{StaticResource WinDrawText}" FontWeight="Bold" FontSize="15">+</Label>
-                    </Border>
-                </StackPanel>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

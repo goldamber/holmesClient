@@ -61,11 +61,29 @@
   <wsdl:message name="IEngService_AddAuthor_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddAuthorResponse" />
   </wsdl:message>
-  <wsdl:message name="IEngService_AddCategory_InputMessage">
-    <wsdl:part name="parameters" element="tns:AddCategory" />
+  <wsdl:message name="IEngService_AddWord_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddWord" />
   </wsdl:message>
-  <wsdl:message name="IEngService_AddCategory_OutputMessage">
-    <wsdl:part name="parameters" element="tns:AddCategoryResponse" />
+  <wsdl:message name="IEngService_AddWord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddWordResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddWordsForm_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddWordsForm" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddWordsForm_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddWordsFormResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddWordsTranscription_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddWordsTranscription" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddWordsTranscription_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddWordsTranscriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddData_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddData" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddDataResponse" />
   </wsdl:message>
   <wsdl:message name="IEngService_AddWordsCategory_InputMessage">
     <wsdl:part name="parameters" element="tns:AddWordsCategory" />
@@ -79,11 +97,17 @@
   <wsdl:message name="IEngService_AddBookmark_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddBookmarkResponse" />
   </wsdl:message>
-  <wsdl:message name="IEngService_AddItemCategory_InputMessage">
-    <wsdl:part name="parameters" element="tns:AddItemCategory" />
+  <wsdl:message name="IEngService_AddItemsWord_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddItemsWord" />
   </wsdl:message>
-  <wsdl:message name="IEngService_AddItemCategory_OutputMessage">
-    <wsdl:part name="parameters" element="tns:AddItemCategoryResponse" />
+  <wsdl:message name="IEngService_AddItemsWord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddItemsWordResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddItemData_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddItemData" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddItemData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddItemDataResponse" />
   </wsdl:message>
   <wsdl:message name="IEngService_AddBookAuthor_InputMessage">
     <wsdl:part name="parameters" element="tns:AddBookAuthor" />
@@ -133,11 +157,11 @@
   <wsdl:message name="IEngService_GetMark_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetMarkResponse" />
   </wsdl:message>
-  <wsdl:message name="IEngService_GetLastId_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetLastId" />
+  <wsdl:message name="IEngService_GetWord_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWord" />
   </wsdl:message>
-  <wsdl:message name="IEngService_GetLastId_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetLastIdResponse" />
+  <wsdl:message name="IEngService_GetWord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWordResponse" />
   </wsdl:message>
   <wsdl:message name="IEngService_GetItems_InputMessage">
     <wsdl:part name="parameters" element="tns:GetItems" />
@@ -169,11 +193,11 @@
   <wsdl:message name="IEngService_GetItemData_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetItemDataResponse" />
   </wsdl:message>
-  <wsdl:message name="IEngService_GetUserId_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetUserId" />
+  <wsdl:message name="IEngService_GetItemsId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetItemsId" />
   </wsdl:message>
-  <wsdl:message name="IEngService_GetUserId_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetUserIdResponse" />
+  <wsdl:message name="IEngService_GetItemsId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetItemsIdResponse" />
   </wsdl:message>
   <wsdl:message name="IEngService_GetLastMark_InputMessage">
     <wsdl:part name="parameters" element="tns:GetLastMark" />
@@ -223,6 +247,12 @@
   <wsdl:message name="IEngService_RemoveItemWord_OutputMessage">
     <wsdl:part name="parameters" element="tns:RemoveItemWordResponse" />
   </wsdl:message>
+  <wsdl:message name="IEngService_ClearResources_InputMessage">
+    <wsdl:part name="parameters" element="tns:ClearResources" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_ClearResources_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ClearResourcesResponse" />
+  </wsdl:message>
   <wsdl:portType msc:usingSession="true" name="IEngService">
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddUser" message="tns:IEngService_AddUser_InputMessage" />
@@ -240,9 +270,21 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddAuthor" message="tns:IEngService_AddAuthor_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddAuthorResponse" message="tns:IEngService_AddAuthor_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddCategory">
-      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddCategory" message="tns:IEngService_AddCategory_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddCategoryResponse" message="tns:IEngService_AddCategory_OutputMessage" />
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddWord">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddWord" message="tns:IEngService_AddWord_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddWordResponse" message="tns:IEngService_AddWord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddWordsForm">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddWordsForm" message="tns:IEngService_AddWordsForm_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddWordsFormResponse" message="tns:IEngService_AddWordsForm_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddWordsTranscription">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddWordsTranscription" message="tns:IEngService_AddWordsTranscription_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddWordsTranscriptionResponse" message="tns:IEngService_AddWordsTranscription_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddData" message="tns:IEngService_AddData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddDataResponse" message="tns:IEngService_AddData_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddWordsCategory">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddWordsCategory" message="tns:IEngService_AddWordsCategory_InputMessage" />
@@ -252,9 +294,13 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddBookmark" message="tns:IEngService_AddBookmark_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddBookmarkResponse" message="tns:IEngService_AddBookmark_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddItemCategory">
-      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddItemCategory" message="tns:IEngService_AddItemCategory_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddItemCategoryResponse" message="tns:IEngService_AddItemCategory_OutputMessage" />
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddItemsWord">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddItemsWord" message="tns:IEngService_AddItemsWord_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddItemsWordResponse" message="tns:IEngService_AddItemsWord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddItemData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddItemData" message="tns:IEngService_AddItemData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddItemDataResponse" message="tns:IEngService_AddItemData_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddBookAuthor">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddBookAuthor" message="tns:IEngService_AddBookAuthor_InputMessage" />
@@ -288,9 +334,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetMark" message="tns:IEngService_GetMark_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetMarkResponse" message="tns:IEngService_GetMark_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetLastId">
-      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetLastId" message="tns:IEngService_GetLastId_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetLastIdResponse" message="tns:IEngService_GetLastId_OutputMessage" />
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetWord">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetWord" message="tns:IEngService_GetWord_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetWordResponse" message="tns:IEngService_GetWord_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetItems">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetItems" message="tns:IEngService_GetItems_InputMessage" />
@@ -312,9 +358,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetItemData" message="tns:IEngService_GetItemData_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetItemDataResponse" message="tns:IEngService_GetItemData_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetUserId">
-      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetUserId" message="tns:IEngService_GetUserId_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetUserIdResponse" message="tns:IEngService_GetUserId_OutputMessage" />
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetItemsId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetItemsId" message="tns:IEngService_GetItemsId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetItemsIdResponse" message="tns:IEngService_GetItemsId_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetLastMark">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetLastMark" message="tns:IEngService_GetLastMark_InputMessage" />
@@ -347,6 +393,10 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="RemoveItemWord">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/RemoveItemWord" message="tns:IEngService_RemoveItemWord_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/RemoveItemWordResponse" message="tns:IEngService_RemoveItemWord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ClearResources">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/ClearResources" message="tns:IEngService_ClearResources_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/ClearResourcesResponse" message="tns:IEngService_ClearResources_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetTcpBinding_IEngService" type="tns:IEngService">
@@ -388,8 +438,35 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="AddCategory">
-      <soap12:operation soapAction="http://tempuri.org/IEngService/AddCategory" style="document" />
+    <wsdl:operation name="AddWord">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddWord" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddWordsForm">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddWordsForm" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddWordsTranscription">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddWordsTranscription" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddData">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddData" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -415,8 +492,17 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="AddItemCategory">
-      <soap12:operation soapAction="http://tempuri.org/IEngService/AddItemCategory" style="document" />
+    <wsdl:operation name="AddItemsWord">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddItemsWord" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddItemData">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddItemData" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -496,8 +582,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetLastId">
-      <soap12:operation soapAction="http://tempuri.org/IEngService/GetLastId" style="document" />
+    <wsdl:operation name="GetWord">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetWord" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -550,8 +636,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetUserId">
-      <soap12:operation soapAction="http://tempuri.org/IEngService/GetUserId" style="document" />
+    <wsdl:operation name="GetItemsId">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetItemsId" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -624,6 +710,15 @@
     </wsdl:operation>
     <wsdl:operation name="RemoveItemWord">
       <soap12:operation soapAction="http://tempuri.org/IEngService/RemoveItemWord" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearResources">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/ClearResources" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

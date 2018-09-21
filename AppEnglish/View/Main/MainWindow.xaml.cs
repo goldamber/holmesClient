@@ -162,18 +162,18 @@ namespace AppEnglish
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    int id = _proxy.GetLastId(EngServRef.ServerData.User);
-
+                    int? id = _proxy.AddUserAsync(txtRName.Text, txtRPswd.Password, "Wolf.png", "user", 0).Result;
                     if (lPath.Content.ToString() != "...")
                     {
-                        string ava = $"{id}{Path.GetExtension(lPath.Content.ToString())}";
-                        if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), ava, EngServRef.FilesType.Avatars))
+                        string ava = $"{Convert.ToInt32(id)}{Path.GetExtension(lPath.Content.ToString())}";
+                        if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), ava, FilesType.Avatars))
                         {
                             MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                            _proxy.RemoveItem(Convert.ToInt32(id), ServerData.User);
                             return;
                         }
+                        _proxy.EditData(Convert.ToInt32(id), ava, ServerData.User, PropertyData.Imgpath);
                     }
-                    _proxy.AddUserAsync(txtRName.Text, txtRPswd.Password, lPath.Content.ToString() == "..."? "Wolf.png": $"{id}{Path.GetExtension(lPath.Content.ToString())}", "user", 0);
 
                     btnReturn_Click(null, null);
                 }));
@@ -227,12 +227,12 @@ namespace AppEnglish
                 grCab.Visibility = Visibility.Visible;
 
                 lUserName.Content = txtUserName.Text.ToUpper();
-                if (_proxy.GetUserIdAsync(txtUserName.Text).Result == null)
+                if (_proxy.GetItemsIdAsync(txtUserName.Text, ServerData.User).Result == null)
                 {
                     MessageBox.Show("This user does not exist!", "Wrong", MessageBoxButton.OK, MessageBoxImage.Stop);
                     return;
                 }
-                txtUserName.Tag = _proxy.GetUserIdAsync(txtUserName.Text).Result;
+                txtUserName.Tag = _proxy.GetItemsIdAsync(txtUserName.Text, ServerData.User).Result;
                 string roleId = _proxy.GetItemPropertyAsync(Convert.ToInt32(txtUserName.Tag), EngServRef.ServerData.User, EngServRef.PropertyData.Role).Result;
                 lRole.Content = roleId == null? "": _proxy.GetItemProperty(Convert.ToInt32(roleId), EngServRef.ServerData.Role, EngServRef.PropertyData.Name);
                 SetAvatar(Convert.ToInt32(txtUserName.Tag), false);

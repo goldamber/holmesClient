@@ -25,8 +25,8 @@ namespace AppEnglish
             EditRole form = new EditRole(_proxy, usId);
             form.ShowDialog();
 
-            if (usId == _proxy.GetUserId(lUserName.Content.ToString()))
-                lRole.Content = _proxy.GetItemProperty(usId, EngServRef.ServerData.User, EngServRef.PropertyData.RolesName);
+            if (usId == _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User))
+                lRole.Content = _proxy.GetItemProperty(usId, ServerData.User, PropertyData.RolesName);
             if (lRole.Content.ToString() != "admin")
                 ButtonBack_Click(null, null);
             else
@@ -192,7 +192,10 @@ namespace AppEnglish
             stActions.Children.Clear();
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
 
-            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Video);
+            AddVideo form = new AddVideo(_proxy, Convert.ToInt32((sender as Button).Tag), ServerData.Video);
+            form.ShowDialog();
+
+            int[] lst = await _proxy.GetItemsAsync(ServerData.Video);
             await Task.Run(() => LoadList(lst, DataType.Video, true));
         }
         //Remove item and refresh the canvas.
@@ -216,23 +219,23 @@ namespace AppEnglish
         private async void btnEditBook_Click(object sender, RoutedEventArgs e)
         {
             int id = Convert.ToInt32((sender as Button).Tag);
-            string name = _proxy.GetItemProperty(id, EngServRef.ServerData.Book, EngServRef.PropertyData.Name);
-            string desc = _proxy.GetItemProperty(id, EngServRef.ServerData.Book, EngServRef.PropertyData.Description);
-            string path = _proxy.GetItemProperty(id, EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
-            string img = _proxy.GetItemProperty(id, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
-            bool copy = _proxy.CheckAbsolute(id, EngServRef.ServerData.Book) == true? true:false;
+            string name = _proxy.GetItemProperty(id, ServerData.Book, PropertyData.Name);
+            string desc = _proxy.GetItemProperty(id, ServerData.Book, PropertyData.Description);
+            string path = _proxy.GetItemProperty(id, ServerData.Book, PropertyData.Path);
+            string img = _proxy.GetItemProperty(id, ServerData.Book, PropertyData.Imgpath);
+            bool copy = _proxy.CheckAbsolute(id, ServerData.Book) == true? true:false;
             int? year = null;
-            if (_proxy.GetItemProperty(id, EngServRef.ServerData.Book, EngServRef.PropertyData.Year) != null)
-                year = Convert.ToInt32(_proxy.GetItemProperty(id, EngServRef.ServerData.Book, EngServRef.PropertyData.Year));
-            List<int> cat = new List<int>(_proxy.GetItemData(id, EngServRef.ServerData.Book, EngServRef.ServerData.BookCategory));
-            List<int> auth = new List<int>(_proxy.GetItemData(id, EngServRef.ServerData.Book, EngServRef.ServerData.Author));
+            if (_proxy.GetItemProperty(id, ServerData.Book, PropertyData.Year) != null)
+                year = Convert.ToInt32(_proxy.GetItemProperty(id, ServerData.Book, PropertyData.Year));
+            List<int> cat = new List<int>(_proxy.GetItemData(id, ServerData.Book, ServerData.BookCategory));
+            List<int> auth = new List<int>(_proxy.GetItemData(id, ServerData.Book, ServerData.Author));
             AddBook form = new AddBook(_proxy, id, name, desc, year, path, copy, cat, auth, img);
             form.ShowDialog();
             
             stActions.Children.Clear();
             stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
 
-            int[] lst = await _proxy.GetItemsAsync(EngServRef.ServerData.Book);
+            int[] lst = await _proxy.GetItemsAsync(ServerData.Book);
             await Task.Run(() => LoadList(lst, DataType.Book, true));
         }
         //Remove item and refresh the canvas.
@@ -253,6 +256,8 @@ namespace AppEnglish
         //Show a form for editting the word.
         private void btnEditWord_Click(object sender, RoutedEventArgs e)
         {
+            AddWord form = new AddWord(_proxy, Convert.ToInt32((sender as Button).Tag), Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User)));
+            form.ShowDialog();
             btnWords_Click(null, null);
         }
         //Remove item and refresh the canvas.

@@ -30,7 +30,7 @@ namespace AppEnglish
                     WrapPanel tmp = new WrapPanel();
                     tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontWeight = FontWeights.Bold, Content = "Login:" });
                     tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontSize = 14, Content = lUserName.Content });
-                    Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 7 }, Width = 32, Height = 30, VerticalAlignment = VerticalAlignment.Top, Background = Brushes.Yellow, Tag = _proxy.GetUserId(lUserName.Content.ToString()), ToolTip = "Edit" };
+                    Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Edit.png")), Height = 7 }, Width = 32, Height = 30, VerticalAlignment = VerticalAlignment.Top, Background = Brushes.Yellow, Tag = _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User), ToolTip = "Edit" };
                     btn.Click += btnEditUsername_Click;
                     tmp.Children.Add(btn);
                     stActions.Children.Add(tmp);
@@ -42,17 +42,17 @@ namespace AppEnglish
 
                     tmp = new WrapPanel { ToolTip = "Your level depends on the quantity of played games and the score of each game." };
                     tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontWeight = FontWeights.Bold, Content = "Level:" });
-                    tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontSize = 14, Content = _proxy.GetItemProperty(Convert.ToInt32(_proxy.GetUserId(lUserName.Content.ToString())), EngServRef.ServerData.User, EngServRef.PropertyData.Level) });
+                    tmp.Children.Add(new Label { Style = TryFindResource("lbFormNormal") as Style, FontSize = 14, Content = _proxy.GetItemProperty(Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User)), ServerData.User, PropertyData.Level) });
                     stActions.Children.Add(tmp);
 
                     tmp = new WrapPanel();
-                    btn = new Button { Style = TryFindResource("btnNormal") as Style, Content = "Change password", Margin = new Thickness(5), Tag = _proxy.GetUserId(lUserName.Content.ToString()) };
+                    btn = new Button { Style = TryFindResource("btnNormal") as Style, Content = "Change password", Margin = new Thickness(5), Tag = _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User) };
                     btn.Click += btnEditPassword_Click;
                     tmp.Children.Add(btn);
                     stActions.Children.Add(tmp);
 
                     tmp = new WrapPanel();
-                    btn = new Button { Style = TryFindResource("btnNormal") as Style, Content = "Change avatar", Margin = new Thickness(5), Tag = _proxy.GetUserId(lUserName.Content.ToString()) };
+                    btn = new Button { Style = TryFindResource("btnNormal") as Style, Content = "Change avatar", Margin = new Thickness(5), Tag = _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User) };
                     btn.Click += btnEditAvatar_Click;
                     tmp.Children.Add(btn);
                     stActions.Children.Add(tmp);
@@ -126,6 +126,8 @@ namespace AppEnglish
         //Show a form for adding a new video.
         private void btnAddVideo(object sender, RoutedEventArgs e)
         {
+            AddVideo form = new AddVideo(_proxy, _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
+            form.ShowDialog();
             btnVideos_Click(null, null);
         }
         //Show a video player.
@@ -133,6 +135,7 @@ namespace AppEnglish
         {
             VideoPlayer frm = new VideoPlayer((sender as Button).Tag.ToString(), false, _proxy);
             frm.ShowDialog();
+            btnVideos_Click(null, null);
         }
         #endregion
         #region Book actions.
@@ -144,16 +147,17 @@ namespace AppEnglish
         //Show a form for adding a new book.
         private void btnAddBook(object sender, RoutedEventArgs e)
         {
-            AddBook frm = new AddBook(_proxy, _proxy.GetUserId(lUserName.Content.ToString()));
+            AddBook frm = new AddBook(_proxy, _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
             frm.ShowDialog();
             btnBooks_Click(null, null);
         }
         //Show a book reader.
         private void btnViewBook_Click(object sender, RoutedEventArgs e)
         {
-            int user = Convert.ToInt32(_proxy.GetUserId(lUserName.Content.ToString()));
+            int user = Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
             BookReader frm = new BookReader(_proxy, Convert.ToInt32((sender as Button).Tag), user);
             frm.ShowDialog();
+            btnBooks_Click(null, null);
         }
         #endregion
         #region Word actions.
@@ -165,13 +169,16 @@ namespace AppEnglish
         //Show a form for adding a new word.
         private void btnAddWord(object sender, RoutedEventArgs e)
         {
+            int? user = _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User);
+            AddWord form = new AddWord(_proxy, user);
+            form.ShowDialog();
             btnWords_Click(null, null);
         }
         //Remove a word from the list of pecific user.
         private void btnRemoveUsersItemsWord_Click(object sender, RoutedEventArgs e)
         {
             int id = Convert.ToInt32((sender as Button).Tag);
-            int user = Convert.ToInt32(_proxy.GetUserId(lUserName.Content.ToString()));
+            int user = Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
             string type = (((((sender as Button).Parent as Panel).Parent as Expander).Parent as Panel).Parent as Expander).Header.ToString();
             if (MessageBox.Show("Are you sure you want to remove this word from your list?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
@@ -189,7 +196,7 @@ namespace AppEnglish
             string[] data = (sender as Button).Tag.ToString().Split(':');
             ServerData type = (ServerData)Enum.Parse(typeof(ServerData), data[0]);
             int parent = Convert.ToInt32(data[1]);
-            int user = Convert.ToInt32(_proxy.GetUserId(lUserName.Content.ToString()));
+            int user = Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
             WordsPrintFilter form = new WordsPrintFilter(_proxy, user, parent, type);
             form.ShowDialog();
             if (FormData.WordsToPrint.Count == 0)
@@ -341,6 +348,9 @@ namespace AppEnglish
             stActions.Children.Add(btn);
             btn = new Button { Name = "btnWords", Content = "Dictionary", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnWords_Click;
+            stActions.Children.Add(btn);
+            btn = new Button { Name = "btnVideos", Content = "Videos", Style = TryFindResource("btnNormal") as Style };
+            btn.Click += btnVideos_Click;
             stActions.Children.Add(btn);
 
             if (lRole.Content.ToString() == "admin")

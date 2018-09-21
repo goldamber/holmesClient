@@ -288,28 +288,7 @@ namespace AppEnglish
 
                     if (name == null)
                     {
-                        int newId = _proxy.GetLastId(EngServRef.ServerData.Book);
-                        if (lPath.Content.ToString() != "...")
-                        {
-                            if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), $"{newId}{Path.GetExtension(lPath.Content.ToString())}", EngServRef.FilesType.BooksImages))
-                            {
-                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
-                                stMain.Visibility = Visibility.Visible;
-                                stPreloader.Visibility = Visibility.Collapsed;
-                                return;
-                            }
-                        }
-                        if (chCopy.IsChecked == true)
-                        {
-                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{newId}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Books))
-                            {
-                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
-                                stMain.Visibility = Visibility.Visible;
-                                stPreloader.Visibility = Visibility.Collapsed;
-                                return;
-                            }
-                        }
-                        int? id = _proxy.AddBook(txtName.Text, txtDesc.Text == "" ? null : txtDesc.Text, chCopy.IsChecked == true ? $"{newId}{Path.GetExtension(txtPath.Text)}" : txtPath.Text, lPath.Content.ToString() == "..."? "WolfB.png" : $"{newId}{Path.GetExtension(lPath.Content.ToString())}", chCopy.IsChecked == true ? false : true, mark, user, year, DateTime.Now);
+                        int? id = _proxy.AddBook(txtName.Text, txtDesc.Text == "" ? null : txtDesc.Text, txtPath.Text, "WolfB.png", chCopy.IsChecked == true ? false : true, mark, user, year, DateTime.Now);
                         if (id == null)
                         {
                             MessageBox.Show("Something went wrong.", "Operation denied", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -318,6 +297,31 @@ namespace AppEnglish
                             return;
                         }
                         edit = Convert.ToInt32(id);
+
+                        if (lPath.Content.ToString() != "...")
+                        {
+                            if (!_proxy.Upload(File.ReadAllBytes(lPath.Content.ToString()), $"{edit}{Path.GetExtension(lPath.Content.ToString())}", EngServRef.FilesType.BooksImages))
+                            {
+                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                _proxy.RemoveItem(edit, EngServRef.ServerData.Book);
+                                stMain.Visibility = Visibility.Visible;
+                                stPreloader.Visibility = Visibility.Collapsed;
+                                return;
+                            }
+                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(lPath.Content.ToString())}", EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
+                        }
+                        if (chCopy.IsChecked == true)
+                        {
+                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Books))
+                            {
+                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                _proxy.RemoveItem(edit, EngServRef.ServerData.Book);
+                                stMain.Visibility = Visibility.Visible;
+                                stPreloader.Visibility = Visibility.Collapsed;
+                                return;
+                            }
+                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
+                        }
                     }
                     else
                     {
@@ -339,6 +343,8 @@ namespace AppEnglish
                             if (!File.Exists(txtPath.Text))
                             {
                                 MessageBox.Show("This file does not exist!", "Wrong", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                stMain.Visibility = Visibility.Visible;
+                                stPreloader.Visibility = Visibility.Collapsed;
                                 return;
                             }
                             if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Books))
@@ -378,7 +384,7 @@ namespace AppEnglish
                     foreach (CheckBox item in lstCategory.Items)
                     {
                         if (item.IsChecked == true)
-                            _proxy.AddItemCategoryAsync(edit, Convert.ToInt32(item.Tag), EngServRef.ServerData.BookCategory);
+                            _proxy.AddItemDataAsync(edit, Convert.ToInt32(item.Tag), EngServRef.ServerData.BookCategory);
                     }
                     foreach (CheckBox item in lstAuthors.Items)
                     {

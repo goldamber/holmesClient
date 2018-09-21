@@ -225,11 +225,11 @@ namespace AppEnglish
                     AddImage(item, "WolfV.png", "VideoImages", st, ServerData.Video, edit);
                     AddStaticContent(item, st, ServerData.Video, PropertyData.Description);
                     AddStaticContent(item, st, ServerData.Video, PropertyData.Created);
-                    AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, ServerData.Video);
+                    AddMarkingStars(item, _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User), st, ServerData.Video);
                     AddHoverableData(item, ServerData.Video, PropertyData.Year, st);
 
                     AddExpanderData("Categories", item, st, ServerData.Video, ServerData.VideoCategory);
-                    int id = _proxy.GetUserId(lUserName.Content.ToString()) ?? 0;
+                    int id = _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User) ?? 0;
                     if (_proxy.GetUserItemWordsAsync(id, item, ServerData.Video).Result != null)
                     {
                         Expander words = new Expander { Header = "Videos words", Background = Brushes.Azure };
@@ -270,13 +270,13 @@ namespace AppEnglish
                     AddImage(item, "WolfB.png", "BookImages", st, ServerData.Book, edit);
                     AddStaticContent(item, st, ServerData.Book, PropertyData.Description);
                     AddStaticContent(item, st, ServerData.Book, PropertyData.Created);
-                    AddMarkingStars(item, _proxy.GetUserId(lUserName.Content.ToString()), st, ServerData.Book);
+                    AddMarkingStars(item, _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User), st, ServerData.Book);
                     AddHoverableData(item, ServerData.Book, PropertyData.Year, st);
 
                     AddExpanderData("Categories", item, st, ServerData.Book, ServerData.BookCategory);
                     AddExpanderData("Authors", item, st, ServerData.Book, ServerData.Author);
 
-                    int user = Convert.ToInt32(_proxy.GetUserId(lUserName.Content.ToString()));
+                    int user = Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
                     if (_proxy.GetUserItemWordsAsync(user, item, ServerData.Book).Result != null)
                     {
                         Expander words = new Expander { Header = "Books words", Background = Brushes.Azure };
