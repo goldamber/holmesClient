@@ -232,7 +232,7 @@ namespace AppEnglish.AddEdit
                 year = Convert.ToInt32(txtYear.Text);
             int edit = 0;
 
-            if (txtPath.Text == "" || txtSubs.Text == "")
+            if (txtPath.Text == "")
             {
                 MessageBox.Show("Choose file!", "No file chosen", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
@@ -282,15 +282,18 @@ namespace AppEnglish.AddEdit
                             }
                             _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Video, EngServRef.PropertyData.Path);
                         }
-                        if (!_proxy.Upload(File.ReadAllBytes(txtSubs.Text), $"{edit}{Path.GetExtension(txtSubs.Text)}", EngServRef.FilesType.Subtitles))
+                        if (txtSubs.Text != "")
                         {
-                            MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
-                            _proxy.RemoveItem(edit, EngServRef.ServerData.Video);
-                            stMain.Visibility = Visibility.Visible;
-                            stPreloader.Visibility = Visibility.Collapsed;
-                            return;
+                            if (!_proxy.Upload(File.ReadAllBytes(txtSubs.Text), $"{edit}{Path.GetExtension(txtSubs.Text)}", EngServRef.FilesType.Subtitles))
+                            {
+                                MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                _proxy.RemoveItem(edit, EngServRef.ServerData.Video);
+                                stMain.Visibility = Visibility.Visible;
+                                stPreloader.Visibility = Visibility.Collapsed;
+                                return;
+                            }
+                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtSubs.Text)}", EngServRef.ServerData.Video, EngServRef.PropertyData.SubPath);
                         }
-                        _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtSubs.Text)}", EngServRef.ServerData.Video, EngServRef.PropertyData.SubPath);
                     }
                     else
                     {

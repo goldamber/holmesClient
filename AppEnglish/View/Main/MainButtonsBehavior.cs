@@ -133,7 +133,7 @@ namespace AppEnglish
         //Show a video player.
         private void btnViewVideo_Click(object sender, RoutedEventArgs e)
         {
-            VideoPlayer frm = new VideoPlayer((sender as Button).Tag.ToString(), false, _proxy);
+            VideoPlayer frm = new VideoPlayer(_proxy, Convert.ToInt32((sender as Button).Tag), _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User), false);
             frm.ShowDialog();
             btnVideos_Click(null, null);
         }
@@ -285,6 +285,24 @@ namespace AppEnglish
         }
         #endregion
 
+        //Add subtitles.
+        private void BtnAddSubs_Click(object sender, RoutedEventArgs e)
+        {
+            int video = Convert.ToInt32((sender as Button).Tag);
+            GenerateSubs form = new GenerateSubs(_proxy, video);
+            form.ShowDialog();
+
+            if (FormData.GeneratedSubsPath != null)
+            {
+                if (!_proxy.Upload(File.ReadAllBytes(FormData.GeneratedSubsPath), $"{video}{Path.GetExtension(FormData.GeneratedSubsPath)}", FilesType.Subtitles))
+                {
+                    MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    return;
+                }
+                _proxy.EditData(video, $"{video}{Path.GetExtension(FormData.GeneratedSubsPath)}", ServerData.Video, PropertyData.SubPath);
+                FormData.GeneratedSubsPath = null;
+            }
+        }
         //Filter data.
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {

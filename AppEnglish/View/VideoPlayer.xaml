@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Video Player" Height="500" Width="700" Icon="..\Images\Eye.png" AllowDrop="True" Closing="Window_Closing" KeyDown="Window_KeyDown">
+        Title="Video Player" Height="500" Width="700" Icon="..\Images\Eye.png" Closing="Window_Closing" KeyDown="Window_KeyDown" WindowState="Maximized">
 
     <ScrollViewer Loaded="Window_Loaded" MouseDoubleClick="Window_MouseDoubleClick" Name="scvVideo" SizeChanged="scvVideo_SizeChanged" VerticalScrollBarVisibility="Auto">
         <StackPanel Name="stVideo">

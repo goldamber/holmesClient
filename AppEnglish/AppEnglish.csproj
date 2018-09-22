@@ -88,6 +88,9 @@
     <Compile Include="AddEdit\AddCategory.xaml.cs">
       <DependentUpon>AddCategory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddEdit\AddSubItem.xaml.cs">
+      <DependentUpon>AddSubItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddEdit\AddVideo.xaml.cs">
       <DependentUpon>AddVideo.xaml</DependentUpon>
     </Compile>
@@ -115,9 +118,13 @@
     <Compile Include="AddEdit\EditUsername.xaml.cs">
       <DependentUpon>EditUsername.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddEdit\GenerateSubs.xaml.cs">
+      <DependentUpon>GenerateSubs.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddEdit\WordsPrintFilter.xaml.cs">
       <DependentUpon>WordsPrintFilter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\GeneratedSub.cs" />
     <Compile Include="View\BookReader.xaml.cs">
       <DependentUpon>BookReader.xaml</DependentUpon>
     </Compile>
@@ -145,6 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddEdit\AddCategory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEdit\AddSubItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -181,6 +192,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddEdit\EditUsername.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEdit\GenerateSubs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -323,6 +338,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\SortR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Sub.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

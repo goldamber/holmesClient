@@ -1,0 +1,20 @@
+﻿<Window x:Class="AppEnglish.AddEdit.GenerateSubs"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Generate" Height="350" Width="420" Icon="..\Images\Eye.png" WindowState="Maximized">
+    
+    <ScrollViewer>
+        <StackPanel>
+            <ListBox Name="lstSubs" />
+            <Button Name="btnAdd" Style="{StaticResource btnNormal}" FontSize="14" HorizontalAlignment="Right" Click="btnAdd_Click">Add new item</Button>
+
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="10">
+                <Button Name="btnOK" IsEnabled="False" HorizontalAlignment="Left" Width="100" Margin="5" Click="btnOK_Click">Generate</Button>
+                <Button Name="btnCancel" HorizontalAlignment="Right" Width="100" Margin="5" Click="btnCancel_Click">Cancel</Button>
+            </WrapPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

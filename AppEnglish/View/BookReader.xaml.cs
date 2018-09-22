@@ -125,10 +125,10 @@ namespace AppEnglish
                     txtMax.Text = $"of {_max}";
                     slPages.Maximum = _max;
 
-                    int? bm = _proxy.GetLastMarkAsync(book, user, EngServRef.ServerData.Book).Result;
+                    int? bm = _proxy.GetLastMarkAsync(book, user, ServerData.Book).Result;
                     if (bm != null)
                     {
-                        txtPage.Text = _proxy.GetItemProperty(Convert.ToInt32(bm), EngServRef.ServerData.Bookmark, EngServRef.PropertyData.Position);
+                        txtPage.Text = _proxy.GetItemProperty(Convert.ToInt32(bm), ServerData.Bookmark, PropertyData.Position);
                         ChangePage(Convert.ToInt32(txtPage.Text));
                     }
                     else

@@ -51,7 +51,7 @@
             <StackPanel>
                 <Label Style="{StaticResource lbFormNormal}">Authors:</Label>
                 <ListBox Name="lstAuthors" Margin="7" MaxHeight="150" />
-                <Button Style="{DynamicResource MetroCircleButtonStyle}" Background="LightGreen" FontWeight="Bold" Foreground="White" Width="35" Height="35" Name="btnAddAuthor" Click="btnAddAuthor_Click" ToolTip="Add a new author.">+</Button>
+                <Button Style="{DynamicResource MetroCircleButtonStyle}" Background="LightGreen" FontWeight="Bold" Foreground="White" Width="35" Height="35" Name="btnAddAuthor" Click="btnAddAuthor_Click" ToolTip="Add a new author">+</Button>
             </StackPanel>
 
             <Label Style="{StaticResource lbFormNormal}">Image:</Label>

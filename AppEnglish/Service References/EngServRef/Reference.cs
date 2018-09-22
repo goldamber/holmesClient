@@ -307,6 +307,12 @@ namespace AppEnglish.EngServRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddBookmark", ReplyAction="http://tempuri.org/IEngService/AddBookmarkResponse")]
         System.Threading.Tasks.Task AddBookmarkAsync(int pos, int item, int user);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddVideoBookmark", ReplyAction="http://tempuri.org/IEngService/AddVideoBookmarkResponse")]
+        void AddVideoBookmark(System.TimeSpan pos, int item, int user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddVideoBookmark", ReplyAction="http://tempuri.org/IEngService/AddVideoBookmarkResponse")]
+        System.Threading.Tasks.Task AddVideoBookmarkAsync(System.TimeSpan pos, int item, int user);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddItemsWord", ReplyAction="http://tempuri.org/IEngService/AddItemsWordResponse")]
         void AddItemsWord(int word, int item, AppEnglish.EngServRef.ServerData type);
         
@@ -569,6 +575,14 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task AddBookmarkAsync(int pos, int item, int user) {
             return base.Channel.AddBookmarkAsync(pos, item, user);
+        }
+        
+        public void AddVideoBookmark(System.TimeSpan pos, int item, int user) {
+            base.Channel.AddVideoBookmark(pos, item, user);
+        }
+        
+        public System.Threading.Tasks.Task AddVideoBookmarkAsync(System.TimeSpan pos, int item, int user) {
+            return base.Channel.AddVideoBookmarkAsync(pos, item, user);
         }
         
         public void AddItemsWord(int word, int item, AppEnglish.EngServRef.ServerData type) {

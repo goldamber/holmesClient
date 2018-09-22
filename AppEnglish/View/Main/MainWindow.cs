@@ -249,6 +249,9 @@ namespace AppEnglish
                     }
 
                     AddButtons(item, st, btnRemoveVideo_Click, btnEditVideo_Click, btnViewVideo_Click);
+                    Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Sub.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.WhiteSmoke, Tag = item, ToolTip = "Add subtitles" };
+                    btn.Click += BtnAddSubs_Click;
+                    st.Children.Add(btn);
 
                     exp.Content = st;
                 }));

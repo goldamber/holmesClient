@@ -169,7 +169,7 @@ namespace AppEnglish
                     if (view != null)
                     {
                         btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/View.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Tag = item, ToolTip = "View" };
-                        btn.Click += btnViewBook_Click;
+                        btn.Click += view;
                         stButtons.Children.Add(btn);
                     }
                     st.Children.Add(stButtons);

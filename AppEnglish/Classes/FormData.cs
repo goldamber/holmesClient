@@ -24,6 +24,8 @@ namespace AppEnglish
         public static int FilterPosition { get; set; } = 0;     //The postion of 'Filter' comboBox.
         public static int SortPosition { get; set; } = 0;       //The postion of 'Sort' comboBox.
 
+        public static string GeneratedSubsPath { get; set; } = null;
+
         #region Types that contains images. They can be updated only upon restart.
         public static List<int> EditBooks { get; set; } = new List<int>();
         public static List<int> EditVideos { get; set; } = new List<int>();

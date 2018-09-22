@@ -97,6 +97,12 @@
   <wsdl:message name="IEngService_AddBookmark_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddBookmarkResponse" />
   </wsdl:message>
+  <wsdl:message name="IEngService_AddVideoBookmark_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddVideoBookmark" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddVideoBookmark_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddVideoBookmarkResponse" />
+  </wsdl:message>
   <wsdl:message name="IEngService_AddItemsWord_InputMessage">
     <wsdl:part name="parameters" element="tns:AddItemsWord" />
   </wsdl:message>
@@ -294,6 +300,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddBookmark" message="tns:IEngService_AddBookmark_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddBookmarkResponse" message="tns:IEngService_AddBookmark_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddVideoBookmark">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddVideoBookmark" message="tns:IEngService_AddVideoBookmark_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddVideoBookmarkResponse" message="tns:IEngService_AddVideoBookmark_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddItemsWord">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddItemsWord" message="tns:IEngService_AddItemsWord_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddItemsWordResponse" message="tns:IEngService_AddItemsWord_OutputMessage" />
@@ -485,6 +495,15 @@
     </wsdl:operation>
     <wsdl:operation name="AddBookmark">
       <soap12:operation soapAction="http://tempuri.org/IEngService/AddBookmark" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddVideoBookmark">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddVideoBookmark" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
