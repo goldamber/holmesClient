@@ -218,6 +218,9 @@ namespace AppEnglish
         //Show a form for editting the book.
         private async void btnEditBook_Click(object sender, RoutedEventArgs e)
         {
+            stActions.Children.Clear();
+            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
+
             int id = Convert.ToInt32((sender as Button).Tag);
             string name = _proxy.GetItemProperty(id, ServerData.Book, PropertyData.Name);
             string desc = _proxy.GetItemProperty(id, ServerData.Book, PropertyData.Description);
@@ -229,11 +232,9 @@ namespace AppEnglish
                 year = Convert.ToInt32(_proxy.GetItemProperty(id, ServerData.Book, PropertyData.Year));
             List<int> cat = new List<int>(_proxy.GetItemData(id, ServerData.Book, ServerData.BookCategory));
             List<int> auth = new List<int>(_proxy.GetItemData(id, ServerData.Book, ServerData.Author));
+
             AddBook form = new AddBook(_proxy, id, name, desc, year, path, copy, cat, auth, img);
             form.ShowDialog();
-            
-            stActions.Children.Clear();
-            stActions.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
 
             int[] lst = await _proxy.GetItemsAsync(ServerData.Book);
             await Task.Run(() => LoadList(lst, DataType.Book, true));
@@ -270,6 +271,23 @@ namespace AppEnglish
                 _proxy.Delete(img, FilesType.WordsImages);
                 btnWords_Click(null, null);
             }
+        }
+        #endregion
+        #region Grammar actions.
+        //Show a form for editting the book.
+        private void btnEditGrammar_Click(object sender, RoutedEventArgs e)
+        {
+            int id = Convert.ToInt32((sender as Button).Tag);
+            AddGrammar form = new AddGrammar(_proxy, id);
+            form.ShowDialog();
+            btnGrammar_Click(null, null);
+        }
+        //Remove item and refresh the canvas.
+        private void btnRemoveGrammar_Click(object sender, RoutedEventArgs e)
+        {
+            int id = Convert.ToInt32((sender as Button).Tag);
+            if (RemoveTemplate(id, "Are you sure you want to remove this rule?", ServerData.Grammar))
+                btnGrammar_Click(null, null);
         }
         #endregion
 

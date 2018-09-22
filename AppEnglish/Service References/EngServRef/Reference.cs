@@ -69,6 +69,18 @@ namespace AppEnglish.EngServRef {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         Transcription = 17,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GrammarExample = 18,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Grammar = 19,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GrammarException = 20,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Rule = 21,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
@@ -276,6 +288,12 @@ namespace AppEnglish.EngServRef {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddWord", ReplyAction="http://tempuri.org/IEngService/AddWordResponse")]
         System.Threading.Tasks.Task<System.Nullable<int>> AddWordAsync(string name, string img, int user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddGrammar", ReplyAction="http://tempuri.org/IEngService/AddGrammarResponse")]
+        System.Nullable<int> AddGrammar(string name, string desc);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddGrammar", ReplyAction="http://tempuri.org/IEngService/AddGrammarResponse")]
+        System.Threading.Tasks.Task<System.Nullable<int>> AddGrammarAsync(string name, string desc);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddWordsForm", ReplyAction="http://tempuri.org/IEngService/AddWordsFormResponse")]
         System.Nullable<int> AddWordsForm(int word, string past, string plural, string pastTh);
@@ -535,6 +553,14 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task<System.Nullable<int>> AddWordAsync(string name, string img, int user) {
             return base.Channel.AddWordAsync(name, img, user);
+        }
+        
+        public System.Nullable<int> AddGrammar(string name, string desc) {
+            return base.Channel.AddGrammar(name, desc);
+        }
+        
+        public System.Threading.Tasks.Task<System.Nullable<int>> AddGrammarAsync(string name, string desc) {
+            return base.Channel.AddGrammarAsync(name, desc);
         }
         
         public System.Nullable<int> AddWordsForm(int word, string past, string plural, string pastTh) {

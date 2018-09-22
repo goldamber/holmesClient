@@ -252,7 +252,7 @@ namespace AppEnglish
             string data = (sender as Label).Content.ToString();
             try
             {
-                data = (sender as Label).Content.ToString().Split(" 1234567890.,!?()-_<>;:\"\\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                data = (sender as Label).Content.ToString().Split(" 1234567890.,!?()-_<>;:'\"\\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
             }
             catch
             {
@@ -587,7 +587,7 @@ namespace AppEnglish
             string data = (sender as Label).Content.ToString();
             try
             {
-                data = (sender as Label).Content.ToString().Split(" 1234567890.,!?()-_<>;:\"\\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                data = (sender as Label).Content.ToString().Split(" 1234567890.,!?()-_<>';:\"\\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
             }
             catch
             {

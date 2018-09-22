@@ -20,6 +20,10 @@
       <xs:enumeration value="VideoBookmark" />
       <xs:enumeration value="Group" />
       <xs:enumeration value="Transcription" />
+      <xs:enumeration value="GrammarExample" />
+      <xs:enumeration value="Grammar" />
+      <xs:enumeration value="GrammarException" />
+      <xs:enumeration value="Rule" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="ServerData" nillable="true" type="tns:ServerData" />

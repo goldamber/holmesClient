@@ -1,5 +1,4 @@
 ﻿using AppEnglish.EngServRef;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -71,14 +70,14 @@ namespace AppEnglish.AddEdit
         }
         #endregion
         #region Close form (OK, Cancel).
-        //Add an author.
+        //Add data.
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             if (!_proxy.CheckExistence(txtName.Text, dataType))
             {
                 if (_proxy.AddData(txtName.Text, dataType) == null)
                 {
-                    MessageBox.Show("Something went wrong. This category was not addded.", "Wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Something went wrong. This type was not addded.", "Wrong", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
             }
@@ -95,6 +94,15 @@ namespace AppEnglish.AddEdit
                     break;
                 case ServerData.Group:
                     FormData.GroupID = _proxy.GetItemsId(txtName.Text, ServerData.Group);
+                    break;
+                case ServerData.GrammarExample:
+                    FormData.GrExampleID = _proxy.GetItemsId(txtName.Text, ServerData.GrammarExample);
+                    break;
+                case ServerData.GrammarException:
+                    FormData.ExceptionID = _proxy.GetItemsId(txtName.Text, ServerData.GrammarException);
+                    break;
+                case ServerData.Rule:
+                    FormData.RuleID = _proxy.GetItemsId(txtName.Text, ServerData.Rule);
                     break;
             }
             Close();

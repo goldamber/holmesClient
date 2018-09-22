@@ -189,6 +189,22 @@ namespace AppEnglish.AddEdit
                 }
             }
         }
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            int len = 2;
+
+            switch (e.Key)
+            {
+                case Key.D:
+                    if (slider.Value + len <= slider.Maximum)
+                        slider.Value += len;
+                    break;
+                case Key.A:
+                    if (slider.Value - len >= 0)
+                        slider.Value -= len;
+                    break;
+            }
+        }
         #endregion
         #region Close form (OK, Cancel).
         //Add a new video.

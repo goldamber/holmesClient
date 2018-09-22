@@ -1,5 +1,6 @@
 ﻿using AppEnglish.AddEdit;
 using AppEnglish.EngServRef;
+using AppEnglish.View.Games;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -136,6 +137,26 @@ namespace AppEnglish
             VideoPlayer frm = new VideoPlayer(_proxy, Convert.ToInt32((sender as Button).Tag), _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User), false);
             frm.ShowDialog();
             btnVideos_Click(null, null);
+        }
+
+        //Add subtitles.
+        private void BtnAddSubs_Click(object sender, RoutedEventArgs e)
+        {
+            int video = Convert.ToInt32((sender as Button).Tag);
+            GenerateSubs form = new GenerateSubs(_proxy, video);
+            form.ShowDialog();
+
+            if (FormData.GeneratedSubsPath != null)
+            {
+                if (!_proxy.Upload(File.ReadAllBytes(FormData.GeneratedSubsPath), $"{video}{Path.GetExtension(FormData.GeneratedSubsPath)}", FilesType.Subtitles))
+                {
+                    MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    return;
+                }
+                _proxy.EditData(video, $"{video}{Path.GetExtension(FormData.GeneratedSubsPath)}", ServerData.Video, PropertyData.SubPath);
+                FormData.GeneratedSubsPath = null;
+                btnVideos_Click(null, null);
+            }
         }
         #endregion
         #region Book actions.
@@ -284,25 +305,35 @@ namespace AppEnglish
             web.Print();
         }
         #endregion
-
-        //Add subtitles.
-        private void BtnAddSubs_Click(object sender, RoutedEventArgs e)
+        #region Games actions.
+        //Show a list of all games to the user.
+        private void btnGames_Click(object sender, RoutedEventArgs e)
         {
-            int video = Convert.ToInt32((sender as Button).Tag);
-            GenerateSubs form = new GenerateSubs(_proxy, video);
-            form.ShowDialog();
-
-            if (FormData.GeneratedSubsPath != null)
-            {
-                if (!_proxy.Upload(File.ReadAllBytes(FormData.GeneratedSubsPath), $"{video}{Path.GetExtension(FormData.GeneratedSubsPath)}", FilesType.Subtitles))
-                {
-                    MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
-                    return;
-                }
-                _proxy.EditData(video, $"{video}{Path.GetExtension(FormData.GeneratedSubsPath)}", ServerData.Video, PropertyData.SubPath);
-                FormData.GeneratedSubsPath = null;
-            }
+            GenerateListTemplate(ServerData.Game, DataType.Game);
         }
+        //Play the game.
+        private void BtnTimeConverter_Click(object sender, RoutedEventArgs e)
+        {
+            ///int user = Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
+            TimeConverter game = new TimeConverter();
+            game.ShowDialog();
+        }
+        #endregion
+        #region Grammar actions.
+        //Show a list of all rules to the user.
+        private void btnGrammar_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateListTemplate(ServerData.Grammar, DataType.Grammar);
+        }
+        //Show a form for adding a new rule.
+        private void btnAddGrammar_Click(object sender, RoutedEventArgs e)
+        {
+            AddGrammar frm = new AddGrammar(_proxy);
+            frm.ShowDialog();
+            btnGrammar_Click(null, null);
+        }
+        #endregion
+
         //Filter data.
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
@@ -369,6 +400,12 @@ namespace AppEnglish
             stActions.Children.Add(btn);
             btn = new Button { Name = "btnVideos", Content = "Videos", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnVideos_Click;
+            stActions.Children.Add(btn);
+            btn = new Button { Name = "btnGames", Content = "Games", Style = TryFindResource("btnNormal") as Style };
+            btn.Click += btnGames_Click;
+            stActions.Children.Add(btn);
+            btn = new Button { Name = "btnGrammar", Content = "Grammar", Style = TryFindResource("btnNormal") as Style };
+            btn.Click += btnGrammar_Click;
             stActions.Children.Add(btn);
 
             if (lRole.Content.ToString() == "admin")

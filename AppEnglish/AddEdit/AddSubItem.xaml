@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Subtitles" Height="500" Width="700" Icon="..\Images\Eye.png" Closing="Window_Closing">
+        Title="Subtitles" Height="500" Width="700" KeyDown="Window_KeyDown" Icon="..\Images\Eye.png" Closing="Window_Closing">
 
     <ScrollViewer Loaded="Window_Loaded" Name="scvVideo" VerticalScrollBarVisibility="Auto">
         <StackPanel Name="stVideo">

@@ -155,7 +155,7 @@ namespace AppEnglish
             string data = (sender as TextBox).Text;
             try
             {
-                data = (sender as TextBox).Text.Split(" 1234567890.,!?()-_<>;:\"\\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                data = (sender as TextBox).Text.Split(" 1234567890.,!'?()-_<>;:\"\\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
             }
             catch
             {
@@ -201,7 +201,7 @@ namespace AppEnglish
             string data = (sender as TextBox).Text;
             try
             {
-                data = (sender as TextBox).Text.Split(" 1234567890.,!?()-_<>;:\"\\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                data = (sender as TextBox).Text.Split(" 1234567890.,!?()-'_<>;:\"\\/=+-/^@$%{}|&\n\r\t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
             }
             catch
             {

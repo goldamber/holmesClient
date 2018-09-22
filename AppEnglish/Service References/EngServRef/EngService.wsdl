@@ -67,6 +67,12 @@
   <wsdl:message name="IEngService_AddWord_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddWordResponse" />
   </wsdl:message>
+  <wsdl:message name="IEngService_AddGrammar_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddGrammar" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddGrammar_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddGrammarResponse" />
+  </wsdl:message>
   <wsdl:message name="IEngService_AddWordsForm_InputMessage">
     <wsdl:part name="parameters" element="tns:AddWordsForm" />
   </wsdl:message>
@@ -280,6 +286,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddWord" message="tns:IEngService_AddWord_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddWordResponse" message="tns:IEngService_AddWord_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddGrammar">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddGrammar" message="tns:IEngService_AddGrammar_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddGrammarResponse" message="tns:IEngService_AddGrammar_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddWordsForm">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddWordsForm" message="tns:IEngService_AddWordsForm_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddWordsFormResponse" message="tns:IEngService_AddWordsForm_OutputMessage" />
@@ -450,6 +460,15 @@
     </wsdl:operation>
     <wsdl:operation name="AddWord">
       <soap12:operation soapAction="http://tempuri.org/IEngService/AddWord" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddGrammar">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddGrammar" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

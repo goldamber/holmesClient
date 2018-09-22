@@ -18,6 +18,11 @@ namespace AppEnglish
         public static int? ExampleID { get; set; } = null;
         public static int? GroupID { get; set; } = null;
         #endregion
+        #region Grammar extre data.
+        public static int? RuleID { get; set; } = null;
+        public static int? GrExampleID { get; set; } = null;
+        public static int? ExceptionID { get; set; } = null;
+        #endregion
 
         public static List<int> WordsToPrint { get; set; } = new List<int>();
 

@@ -49,10 +49,11 @@ namespace AppEnglish.AddEdit
             {
                 string start = GeneratedSub.Start.ToString().Replace('.', ',');
                 string end = GeneratedSub.End.ToString().Replace('.', ',');
-                lstSubs.Items.Add(new TextBlock { Text = $"{count}\n{start.Substring(0, start.Length - 4)} --> {end.Substring(0, end.Length - 4)}\n{GeneratedSub.Name}\n\n" });
+                lstSubs.Items.Add(new TextBlock { Text = $"{count}\n{start.Substring(0, start.Length - 4)} --> {end.Substring(0, end.Length - 4)}\n{GeneratedSub.Name}\r\n\r\n" });
                 count++;
                 last = GeneratedSub.End;
                 GeneratedSub.Name = null;
+                btnOK.IsEnabled = true;
             }
         }
         #region Close form (OK, Cancel).
@@ -66,6 +67,7 @@ namespace AppEnglish.AddEdit
             }
             File.WriteAllText(@"Temp\File.srt", str.ToString());
             FormData.GeneratedSubsPath = $@"{Directory.GetCurrentDirectory()}\Temp\File.srt";
+            FormData.EditVideos.Add(videoId);
             Close();
         }
         //Close form.

@@ -88,6 +88,9 @@
     <Compile Include="AddEdit\AddCategory.xaml.cs">
       <DependentUpon>AddCategory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddEdit\AddGrammar.xaml.cs">
+      <DependentUpon>AddGrammar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddEdit\AddSubItem.xaml.cs">
       <DependentUpon>AddSubItem.xaml</DependentUpon>
     </Compile>
@@ -135,6 +138,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Classes\SubTitle.cs" />
+    <Compile Include="View\Games\TimeConverter.xaml.cs">
+      <DependentUpon>TimeConverter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Main\MainButtonsAdmin.cs" />
     <Compile Include="View\Main\MainButtonsBehavior.cs" />
     <Compile Include="View\Main\MainParts.cs" />
@@ -152,6 +158,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddEdit\AddCategory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEdit\AddGrammar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -208,6 +218,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ElementStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Games\TimeConverter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -341,6 +355,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Sub.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PlayGame.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

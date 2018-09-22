@@ -14,7 +14,7 @@ namespace AppEnglish
     public partial class MainWindow : MetroWindow
     {
         //Types of data to be presented.
-        enum DataType { Video, Book, Word, User, Author, BookCategory, WordCategory, VideoCategory, Group }
+        enum DataType { Video, Book, Word, User, Author, BookCategory, WordCategory, VideoCategory, Group, Grammar, Game }
         
         #region Render a template for list.
         /// <summary>
@@ -111,9 +111,19 @@ namespace AppEnglish
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                             btnGrid.ToolTip = "Add words group";
                             break;
+                        case DataType.Grammar:
+                            btnGrid.Click += btnAddGrammar_Click;
+                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                            cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                            btnGrid.ToolTip = "Add rule";
+                            break;
+                        case DataType.Game:
+                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                            cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
+                            break;
                     }
                     btnSort.Tag = btnSearch.Tag = data.ToString();
-                    if (data != DataType.User)
+                    if (data != DataType.User && data != DataType.Game)
                         stActions.Children.Add(btnGrid);
                     if (cmbFilter.Items.Count > FormData.FilterPosition)
                         cmbFilter.SelectedIndex = FormData.FilterPosition;
@@ -170,6 +180,16 @@ namespace AppEnglish
                                     expWG.Expanded += expWordGroup_Expanded;
                                     stActions.Children.Add(expWG);
                                     break;
+                                case DataType.Grammar:
+                                    Expander expGrammar = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Grammar, PropertyData.Name), Tag = item };
+                                    expGrammar.Expanded += expGrammar_Expanded;
+                                    stActions.Children.Add(expGrammar);
+                                    break;
+                                case DataType.Game:
+                                    Expander expGame = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Game, PropertyData.Name), Tag = item };
+                                    expGame.Expanded += expGame_Expanded;
+                                    stActions.Children.Add(expGame);
+                                    break;
                             }
                         }
                     }
@@ -208,7 +228,17 @@ namespace AppEnglish
             if ((sender as Expander).Content == null)
                 AddWordItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), false);
         }
-        
+        private void expGrammar_Expanded(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Expander).Content == null)
+                AddGrammarItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), false);
+        }
+        private void expGame_Expanded(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Expander).Content == null)
+                AddGameItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), false);
+        }
+
         /// <summary>
         /// Add a video item to the template.
         /// </summary>
@@ -355,6 +385,55 @@ namespace AppEnglish
             }
             
             exp.Content = st;
+        }
+        /// <summary>
+        /// Add a game item to the template.
+        /// </summary>
+        /// <param name="item">Id of game.</param>
+        /// <param name="exp">The expander where the data are supposed to be added.</param>
+        /// <param name="edit">If this item is editable.</param>
+        private void AddGameItem(int item, Expander exp, bool edit)
+        {
+            Thread thd = new Thread(new ThreadStart(() => {
+                Dispatcher.InvokeAsync(new Action(() => {
+                    StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+                    AddStaticContent(item, st, ServerData.Game, PropertyData.Description);
+                    
+                    switch (exp.Header.ToString().ToLower())
+                    {
+                        case "time conversion":
+                            AddButtons(item, st, null, null, BtnTimeConverter_Click);
+                            break;
+                    }
+                    exp.Content = st;
+                }));
+            }));
+            thd.IsBackground = true;
+            thd.Start();
+        }
+        /// <summary>
+        /// Add a grammar item to the template.
+        /// </summary>
+        /// <param name="item">Id of grammars item.</param>
+        /// <param name="exp">The expander where the data are supposed to be added.</param>
+        /// <param name="edit">If this item is editable.</param>
+        private void AddGrammarItem(int item, Expander exp, bool edit)
+        {
+            Thread thd = new Thread(new ThreadStart(() => {
+                Dispatcher.InvokeAsync(new Action(() => {
+                    StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+                    AddStaticContent(item, st, ServerData.Grammar, PropertyData.Description);
+
+                    AddExpanderData("Rules", item, st, ServerData.Grammar, ServerData.Rule, false);
+                    AddExpanderData("Exceptions", item, st, ServerData.Grammar, ServerData.GrammarException, false);
+                    AddExpanderData("Examples", item, st, ServerData.Grammar, ServerData.GrammarExample, false);
+
+                    AddButtons(item, st, btnRemoveGrammar_Click, btnEditGrammar_Click, null);
+                    exp.Content = st;
+                }));
+            }));
+            thd.IsBackground = true;
+            thd.Start();
         }
         #endregion
     }
