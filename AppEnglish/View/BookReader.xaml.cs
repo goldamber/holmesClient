@@ -402,7 +402,7 @@ namespace AppEnglish
                 {
                     if (wordsCount >= from && wordsCount < to)
                     {
-                        TextBox lb = new TextBox { Text = word, Style = TryFindResource("txtSub") as Style };
+                        TextBox lb = new TextBox { Text = word, Style = TryFindResource("txtBook") as Style };
                         lb.PreviewMouseDown += Lb_PreviewMouseDown;
                         lb.MouseEnter += Lb_MouseEnter;
                         tmp.Children.Add(lb);

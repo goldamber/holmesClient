@@ -7,8 +7,7 @@
         Title="Add Book" Height="300" Width="400" Icon="..\Images\Eye.png">
 
     <ScrollViewer>
-        <Grid>
-            <StackPanel Name="stMain" SizeChanged="StackPanel_SizeChanged">
+        <StackPanel Name="stMain" SizeChanged="StackPanel_SizeChanged">
             <StackPanel Orientation="Horizontal">
                 <Label Style="{StaticResource lbFormNormal}">Name:</Label>
                 <TextBox Style="{StaticResource txtNormal}" TextChanged="txtName_TextChanged" Name="txtName" />
@@ -65,7 +64,5 @@
                 <Button Name="btnCancel" HorizontalAlignment="Right" Width="100" Margin="5" Click="btnCancel_Click">Cancel</Button>
             </WrapPanel>
         </StackPanel>
-            <StackPanel Name="stPreloader" Visibility="Collapsed" />
-        </Grid>
     </ScrollViewer>
 </Window>

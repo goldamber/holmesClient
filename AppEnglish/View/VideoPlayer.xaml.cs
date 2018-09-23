@@ -28,10 +28,9 @@ namespace AppEnglish
         bool _play = true;      //Play video.
         bool _sub = false;      //Show subs.
         bool _scroll = true;    //Scroll to subs.
-        bool _justWords = false;    //Show only words (without video).
         bool _isOver = false;       //Is a pointer over the screen.
         bool _fullScreen = false;   //Fullscreen mode.
-        DateTime _start = DateTime.Now;
+        DateTime _start = DateTime.Now;     //Time of screen having fullscreen state.
         bool _prev = true;          //Previous postion of scroll.
 
         #region Constructors.
@@ -50,11 +49,9 @@ namespace AppEnglish
         /// <param name="tmp">Host.</param>
         /// <param name="video">Videos id</param>
         /// <param name="user">Users id</param>
-        /// <param name="words">Show only words (without video).</param>
-        public VideoPlayer(EngServiceClient tmp, int video, int? user, bool words) : this()
+        public VideoPlayer(EngServiceClient tmp, int video, int? user) : this()
         {
             _proxy = tmp;
-            _justWords = words;
             videoId = video;
             this.user = user;
             txtName.Text = _proxy.GetItemProperty(video, ServerData.Video, PropertyData.Name);
@@ -71,50 +68,39 @@ namespace AppEnglish
                     {
                         Dispatcher.Invoke(new Action(() =>
                         {
-                            if (!_justWords)
+                            bool isAbsolute = _proxy.CheckAbsolute(videoId, ServerData.Video) == true ? true : false;
+                            string videoPath = _proxy.GetItemProperty(videoId, ServerData.Video, PropertyData.Path);
+                            string path = isAbsolute ? videoPath : $@"Temp\Videos\{videoPath}";
+                            if (!isAbsolute)
                             {
-                                bool isAbsolute = _proxy.CheckAbsolute(videoId, ServerData.Video) == true ? true : false;
-                                string videoPath = _proxy.GetItemProperty(videoId, ServerData.Video, PropertyData.Path);
-                                string path = isAbsolute ? videoPath : $@"Temp\Videos\{videoPath}";
-                                if (!isAbsolute)
+                                if (!Directory.Exists(@"Temp\Videos"))
+                                    Directory.CreateDirectory(@"Temp\Videos");
+                                byte[] res = _proxy.DownloadAsync(videoPath, FilesType.Videos).Result;
+                                if (res != null)
                                 {
-                                    if (!Directory.Exists(@"Temp\Videos"))
-                                        Directory.CreateDirectory(@"Temp\Videos");
-                                    byte[] res = _proxy.DownloadAsync(videoPath, FilesType.Videos).Result;
-                                    if (res != null)
+                                    using (FileStream fs = File.OpenWrite(path))
                                     {
-                                        using (FileStream fs = File.OpenWrite(path))
-                                        {
-                                            Task.WaitAll(fs.WriteAsync(res, 0, res.Length));
-                                            fs.Dispose();
-                                        }
+                                        Task.WaitAll(fs.WriteAsync(res, 0, res.Length));
+                                        fs.Dispose();
                                     }
                                 }
-                                if (!File.Exists(path))
-                                {
-                                    MessageBox.Show($"Video can not be found!\n({path})", "Wrong", MessageBoxButton.OK, MessageBoxImage.Error);
-                                    Close();
-                                    return;
-                                }
-
-                                mainVideo.Source = new Uri(isAbsolute ? path : $"pack://siteoforigin:,,,/{path}");
-                                mainVideo.Volume = slVolume.Value;
-                                int? vm = _proxy.GetLastMarkAsync(videoId, Convert.ToInt32(user), ServerData.Video).Result;
-                                if (vm != null)
-                                {
-                                    mainVideo.Position = TimeSpan.Parse(_proxy.GetItemProperty(Convert.ToInt32(vm), ServerData.VideoBookmark, PropertyData.Position));
-                                    slDurration.Value = mainVideo.Position.TotalSeconds;
-                                }
-                                mainVideo.Play();
                             }
-                            else
+                            if (!File.Exists(path))
                             {
-                                mainVideo.Source = null;
-                                grControl.Visibility = Visibility.Collapsed;
-                                mainVideo.Visibility = Visibility.Collapsed;
-                                chScroll.Visibility = Visibility.Collapsed;
-                                exSettings.Visibility = Visibility.Collapsed;
+                                MessageBox.Show($"Video can not be found!\n({path})", "Wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+                                Close();
+                                return;
                             }
+
+                            mainVideo.Source = new Uri(isAbsolute ? path : $"pack://siteoforigin:,,,/{path}");
+                            mainVideo.Volume = slVolume.Value;
+                            int? vm = _proxy.GetLastMarkAsync(videoId, Convert.ToInt32(user), ServerData.Video).Result;
+                            if (vm != null)
+                            {
+                                mainVideo.Position = TimeSpan.Parse(_proxy.GetItemProperty(Convert.ToInt32(vm), ServerData.VideoBookmark, PropertyData.Position));
+                                slDurration.Value = mainVideo.Position.TotalSeconds;
+                            }
+                            mainVideo.Play();
                         }));
                     }
                     catch (Exception ex)
@@ -511,7 +497,6 @@ namespace AppEnglish
             }
         }
         #endregion
-
         #region Slider data.
         private void slDurration_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -528,7 +513,7 @@ namespace AppEnglish
             slVolume.ToolTip = $"{Convert.ToInt32(100 * slVolume.Value)}%";
         }
         #endregion
-        #region Clicks.
+        #region Clicks, keys.
         //Maximize/minimize player.
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -650,26 +635,7 @@ namespace AppEnglish
                 stWords.IsEnabled = _play;
             }
         }
-        #endregion
-        #region CheckBoxes.
-        private void chScroll_Checked(object sender, RoutedEventArgs e)
-        {
-            _scroll = true;
-        }
-        private void chScroll_Unchecked(object sender, RoutedEventArgs e)
-        {
-            _scroll = false;
-        }
-        private void chShowSubs_Checked(object sender, RoutedEventArgs e)
-        {
-            _sub = true;
-        }
-        private void chShowSubs_Unchecked(object sender, RoutedEventArgs e)
-        {
-            _sub = false;
-        }
-        #endregion
-
+        //Scroll the video.
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             int len = 2;
@@ -690,7 +656,27 @@ namespace AppEnglish
                     break;
             }
         }
+        #endregion
+        #region CheckBoxes.
+        private void chScroll_Checked(object sender, RoutedEventArgs e)
+        {
+            _scroll = true;
+        }
+        private void chScroll_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _scroll = false;
+        }
+        private void chShowSubs_Checked(object sender, RoutedEventArgs e)
+        {
+            _sub = true;
+        }
+        private void chShowSubs_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _sub = false;
+        }
+        #endregion
 
+        #region Dispose.
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             mainVideo.Close();
@@ -699,5 +685,6 @@ namespace AppEnglish
             if (_time != null)
                 _time.Dispose();
         }
+        #endregion
     }
 }

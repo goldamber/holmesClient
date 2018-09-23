@@ -49,7 +49,7 @@ namespace AppEnglish.AddEdit
             {
                 string start = GeneratedSub.Start.ToString().Replace('.', ',');
                 string end = GeneratedSub.End.ToString().Replace('.', ',');
-                lstSubs.Items.Add(new TextBlock { Text = $"{count}\n{start.Substring(0, start.Length - 4)} --> {end.Substring(0, end.Length - 4)}\n{GeneratedSub.Name}\r\n\r\n" });
+                lstSubs.Items.Add(new TextBlock { Text = $"{count}\n{start.Substring(0, start.Length - 4)} --> {end.Substring(0, end.Length - 4)}\n{GeneratedSub.Name}\n\r\n" });
                 count++;
                 last = GeneratedSub.End;
                 GeneratedSub.Name = null;

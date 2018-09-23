@@ -282,9 +282,6 @@ namespace AppEnglish
                 Dispatcher.Invoke(new Action(() =>
                 {
                     stMain.Visibility = Visibility.Collapsed;
-                    stPreloader.Visibility = Visibility.Visible;
-                    stPreloader.Children.Clear();
-                    stPreloader.Children.Add(new ProgressBar { Template = TryFindResource("Preloader") as ControlTemplate });
 
                     if (name == null)
                     {
@@ -293,7 +290,6 @@ namespace AppEnglish
                         {
                             MessageBox.Show("Something went wrong.", "Operation denied", MessageBoxButton.OK, MessageBoxImage.Stop);
                             stMain.Visibility = Visibility.Visible;
-                            stPreloader.Visibility = Visibility.Collapsed;
                             return;
                         }
                         edit = Convert.ToInt32(id);
@@ -305,7 +301,6 @@ namespace AppEnglish
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 _proxy.RemoveItem(edit, EngServRef.ServerData.Book);
                                 stMain.Visibility = Visibility.Visible;
-                                stPreloader.Visibility = Visibility.Collapsed;
                                 return;
                             }
                             _proxy.EditData(edit, $"{edit}{Path.GetExtension(lPath.Content.ToString())}", EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);
@@ -317,7 +312,6 @@ namespace AppEnglish
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 _proxy.RemoveItem(edit, EngServRef.ServerData.Book);
                                 stMain.Visibility = Visibility.Visible;
-                                stPreloader.Visibility = Visibility.Collapsed;
                                 return;
                             }
                             _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
@@ -333,7 +327,6 @@ namespace AppEnglish
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 stMain.Visibility = Visibility.Visible;
-                                stPreloader.Visibility = Visibility.Collapsed;
                                 return;
                             }
                             _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
@@ -344,14 +337,12 @@ namespace AppEnglish
                             {
                                 MessageBox.Show("This file does not exist!", "Wrong", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 stMain.Visibility = Visibility.Visible;
-                                stPreloader.Visibility = Visibility.Collapsed;
                                 return;
                             }
                             if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Books))
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 stMain.Visibility = Visibility.Visible;
-                                stPreloader.Visibility = Visibility.Collapsed;
                                 return;
                             }
                             _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Book, EngServRef.PropertyData.Path);
@@ -366,7 +357,6 @@ namespace AppEnglish
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
                                 stMain.Visibility = Visibility.Visible;
-                                stPreloader.Visibility = Visibility.Collapsed;
                                 return;
                             }
                             _proxy.EditData(edit, file, EngServRef.ServerData.Book, EngServRef.PropertyData.Imgpath);

@@ -14,7 +14,7 @@ namespace AppEnglish
     public partial class MainWindow : MetroWindow
     {
         //Types of data to be presented.
-        enum DataType { Video, Book, Word, User, Author, BookCategory, WordCategory, VideoCategory, Group, Grammar, Game }
+        enum DataType { Video, Book, Word, User, Author, BookCategory, WordCategory, VideoCategory, Group, Grammar }
         
         #region Render a template for list.
         /// <summary>
@@ -117,13 +117,9 @@ namespace AppEnglish
                             cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
                             btnGrid.ToolTip = "Add rule";
                             break;
-                        case DataType.Game:
-                            cmbFilter.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
-                            cmbSort.Items.Add(new ComboBoxItem { Content = "Name", IsSelected = true, Foreground = Brushes.Black });
-                            break;
                     }
                     btnSort.Tag = btnSearch.Tag = data.ToString();
-                    if (data != DataType.User && data != DataType.Game)
+                    if (data != DataType.User)
                         stActions.Children.Add(btnGrid);
                     if (cmbFilter.Items.Count > FormData.FilterPosition)
                         cmbFilter.SelectedIndex = FormData.FilterPosition;
@@ -185,11 +181,6 @@ namespace AppEnglish
                                     expGrammar.Expanded += expGrammar_Expanded;
                                     stActions.Children.Add(expGrammar);
                                     break;
-                                case DataType.Game:
-                                    Expander expGame = new Expander { Header = _proxy.GetItemProperty(item, ServerData.Game, PropertyData.Name), Tag = item };
-                                    expGame.Expanded += expGame_Expanded;
-                                    stActions.Children.Add(expGame);
-                                    break;
                             }
                         }
                     }
@@ -232,11 +223,6 @@ namespace AppEnglish
         {
             if ((sender as Expander).Content == null)
                 AddGrammarItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), false);
-        }
-        private void expGame_Expanded(object sender, RoutedEventArgs e)
-        {
-            if ((sender as Expander).Content == null)
-                AddGameItem(Convert.ToInt32((sender as Expander).Tag), (sender as Expander), false);
         }
 
         /// <summary>
@@ -281,6 +267,9 @@ namespace AppEnglish
                     AddButtons(item, st, btnRemoveVideo_Click, btnEditVideo_Click, btnViewVideo_Click);
                     Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Sub.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.WhiteSmoke, Tag = item, ToolTip = "Add subtitles" };
                     btn.Click += BtnAddSubs_Click;
+                    st.Children.Add(btn);
+                    btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/PlayGame.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.WhiteSmoke, Tag = item, ToolTip = "Play" };
+                    btn.Click += PlayLyricGame_Click;
                     st.Children.Add(btn);
 
                     exp.Content = st;
@@ -385,31 +374,6 @@ namespace AppEnglish
             }
             
             exp.Content = st;
-        }
-        /// <summary>
-        /// Add a game item to the template.
-        /// </summary>
-        /// <param name="item">Id of game.</param>
-        /// <param name="exp">The expander where the data are supposed to be added.</param>
-        /// <param name="edit">If this item is editable.</param>
-        private void AddGameItem(int item, Expander exp, bool edit)
-        {
-            Thread thd = new Thread(new ThreadStart(() => {
-                Dispatcher.InvokeAsync(new Action(() => {
-                    StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-                    AddStaticContent(item, st, ServerData.Game, PropertyData.Description);
-                    
-                    switch (exp.Header.ToString().ToLower())
-                    {
-                        case "time conversion":
-                            AddButtons(item, st, null, null, BtnTimeConverter_Click);
-                            break;
-                    }
-                    exp.Content = st;
-                }));
-            }));
-            thd.IsBackground = true;
-            thd.Start();
         }
         /// <summary>
         /// Add a grammar item to the template.

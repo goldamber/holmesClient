@@ -47,7 +47,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
     <Style x:Key="WinDrawBorder" TargetType="Border">
         <Setter Property="BorderBrush" Value="#FF2887D6" />
         <Setter Property="Background" Value="WhiteSmoke" />
@@ -106,6 +105,14 @@
         <Setter Property="Padding" Value="10" />
         <Setter Property="FontSize" Value="19" />
         <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="MinWidth" Value="70" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="txtBook" TargetType="TextBox">
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="FontSize" Value="19" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
 
         <Style.Triggers>
             <Trigger Property="Label.IsMouseOver" Value="True">
@@ -165,10 +172,10 @@
     <ControlTemplate x:Key="Preloader" TargetType="{x:Type ProgressBar}">
         <StackPanel>
             <Image Height="150" gif:ImageBehavior.AnimatedSource="Images\Orcas.gif" />
-            <!--<Label Name="lLoad" Style="{StaticResource lbFormNormal}" HorizontalAlignment="Center" />-->
+            <Label Name="lLoad" Style="{StaticResource lbFormNormal}" HorizontalAlignment="Center" Content="Loading" />
         </StackPanel>
 
-        <!--<ControlTemplate.Triggers>
+        <ControlTemplate.Triggers>
             <EventTrigger RoutedEvent="FrameworkElement.Loaded">
                 <BeginStoryboard>
                     <Storyboard>
@@ -181,7 +188,7 @@
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>
-        </ControlTemplate.Triggers>-->
+        </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <!--CheckBox-->
@@ -191,5 +198,13 @@
         <Setter Property="Foreground" Value="#FF2887D6" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+    
+    <!--ComboBox-->
+    <Style x:Key="cmbSub" TargetType="ComboBox">
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="FontSize" Value="19" />
+        <Setter Property="MinWidth" Value="70" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
 </ResourceDictionary>

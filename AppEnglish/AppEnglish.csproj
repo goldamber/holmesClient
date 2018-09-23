@@ -138,8 +138,14 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Classes\SubTitle.cs" />
+    <Compile Include="View\Games\GamePlayer.xaml.cs">
+      <DependentUpon>GamePlayer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Games\TimeConverter.xaml.cs">
       <DependentUpon>TimeConverter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Games\WordsGamePlayer.xaml.cs">
+      <DependentUpon>WordsGamePlayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Main\MainButtonsAdmin.cs" />
     <Compile Include="View\Main\MainButtonsBehavior.cs" />
@@ -221,7 +227,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Games\GamePlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Games\TimeConverter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Games\WordsGamePlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -279,8 +293,6 @@
     <None Include="Service References\EngServRef\EngService3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Subtitles\Avengers.srt" />
-    <None Include="Subtitles\I See Fire.srt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

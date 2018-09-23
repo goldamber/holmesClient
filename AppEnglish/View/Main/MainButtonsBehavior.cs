@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -134,7 +135,7 @@ namespace AppEnglish
         //Show a video player.
         private void btnViewVideo_Click(object sender, RoutedEventArgs e)
         {
-            VideoPlayer frm = new VideoPlayer(_proxy, Convert.ToInt32((sender as Button).Tag), _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User), false);
+            VideoPlayer frm = new VideoPlayer(_proxy, Convert.ToInt32((sender as Button).Tag), _proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
             frm.ShowDialog();
             btnVideos_Click(null, null);
         }
@@ -306,17 +307,19 @@ namespace AppEnglish
         }
         #endregion
         #region Games actions.
-        //Show a list of all games to the user.
-        private void btnGames_Click(object sender, RoutedEventArgs e)
-        {
-            GenerateListTemplate(ServerData.Game, DataType.Game);
-        }
-        //Play the game.
+        //Show converter.
         private void BtnTimeConverter_Click(object sender, RoutedEventArgs e)
         {
             ///int user = Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
             TimeConverter game = new TimeConverter();
             game.ShowDialog();
+        }
+        //Play lyric game.
+        private void PlayLyricGame_Click(object sender, RoutedEventArgs e)
+        {
+            int user = Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
+            GamePlayer form = new GamePlayer(_proxy, Convert.ToInt32((sender as Button).Tag), user);
+            form.ShowDialog();
         }
         #endregion
         #region Grammar actions.
@@ -401,8 +404,8 @@ namespace AppEnglish
             btn = new Button { Name = "btnVideos", Content = "Videos", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnVideos_Click;
             stActions.Children.Add(btn);
-            btn = new Button { Name = "btnGames", Content = "Games", Style = TryFindResource("btnNormal") as Style };
-            btn.Click += btnGames_Click;
+            btn = new Button { Name = "btnGames", Content = "Time Converter", Style = TryFindResource("btnNormal") as Style };
+            btn.Click += BtnTimeConverter_Click;
             stActions.Children.Add(btn);
             btn = new Button { Name = "btnGrammar", Content = "Grammar", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnGrammar_Click;

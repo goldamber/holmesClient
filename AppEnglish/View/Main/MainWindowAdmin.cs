@@ -3,6 +3,8 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace AppEnglish
 {
@@ -67,6 +69,12 @@ namespace AppEnglish
                     StackPanel st = new StackPanel { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
                     AddExpanderData($"{innerData}s", item, st, type, innerData);
                     AddButtons(item, st, delete, edit, null);
+                    if (type == EngServRef.ServerData.Group && _proxy.GetItemData(item, EngServRef.ServerData.Group, EngServRef.ServerData.Word)?.Length > 0)
+                    {
+                        Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/PlayGame.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.WhiteSmoke, Tag = item, ToolTip = "Play" };
+                        //btn.Click += BtnAddSubs_Click;
+                        st.Children.Add(btn);
+                    }
                     exp.Content = st;
                 });
             });
@@ -86,6 +94,12 @@ namespace AppEnglish
                     AddStaticContent(item, st, EngServRef.ServerData.WordCategory, EngServRef.PropertyData.Abbreviation);
                     AddExpanderData("Words", item, st, EngServRef.ServerData.WordCategory, EngServRef.ServerData.Word);
                     AddButtons(item, st, btnRemoveWCategory_Click, btnEditWCategory_Click, null);
+                    if (_proxy.GetItemData(item, EngServRef.ServerData.WordCategory, EngServRef.ServerData.Word)?.Length > 0)
+                    {
+                        Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/PlayGame.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.WhiteSmoke, Tag = item, ToolTip = "Play" };
+                        //btn.Click += BtnAddSubs_Click;
+                        st.Children.Add(btn);
+                    }
                     exp.Content = st;
                 });
             });

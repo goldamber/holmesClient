@@ -115,6 +115,12 @@
   <wsdl:message name="IEngService_AddItemsWord_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddItemsWordResponse" />
   </wsdl:message>
+  <wsdl:message name="IEngService_AddScore_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddScore" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_AddScore_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddScoreResponse" />
+  </wsdl:message>
   <wsdl:message name="IEngService_AddItemData_InputMessage">
     <wsdl:part name="parameters" element="tns:AddItemData" />
   </wsdl:message>
@@ -192,6 +198,12 @@
   </wsdl:message>
   <wsdl:message name="IEngService_GetSortedItems_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetSortedItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetHighScores_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHighScores" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetHighScores_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHighScoresResponse" />
   </wsdl:message>
   <wsdl:message name="IEngService_GetUserItemWords_InputMessage">
     <wsdl:part name="parameters" element="tns:GetUserItemWords" />
@@ -318,6 +330,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddItemsWord" message="tns:IEngService_AddItemsWord_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddItemsWordResponse" message="tns:IEngService_AddItemsWord_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddScore">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddScore" message="tns:IEngService_AddScore_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddScoreResponse" message="tns:IEngService_AddScore_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddItemData">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/AddItemData" message="tns:IEngService_AddItemData_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/AddItemDataResponse" message="tns:IEngService_AddItemData_OutputMessage" />
@@ -369,6 +385,10 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetSortedItems">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetSortedItems" message="tns:IEngService_GetSortedItems_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetSortedItemsResponse" message="tns:IEngService_GetSortedItems_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetHighScores">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetHighScores" message="tns:IEngService_GetHighScores_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetHighScoresResponse" message="tns:IEngService_GetHighScores_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetUserItemWords">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetUserItemWords" message="tns:IEngService_GetUserItemWords_InputMessage" />
@@ -539,6 +559,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="AddScore">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/AddScore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="AddItemData">
       <soap12:operation soapAction="http://tempuri.org/IEngService/AddItemData" style="document" />
       <wsdl:input>
@@ -649,6 +678,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetSortedItems">
       <soap12:operation soapAction="http://tempuri.org/IEngService/GetSortedItems" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHighScores">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetHighScores" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

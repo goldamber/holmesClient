@@ -1,0 +1,135 @@
+﻿<Window x:Class="AppEnglish.View.Games.GamePlayer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Game" Height="500" Width="700" Icon="..\..\Images\Eye.png" Closing="Window_Closing" KeyDown="Window_KeyDown" WindowState="Maximized" Loaded="Window_Loaded">
+
+    <ScrollViewer Name="scvVideo" SizeChanged="scvVideo_SizeChanged" VerticalScrollBarVisibility="Auto">
+        <StackPanel VerticalAlignment="Center">
+            <!--Choose mode.-->
+            <StackPanel Name="stOptions" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Label Style="{StaticResource lbFormNormal}" HorizontalContentAlignment="Center">Choose mode</Label>
+                <Button Name="btnModeFill" Style="{StaticResource btnNormal}" Click="btnModeFill_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Fill Gaps</TextBlock>
+                        <TextBlock FontSize="11" HorizontalAlignment="Center">Fill in the gaps entering the word</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnModeChoice" Style="{StaticResource btnNormal}" Click="btnModeChoice_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Multiple choice</TextBlock>
+                        <TextBlock FontSize="11" HorizontalAlignment="Center">Fill in the missing words pressing the right option</TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            
+            <!--Choose diffculty level.-->
+            <StackPanel Name="stDiffculty" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
+                <Label Style="{StaticResource lbFormNormal}" HorizontalContentAlignment="Center">Select difficulty level</Label>
+                <Button Name="btnBeginner" MinWidth="200" Background="LightGreen" BorderBrush="DarkGreen" Style="{StaticResource btnNormal}" Click="btnBeginner_Click" Foreground="Black">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Easy</TextBlock>
+                        <TextBlock FontSize="11" Name="txtBeginner" HorizontalAlignment="Center">Fill ... of ... words</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnIntermediate" Background="LightYellow" BorderBrush="Yellow" Style="{StaticResource btnNormal}" Click="btnIntermediate_Click" Foreground="Black">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Normal</TextBlock>
+                        <TextBlock FontSize="11" Name="txtIntermediate" HorizontalAlignment="Center">Fill ... of ... words</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnAdvanced" Background="Orange" BorderBrush="DarkOrange" Style="{StaticResource btnNormal}" Click="btnAdvanced_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Hard</TextBlock>
+                        <TextBlock FontSize="11" Name="txtAdvanced" HorizontalAlignment="Center">Fill ... of ... words</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnExpert" Background="Red" BorderBrush="DarkRed" Style="{StaticResource btnNormal}" Click="btnExpert_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Expert</TextBlock>
+                        <TextBlock FontSize="11" Name="txtExpert" HorizontalAlignment="Center">Fill ... of ... words</TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            
+            <!--VideoPlayer.-->
+            <StackPanel Name="stVideo" Visibility="Collapsed" IsVisibleChanged="stVideo_IsVisibleChanged">
+                <!--Caption.-->
+                <Grid>
+                    <TextBlock Name="txtName" Margin="10 5" FontWeight="Bold" FontSize="21" Foreground="#FF2887D6" >Name</TextBlock>
+                </Grid>
+                <!--Game data.-->
+                <WrapPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Margin="15 5">
+                        <TextBlock Margin="5" FontWeight="Bold" FontSize="16" Foreground="#FF2887D6" >Score:</TextBlock>
+                        <TextBlock Name="txtScore" Margin="5" FontSize="16" Foreground="#FF2887D6">...</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="15 5">
+                        <TextBlock Margin="5" FontWeight="Bold" FontSize="16" Foreground="#FF2887D6" >Fails:</TextBlock>
+                        <TextBlock Name="txtFails" Margin="5" FontSize="16" Foreground="#FF2887D6">...</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="15 5">
+                        <TextBlock Margin="5" FontWeight="Bold" FontSize="16" Foreground="#FF2887D6" >Hits:</TextBlock>
+                        <TextBlock Name="txtHits" Margin="5" FontSize="16" Foreground="#FF2887D6">...</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="15 5">
+                        <TextBlock Margin="5" FontWeight="Bold" FontSize="16" Foreground="#FF2887D6" >Gaps:</TextBlock>
+                        <TextBlock Name="txtGaps" Margin="5" FontSize="16" Foreground="#FF2887D6">...</TextBlock>
+                    </StackPanel>
+                </WrapPanel>
+
+                <!--Media player.-->
+                <Grid Name="grMedia">
+                    <MediaElement MinHeight="250" Name="mainVideo" LoadedBehavior="Manual" UnloadedBehavior="Manual" MouseDown="mainVideo_MouseDown" MediaOpened="mainVideo_MediaOpened" VerticalAlignment="Center" />
+                </Grid>
+
+                <!--Controls.-->
+                <Grid Name="grControl">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="7*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Style="{StaticResource WinDrawBorder}" Margin="10" MouseDown="btnPlay_Click">
+                        <Label Name="lPlay" Style="{StaticResource WinDrawText}" FontWeight="Bold" FontSize="15" Padding="15 10">||</Label>
+                    </Border>
+
+                    <Slider Name="slDurration" Grid.Column="1" Margin="10" ValueChanged="slDurration_ValueChanged" />
+
+                    <Grid Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image Name="imVol" Source="..\..\Images\Volume.png" Margin="5" />
+                        <Slider Name="slVolume" Grid.Column="1" Margin="5" ValueChanged="slVolume_ValueChanged" Value="0.5" Maximum="1" TickPlacement="Both" TickFrequency="0.1" />
+                    </Grid>
+                </Grid>
+
+                <!--Subtitles.-->
+                <StackPanel>
+                    <CheckBox Name="chScroll" Checked="chScroll_Checked" Unchecked="chScroll_Unchecked" Margin="10" IsChecked="True">Scroll</CheckBox>
+
+                    <!--Subtitles.-->
+                    <ListBox Name="stWords" Margin="10" Height="300" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MinWidth="250" />
+                </StackPanel>
+                
+                <!--End game.-->
+                <Grid>
+                    <Button Name="btnEndGame" Style="{StaticResource btnNormal}" Click="btnEndGame_Click">End game</Button>
+                </Grid>
+            </StackPanel>
+            
+            <!--Results.-->
+            <StackPanel Name="stResuts" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Style="{StaticResource lbFormNormal}" HorizontalContentAlignment="Center">High scores</Label>
+                <ListBox Name="lstHighScores" BorderBrush="PowderBlue" BorderThickness="2" Padding="10" />
+                <Button Name="btnFinishGame" Style="{StaticResource btnNormal}" Click="btnFinishGame_Click">Finish</Button>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

@@ -7,65 +7,62 @@
         Title="Add video" Height="350" Width="420" Icon="..\Images\Eye.png" Loaded="Window_Loaded">
 
     <ScrollViewer>
-        <Grid>
-            <StackPanel Name="stMain" SizeChanged="StackPanel_SizeChanged">
-                <StackPanel Orientation="Horizontal">
-                    <Label Style="{StaticResource lbFormNormal}">Name:</Label>
-                    <TextBox Style="{StaticResource txtNormal}" TextChanged="txtName_TextChanged" Name="txtName" />
-                    <Label Style="{StaticResource lbFormNormal}" Padding="0">*</Label>
-                </StackPanel>
+        <StackPanel Name="stMain" SizeChanged="StackPanel_SizeChanged">
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Name:</Label>
+                <TextBox Style="{StaticResource txtNormal}" TextChanged="txtName_TextChanged" Name="txtName" />
+                <Label Style="{StaticResource lbFormNormal}" Padding="0">*</Label>
+            </StackPanel>
 
-                <StackPanel Orientation="Horizontal">
-                    <Label Style="{StaticResource lbFormNormal}">Description:</Label>
-                    <TextBox Style="{StaticResource txtNormal}" Name="txtDesc" />
-                </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Description:</Label>
+                <TextBox Style="{StaticResource txtNormal}" Name="txtDesc" />
+            </StackPanel>
 
-                <StackPanel Orientation="Horizontal">
-                    <Label Style="{StaticResource lbFormNormal}">Year:</Label>
-                    <TextBox Style="{StaticResource txtNormal}" Name="txtYear" PreviewTextInput="txtYear_PreviewTextInput" />
-                </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Year:</Label>
+                <TextBox Style="{StaticResource txtNormal}" Name="txtYear" PreviewTextInput="txtYear_PreviewTextInput" />
+            </StackPanel>
 
-                <StackPanel Name="stRating" Orientation="Horizontal">
-                    <Label Style="{StaticResource lbFormNormal}">Rating:</Label>
-                    <WrapPanel Name="wrRating" VerticalAlignment="Center">
-                        <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="1" />
-                        <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="2" />
-                        <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="3" />
-                        <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="4" />
-                        <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="5" />
-                    </WrapPanel>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Style="{StaticResource lbFormNormal}">Path:</Label>
-                    <TextBox Style="{StaticResource txtNormal}" IsReadOnly="True" Name="txtPath" />
-                    <Button Name="btnPath" Height="30" Click="btnPath_Click" Margin="5">...</Button>
-                </StackPanel>
-                <CheckBox Name="chCopy" IsChecked="False" Style="{StaticResource chNormal}">Make public</CheckBox>
-
-                <StackPanel Orientation="Horizontal">
-                    <Label Style="{StaticResource lbFormNormal}">Subtitles:</Label>
-                    <TextBox Style="{StaticResource txtNormal}" IsReadOnly="True" Name="txtSubs" />
-                    <Button Name="btnSubs" Height="30" Click="btnSubs_Click" Margin="5">...</Button>
-                </StackPanel>
-                
-                <StackPanel>
-                    <Label Style="{StaticResource lbFormNormal}">Category:</Label>
-                    <ListBox Name="lstCategory" Margin="7" MaxHeight="150" />
-                </StackPanel>
-
-                <Label Style="{StaticResource lbFormNormal}">Image:</Label>
-                <Border Name="brImage" Style="{StaticResource brdDragDrop}" DragEnter="Border_DragEnter" DragLeave="Border_DragLeave" Drop="Border_Drop" MouseDown="Border_MouseDown">
-                    <Image Name="imDrag" Source="..\Images\ImageDrop.png" />
-                </Border>
-                <Label Name="lPath" Margin="10">...</Label>
-
-                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="10">
-                    <Button Name="btnOK" IsEnabled="False" HorizontalAlignment="Left" Width="100" Margin="5" Click="btnOK_Click">OK</Button>
-                    <Button Name="btnCancel" HorizontalAlignment="Right" Width="100" Margin="5" Click="btnCancel_Click">Cancel</Button>
+            <StackPanel Name="stRating" Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Rating:</Label>
+                <WrapPanel Name="wrRating" VerticalAlignment="Center">
+                    <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="1" />
+                    <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="2" />
+                    <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="3" />
+                    <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="4" />
+                    <Image Source="..\Images\Rating.png" Height="30" Opacity="0.2" Margin="2" MouseDown="imgRating_MouseDown" MouseEnter="imgRating_MouseEnter" MouseLeave="imgRating_MouseLeave" Tag="5" />
                 </WrapPanel>
             </StackPanel>
-            <StackPanel Name="stPreloader" Visibility="Collapsed" />
-        </Grid>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Path:</Label>
+                <TextBox Style="{StaticResource txtNormal}" IsReadOnly="True" Name="txtPath" />
+                <Button Name="btnPath" Height="30" Click="btnPath_Click" Margin="5">...</Button>
+            </StackPanel>
+            <CheckBox Name="chCopy" IsChecked="False" Style="{StaticResource chNormal}">Make public</CheckBox>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Style="{StaticResource lbFormNormal}">Subtitles:</Label>
+                <TextBox Style="{StaticResource txtNormal}" IsReadOnly="True" Name="txtSubs" />
+                <Button Name="btnSubs" Height="30" Click="btnSubs_Click" Margin="5">...</Button>
+            </StackPanel>
+
+            <StackPanel>
+                <Label Style="{StaticResource lbFormNormal}">Category:</Label>
+                <ListBox Name="lstCategory" Margin="7" MaxHeight="150" />
+            </StackPanel>
+
+            <Label Style="{StaticResource lbFormNormal}">Image:</Label>
+            <Border Name="brImage" Style="{StaticResource brdDragDrop}" DragEnter="Border_DragEnter" DragLeave="Border_DragLeave" Drop="Border_Drop" MouseDown="Border_MouseDown">
+                <Image Name="imDrag" Source="..\Images\ImageDrop.png" />
+            </Border>
+            <Label Name="lPath" Margin="10">...</Label>
+
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="10">
+                <Button Name="btnOK" IsEnabled="False" HorizontalAlignment="Left" Width="100" Margin="5" Click="btnOK_Click">OK</Button>
+                <Button Name="btnCancel" HorizontalAlignment="Right" Width="100" Margin="5" Click="btnCancel_Click">Cancel</Button>
+            </WrapPanel>
+        </StackPanel>
     </ScrollViewer>
 </Window>

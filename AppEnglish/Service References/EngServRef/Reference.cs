@@ -337,6 +337,12 @@ namespace AppEnglish.EngServRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddItemsWord", ReplyAction="http://tempuri.org/IEngService/AddItemsWordResponse")]
         System.Threading.Tasks.Task AddItemsWordAsync(int word, int item, AppEnglish.EngServRef.ServerData type);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddScore", ReplyAction="http://tempuri.org/IEngService/AddScoreResponse")]
+        void AddScore(int count, int user, int game);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddScore", ReplyAction="http://tempuri.org/IEngService/AddScoreResponse")]
+        System.Threading.Tasks.Task AddScoreAsync(int count, int user, int game);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/AddItemData", ReplyAction="http://tempuri.org/IEngService/AddItemDataResponse")]
         void AddItemData(int item, int cat, AppEnglish.EngServRef.ServerData data);
         
@@ -414,6 +420,12 @@ namespace AppEnglish.EngServRef {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetSortedItems", ReplyAction="http://tempuri.org/IEngService/GetSortedItemsResponse")]
         System.Threading.Tasks.Task<int[]> GetSortedItemsAsync(AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property, bool desc);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetHighScores", ReplyAction="http://tempuri.org/IEngService/GetHighScoresResponse")]
+        System.Collections.Generic.Dictionary<int, int> GetHighScores(int game);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetHighScores", ReplyAction="http://tempuri.org/IEngService/GetHighScoresResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<int, int>> GetHighScoresAsync(int game);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetUserItemWords", ReplyAction="http://tempuri.org/IEngService/GetUserItemWordsResponse")]
         int[] GetUserItemWords(int user, int item, AppEnglish.EngServRef.ServerData data);
@@ -619,6 +631,14 @@ namespace AppEnglish.EngServRef {
             return base.Channel.AddItemsWordAsync(word, item, type);
         }
         
+        public void AddScore(int count, int user, int game) {
+            base.Channel.AddScore(count, user, game);
+        }
+        
+        public System.Threading.Tasks.Task AddScoreAsync(int count, int user, int game) {
+            return base.Channel.AddScoreAsync(count, user, game);
+        }
+        
         public void AddItemData(int item, int cat, AppEnglish.EngServRef.ServerData data) {
             base.Channel.AddItemData(item, cat, data);
         }
@@ -721,6 +741,14 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task<int[]> GetSortedItemsAsync(AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.PropertyData property, bool desc) {
             return base.Channel.GetSortedItemsAsync(data, property, desc);
+        }
+        
+        public System.Collections.Generic.Dictionary<int, int> GetHighScores(int game) {
+            return base.Channel.GetHighScores(game);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<int, int>> GetHighScoresAsync(int game) {
+            return base.Channel.GetHighScoresAsync(game);
         }
         
         public int[] GetUserItemWords(int user, int item, AppEnglish.EngServRef.ServerData data) {
