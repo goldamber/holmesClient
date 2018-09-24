@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Video Player" Height="500" Width="700" Icon="..\Images\Eye.png" Closing="Window_Closing" KeyDown="Window_KeyDown" WindowState="Maximized">
+        Title="Video Player" Height="500" Width="700" Icon="..\..\Images\Eye.png" Closing="Window_Closing" KeyDown="Window_KeyDown" WindowState="Maximized">
 
     <ScrollViewer Loaded="Window_Loaded" MouseDoubleClick="Window_MouseDoubleClick" Name="scvVideo" SizeChanged="scvVideo_SizeChanged" VerticalScrollBarVisibility="Auto">
         <StackPanel Name="stVideo">
@@ -39,7 +39,7 @@
                         <ColumnDefinition Width="5*" />
                     </Grid.ColumnDefinitions>
 
-                    <Image Name="imVol" Source="..\Images\Volume.png" Margin="5" />
+                    <Image Name="imVol" Source="..\..\Images\Volume.png" Margin="5" />
                     <Slider Name="slVolume" Grid.Column="1" Margin="5" ValueChanged="slVolume_ValueChanged" Value="0.5" Maximum="1" TickPlacement="Both" TickFrequency="0.1" />
                 </Grid>
             </Grid>

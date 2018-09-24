@@ -129,7 +129,6 @@ namespace AppEnglish.AddEdit
             }
         }
         #endregion
-
         #region Visualisation, validation.
         //Change the size of the inner fields.
         private void StackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -441,7 +440,6 @@ namespace AppEnglish.AddEdit
             txtAustralian.Text += (sender as Button).Content.ToString();
         }
         #endregion
-
         #region Close form (OK, Cancel).
         //Add a new word.
         private void btnOK_Click(object sender, RoutedEventArgs e)

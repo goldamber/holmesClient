@@ -138,13 +138,15 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Classes\SubTitle.cs" />
-    <Compile Include="View\Games\GamePlayer.xaml.cs">
+    <Compile Include="View\Games\VideoPlayer\GamePlayer.xaml.cs">
       <DependentUpon>GamePlayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Games\TimeConverter.xaml.cs">
       <DependentUpon>TimeConverter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Games\WordsGamePlayer.xaml.cs">
+    <Compile Include="View\Games\VideoPlayer\VideoGamePlayer.cs" />
+    <Compile Include="View\Games\WordsGames\WordsGame.cs" />
+    <Compile Include="View\Games\WordsGames\WordsGamePlayer.xaml.cs">
       <DependentUpon>WordsGamePlayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Main\MainButtonsAdmin.cs" />
@@ -152,7 +154,8 @@
     <Compile Include="View\Main\MainParts.cs" />
     <Compile Include="View\Main\MainWindow.cs" />
     <Compile Include="View\Main\MainWindowAdmin.cs" />
-    <Compile Include="View\VideoPlayer.xaml.cs">
+    <Compile Include="View\VideoPlayer\VideoPlayer.cs" />
+    <Compile Include="View\VideoPlayer\VideoPlayer.xaml.cs">
       <DependentUpon>VideoPlayer.xaml</DependentUpon>
     </Compile>
     <Page Include="AddEdit\AddAuthor.xaml">
@@ -227,7 +230,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Games\GamePlayer.xaml">
+    <Page Include="View\Games\VideoPlayer\GamePlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -235,7 +238,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Games\WordsGamePlayer.xaml">
+    <Page Include="View\Games\WordsGames\WordsGamePlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -251,7 +254,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\VideoPlayer.xaml">
+    <Page Include="View\VideoPlayer\VideoPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
