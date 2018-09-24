@@ -4,9 +4,72 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Game" Height="500" Width="700" Icon="..\..\Images\Eye.png" WindowState="Maximized" Loaded="Window_Loaded">
-    
-    <ScrollViewer>
+        Title="Game" Height="500" Width="700" Icon="..\..\Images\Eye.png" WindowState="Maximized" Closing="Window_Closing">
 
+    <ScrollViewer  VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <!--Choose game.-->
+            <StackPanel Name="stOptions" VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="450">
+                <Label Style="{StaticResource lbFormNormal}" HorizontalContentAlignment="Center">Choose game</Label>
+                <Button Name="btnGameFlashcards" Style="{StaticResource btnNormal}" Click="btnGameFlashcards_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Flashcards</TextBlock>
+                        <TextBlock FontSize="11" HorizontalAlignment="Center">Study sets by matching the description with the word</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnGameQuizzes" Style="{StaticResource btnNormal}" Click="btnGameQuizzes_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Quizzes</TextBlock>
+                        <TextBlock FontSize="11" HorizontalAlignment="Center">Study sets by answering questions</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnGamePuzzles" Style="{StaticResource btnNormal}" Click="btnGamePuzzles_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Puzzles</TextBlock>
+                        <TextBlock FontSize="11" HorizontalAlignment="Center" TextWrapping="Wrap">In this game you will be given the descrition of the word. While playing this game you have to fill the gaps.</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnGameVisualization" Style="{StaticResource btnNormal}" Click="btnGameVisualization_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Visualization</TextBlock>
+                        <TextBlock FontSize="11" HorizontalAlignment="Center">Guess a word by its image</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnGameMatch" Style="{StaticResource btnNormal}" Click="btnGameMatch_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Match</TextBlock>
+                        <TextBlock FontSize="11" HorizontalAlignment="Center">In a grid you will be given words and their images You should match the data.</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnFindMistake" Style="{StaticResource btnNormal}" Click="btnFindMistake_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Find a mistake</TextBlock>
+                        <TextBlock FontSize="11" HorizontalAlignment="Center">You should point the mistake in the given sentence</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnGameAgility" Style="{StaticResource btnNormal}" Click="btnGameAgility_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Agility</TextBlock>
+                        <TextBlock FontSize="11" HorizontalAlignment="Center">You should find synonyms of the given word</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnGamePronunciation" Style="{StaticResource btnNormal}" Click="btnGamePronunciation_Click">
+                    <StackPanel>
+                        <TextBlock FontSize="19" HorizontalAlignment="Center">Pronunciation</TextBlock>
+                        <TextBlock FontSize="11" HorizontalAlignment="Center">Improve your pronunciation by repeating tongue twisters</TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <!--Game.-->
+            <StackPanel Name="stGame" Visibility="Collapsed">
+                <StackPanel Name="stGameContent" />
+                <Button Name="btnEndGame" Style="{StaticResource btnNormal}" Click="btnEndGame_Click">End game</Button>
+            </StackPanel>
+            <!--Results.-->
+            <StackPanel Name="stResuts" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Style="{StaticResource lbFormNormal}" HorizontalContentAlignment="Center">High scores</Label>
+                <ListBox Name="lstHighScores" BorderBrush="PowderBlue" BorderThickness="2" Padding="10" />
+            </StackPanel>
+        </StackPanel>
     </ScrollViewer>
 </Window>

@@ -439,6 +439,18 @@ namespace AppEnglish.EngServRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItemData", ReplyAction="http://tempuri.org/IEngService/GetItemDataResponse")]
         System.Threading.Tasks.Task<int[]> GetItemDataAsync(int id, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.ServerData res);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetToungeTwisters", ReplyAction="http://tempuri.org/IEngService/GetToungeTwistersResponse")]
+        int[] GetToungeTwisters();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetToungeTwisters", ReplyAction="http://tempuri.org/IEngService/GetToungeTwistersResponse")]
+        System.Threading.Tasks.Task<int[]> GetToungeTwistersAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetWordsWithImages", ReplyAction="http://tempuri.org/IEngService/GetWordsWithImagesResponse")]
+        int[] GetWordsWithImages(int cat, AppEnglish.EngServRef.ServerData type);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetWordsWithImages", ReplyAction="http://tempuri.org/IEngService/GetWordsWithImagesResponse")]
+        System.Threading.Tasks.Task<int[]> GetWordsWithImagesAsync(int cat, AppEnglish.EngServRef.ServerData type);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IEngService/GetItemsId", ReplyAction="http://tempuri.org/IEngService/GetItemsIdResponse")]
         System.Nullable<int> GetItemsId(string name, AppEnglish.EngServRef.ServerData type);
         
@@ -765,6 +777,22 @@ namespace AppEnglish.EngServRef {
         
         public System.Threading.Tasks.Task<int[]> GetItemDataAsync(int id, AppEnglish.EngServRef.ServerData data, AppEnglish.EngServRef.ServerData res) {
             return base.Channel.GetItemDataAsync(id, data, res);
+        }
+        
+        public int[] GetToungeTwisters() {
+            return base.Channel.GetToungeTwisters();
+        }
+        
+        public System.Threading.Tasks.Task<int[]> GetToungeTwistersAsync() {
+            return base.Channel.GetToungeTwistersAsync();
+        }
+        
+        public int[] GetWordsWithImages(int cat, AppEnglish.EngServRef.ServerData type) {
+            return base.Channel.GetWordsWithImages(cat, type);
+        }
+        
+        public System.Threading.Tasks.Task<int[]> GetWordsWithImagesAsync(int cat, AppEnglish.EngServRef.ServerData type) {
+            return base.Channel.GetWordsWithImagesAsync(cat, type);
         }
         
         public System.Nullable<int> GetItemsId(string name, AppEnglish.EngServRef.ServerData type) {

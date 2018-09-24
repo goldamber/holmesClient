@@ -25,14 +25,14 @@ namespace AppEnglish.View.Games
         List<SubTitle> _subs = new List<SubTitle>();    //List of subtitles.
         List<string> _subWords = new List<string>();    //All words.
         int? user;              //Users id.
-        int? _game = null;               //Id of game.
+        int? _game = null;      //Id of game.
         int videoId;            //VideosId.
         bool _play = true;      //Play video.
         bool _scroll = true;    //Scroll to subs.
-        int wordsCount = 0;       //The number of words for this video.
-        int gapsCount = 0;       //The number of gaps for this game.
+        int wordsCount = 0;     //The number of words for this video.
+        int gapsCount = 0;      //The number of gaps for this game.
         int _hits = 0;          //The number of valid words.
-        int _fails = 0;          //The number of mistakes.
+        int _fails = 0;         //The number of mistakes.
         int _score = 0;         //Current score.
         int level;              //Users level.
         GameMode mode = GameMode.FillGaps;
@@ -49,6 +49,12 @@ namespace AppEnglish.View.Games
             dsTime.Interval = TimeSpan.FromMilliseconds(700);
             dsTime.Tick += new EventHandler(TimerTick);
         }
+        /// <summary>
+        /// Initialization.
+        /// </summary>
+        /// <param name="tmp">Host.</param>
+        /// <param name="video">Id of video to be payed.</param>
+        /// <param name="user">Id of player.</param>
         public GamePlayer(EngServiceClient tmp, int video, int? user) : this()
         {
             _proxy = tmp;
@@ -530,7 +536,7 @@ namespace AppEnglish.View.Games
             {
                 _play = true;
                 btnPlay_Click(null, null);
-                if (MessageBox.Show("Are you sure you want to end this game?\nYour will loose your score.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Are you sure you want to end this game?\nYour will lose your score.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     Close();
                 else
                     btnPlay_Click(null, null);
@@ -711,7 +717,7 @@ namespace AppEnglish.View.Games
             {
                 _play = true;
                 btnPlay_Click(null, null);
-                if (MessageBox.Show("Are you sure you want to end this game?\nYour will loose your score.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Are you sure you want to end this game?\nYour will lose your score.", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     EndVideo();
                 else
                 {

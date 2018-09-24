@@ -321,6 +321,19 @@ namespace AppEnglish
             GamePlayer form = new GamePlayer(_proxy, Convert.ToInt32((sender as Button).Tag), user);
             form.ShowDialog();
         }
+        //Play words game.
+        private void PlayWordsCatGame_Click(object sender, RoutedEventArgs e)
+        {
+            int user = Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
+            WordsGamePlayer form = new WordsGamePlayer(_proxy, user, Convert.ToInt32((sender as Button).Tag), ServerData.WordCategory);
+            form.ShowDialog();
+        }
+        private void PlayWordsGroupGame_Click(object sender, RoutedEventArgs e)
+        {
+            int user = Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
+            WordsGamePlayer form = new WordsGamePlayer(_proxy, user, Convert.ToInt32((sender as Button).Tag), ServerData.Group);
+            form.ShowDialog();
+        }
         #endregion
         #region Grammar actions.
         //Show a list of all rules to the user.
@@ -404,11 +417,17 @@ namespace AppEnglish
             btn = new Button { Name = "btnVideos", Content = "Videos", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnVideos_Click;
             stActions.Children.Add(btn);
-            btn = new Button { Name = "btnGames", Content = "Time Converter", Style = TryFindResource("btnNormal") as Style };
-            btn.Click += BtnTimeConverter_Click;
-            stActions.Children.Add(btn);
             btn = new Button { Name = "btnGrammar", Content = "Grammar", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnGrammar_Click;
+            stActions.Children.Add(btn);
+            btn = new Button { Name = "btnWordsCategoriesAct", Content = "Words Categories", Style = TryFindResource("btnNormal") as Style };
+            btn.Click += btnWordsCategoriesAct_Click;
+            stActions.Children.Add(btn);
+            btn = new Button { Name = "btnWordsGroupsAct", Content = "Words Groups", Style = TryFindResource("btnNormal") as Style };
+            btn.Click += btnWordsGroupsAct_Click;
+            stActions.Children.Add(btn);
+            btn = new Button { Name = "btnGames", Content = "Time Converter", Style = TryFindResource("btnNormal") as Style };
+            btn.Click += BtnTimeConverter_Click;
             stActions.Children.Add(btn);
 
             if (lRole.Content.ToString() == "admin")
@@ -424,12 +443,6 @@ namespace AppEnglish
                 stActions.Children.Add(btn);
                 btn = new Button { Name = "btnVideoCategoriesAct", Content = "Video Categories", Style = TryFindResource("btnNormal") as Style };
                 btn.Click += btnVideoCategoriesAct_Click;
-                stActions.Children.Add(btn);
-                btn = new Button { Name = "btnWordsCategoriesAct", Content = "Words Categories", Style = TryFindResource("btnNormal") as Style };
-                btn.Click += btnWordsCategoriesAct_Click;
-                stActions.Children.Add(btn);
-                btn = new Button { Name = "btnWordsGroupsAct", Content = "Words Groups", Style = TryFindResource("btnNormal") as Style };
-                btn.Click += btnWordsGroupsAct_Click;
                 stActions.Children.Add(btn);
             }
         }

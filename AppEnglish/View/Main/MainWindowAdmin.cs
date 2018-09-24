@@ -72,7 +72,7 @@ namespace AppEnglish
                     if (type == EngServRef.ServerData.Group && _proxy.GetItemData(item, EngServRef.ServerData.Group, EngServRef.ServerData.Word)?.Length > 0)
                     {
                         Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/PlayGame.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.WhiteSmoke, Tag = item, ToolTip = "Play" };
-                        //btn.Click += BtnAddSubs_Click;
+                        btn.Click += PlayWordsGroupGame_Click;
                         st.Children.Add(btn);
                     }
                     exp.Content = st;
@@ -97,7 +97,7 @@ namespace AppEnglish
                     if (_proxy.GetItemData(item, EngServRef.ServerData.WordCategory, EngServRef.ServerData.Word)?.Length > 0)
                     {
                         Button btn = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/PlayGame.png")), Height = 15 }, Margin = new Thickness(5), Width = 37, Height = 35, HorizontalAlignment = HorizontalAlignment.Left, Background = Brushes.WhiteSmoke, Tag = item, ToolTip = "Play" };
-                        //btn.Click += BtnAddSubs_Click;
+                        btn.Click += PlayWordsCatGame_Click;
                         st.Children.Add(btn);
                     }
                     exp.Content = st;

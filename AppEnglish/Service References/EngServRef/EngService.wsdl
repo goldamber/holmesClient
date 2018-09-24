@@ -217,6 +217,18 @@
   <wsdl:message name="IEngService_GetItemData_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetItemDataResponse" />
   </wsdl:message>
+  <wsdl:message name="IEngService_GetToungeTwisters_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetToungeTwisters" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetToungeTwisters_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetToungeTwistersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetWordsWithImages_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWordsWithImages" />
+  </wsdl:message>
+  <wsdl:message name="IEngService_GetWordsWithImages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWordsWithImagesResponse" />
+  </wsdl:message>
   <wsdl:message name="IEngService_GetItemsId_InputMessage">
     <wsdl:part name="parameters" element="tns:GetItemsId" />
   </wsdl:message>
@@ -397,6 +409,14 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetItemData">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetItemData" message="tns:IEngService_GetItemData_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetItemDataResponse" message="tns:IEngService_GetItemData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetToungeTwisters">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetToungeTwisters" message="tns:IEngService_GetToungeTwisters_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetToungeTwistersResponse" message="tns:IEngService_GetToungeTwisters_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetWordsWithImages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetWordsWithImages" message="tns:IEngService_GetWordsWithImages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IEngService/GetWordsWithImagesResponse" message="tns:IEngService_GetWordsWithImages_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetItemsId">
       <wsdl:input wsaw:Action="http://tempuri.org/IEngService/GetItemsId" message="tns:IEngService_GetItemsId_InputMessage" />
@@ -705,6 +725,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetItemData">
       <soap12:operation soapAction="http://tempuri.org/IEngService/GetItemData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetToungeTwisters">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetToungeTwisters" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWordsWithImages">
+      <soap12:operation soapAction="http://tempuri.org/IEngService/GetWordsWithImages" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

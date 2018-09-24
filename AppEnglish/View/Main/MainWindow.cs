@@ -119,7 +119,9 @@ namespace AppEnglish
                             break;
                     }
                     btnSort.Tag = btnSearch.Tag = data.ToString();
-                    if (data != DataType.User)
+                    int userId = Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
+                    string role = _proxy.GetItemProperty(userId, ServerData.User, PropertyData.RolesName);
+                    if (!(data == DataType.User || (data == DataType.WordCategory && role != "admin") || (data == DataType.Group && role != "admin")))
                         stActions.Children.Add(btnGrid);
                     if (cmbFilter.Items.Count > FormData.FilterPosition)
                         cmbFilter.SelectedIndex = FormData.FilterPosition;

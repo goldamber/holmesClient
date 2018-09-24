@@ -76,6 +76,19 @@
     </Style>
 
     <!--Label-->
+    <Style x:Key="lbCard" TargetType="Label">
+        <Setter Property="Padding" Value="25" />
+        <Setter Property="BorderBrush" Value="PowderBlue" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+
+        <Style.Triggers>
+            <Trigger Property="Label.IsMouseOver" Value="True">
+                <Setter Property="Background" Value="PowderBlue" />
+                <Setter Property="BorderBrush" Value="CornflowerBlue" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <Style x:Key="lbSub" TargetType="Label">
         <Setter Property="Padding" Value="10" />
         <Setter Property="FontSize" Value="19" />
@@ -167,6 +180,16 @@
         <Setter Property="Margin" Value="10" />
         <Setter Property="HorizontalAlignment" Value="Right" />
     </Style>
+    
+    <!--TextBlock.-->
+    <Style x:Key="txtCard" TargetType="TextBlock">
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="Foreground" Value="#FF2887D6" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
 
     <!--ProgressBar-->
     <ControlTemplate x:Key="Preloader" TargetType="{x:Type ProgressBar}">
@@ -206,5 +229,13 @@
         <Setter Property="FontSize" Value="19" />
         <Setter Property="MinWidth" Value="70" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+    
+    <!--StackPanel.-->
+    <Style x:Key="stCard" TargetType="StackPanel">
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Width" Value="300" />
     </Style>
 </ResourceDictionary>
