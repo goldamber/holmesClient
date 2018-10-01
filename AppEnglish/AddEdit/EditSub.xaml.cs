@@ -1,33 +1,18 @@
-﻿using AppEnglish.EngServRef;
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace AppEnglish.AddEdit
 {
-    public partial class AddCategory : Window
+    public partial class EditSub : Window
     {
-        EngServiceClient _proxy;
-        ServerData dataType;
-        int? id = null;
-
         #region Constructors.
-        //Initialization.
-        public AddCategory()
+        public EditSub()
         {
             InitializeComponent();
         }
-        //Initialize '_proxy'.
-        public AddCategory(EngServiceClient tmp, ServerData type) : this()
+        public EditSub(string text) : this()
         {
-            _proxy = tmp;
-            dataType = type;
-        }
-        //Initialize '_proxy' and fields.
-        public AddCategory(EngServiceClient tmp, ServerData type, int catId) : this(tmp, type)
-        {
-            id = catId;
-            txtName.Text = _proxy.GetItemProperty(catId, type, PropertyData.Name);
+            txtName.Text = text;
         }
         #endregion
 
@@ -82,22 +67,8 @@ namespace AppEnglish.AddEdit
         //Add an author.
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (!_proxy.CheckExistence(txtName.Text, dataType))
-            {
-                if (id == null)
-                {
-                    if (_proxy.AddData(txtName.Text, dataType) == null)
-                    {
-                        MessageBox.Show("Something went wrong. This category was not addded.", "Wrong", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                }
-                else
-                    _proxy.EditData(Convert.ToInt32(id), txtName.Text, dataType, PropertyData.Name);
-                Close();
-            }
-            else
-                MessageBox.Show("This category already exists!", "Wrong.", MessageBoxButton.OK, MessageBoxImage.Error);
+            FormData.SubsText = txtName.Text;
+            Close();
         }
         //Close the form.
         private void btnCancel_Click(object sender, RoutedEventArgs e)

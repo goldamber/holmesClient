@@ -162,12 +162,15 @@ namespace AppEnglish.View.Games
             switch (e.Key)
             {
                 case Key.D:
-                    if (slDurration.Value + len <= slDurration.Maximum)
+                    if (!_focus && slDurration.Value + len <= slDurration.Maximum)
                         slDurration.Value += len;
                     break;
                 case Key.A:
-                    if (slDurration.Value - len >= 0)
+                    if (!_focus && slDurration.Value - len >= 0)
                         slDurration.Value -= len;
+                    break;
+                case Key.LeftCtrl:
+                    btnPlay_Click(null, null);
                     break;
             }
         }

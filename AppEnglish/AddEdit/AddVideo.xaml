@@ -16,7 +16,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <Label Style="{StaticResource lbFormNormal}">Description:</Label>
-                <TextBox Style="{StaticResource txtNormal}" Name="txtDesc" />
+                <TextBox Style="{StaticResource txtNormal}" AcceptsReturn="True" TextWrapping="Wrap"  Name="txtDesc" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">

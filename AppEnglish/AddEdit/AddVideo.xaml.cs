@@ -267,14 +267,25 @@ namespace AppEnglish.AddEdit
                         }
                         if (chCopy.IsChecked == true)
                         {
-                            if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Videos))
+                            try
+                            {
+                                if (!_proxy.Upload(File.ReadAllBytes(txtPath.Text), $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.FilesType.Videos))
+                                {
+                                    MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                    _proxy.RemoveItem(edit, EngServRef.ServerData.Video);
+                                    stMain.Visibility = Visibility.Visible;
+                                    return;
+                                }
+                                _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Video, EngServRef.PropertyData.Path);
+                            }
+                            catch (OutOfMemoryException)
                             {
                                 MessageBox.Show("This file is too large!\nPlease choose another file.", "Unable to upload", MessageBoxButton.OK, MessageBoxImage.Stop);
+                                _proxy = new EngServRef.EngServiceClient();
                                 _proxy.RemoveItem(edit, EngServRef.ServerData.Video);
                                 stMain.Visibility = Visibility.Visible;
                                 return;
                             }
-                            _proxy.EditData(edit, $"{edit}{Path.GetExtension(txtPath.Text)}", EngServRef.ServerData.Video, EngServRef.PropertyData.Path);
                         }
                         if (txtSubs.Text != "")
                         {

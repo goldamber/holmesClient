@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -408,40 +407,40 @@ namespace AppEnglish
             grSearch.Visibility = Visibility.Collapsed;
             stActions.Children.Clear();
 
-            Button btn = new Button { Name = "btnBooks", Content = "Books", Style = TryFindResource("btnNormal") as Style };
+            Button btn = new Button { Name = "btnBooks", Content = "Books", ToolTip = "Show books", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnBooks_Click;
             stActions.Children.Add(btn);
-            btn = new Button { Name = "btnWords", Content = "Dictionary", Style = TryFindResource("btnNormal") as Style };
+            btn = new Button { Name = "btnWords", Content = "Dictionary", ToolTip = "Show words", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnWords_Click;
             stActions.Children.Add(btn);
-            btn = new Button { Name = "btnVideos", Content = "Videos", Style = TryFindResource("btnNormal") as Style };
+            btn = new Button { Name = "btnVideos", Content = "Videos", ToolTip = "Show videos", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnVideos_Click;
             stActions.Children.Add(btn);
-            btn = new Button { Name = "btnGrammar", Content = "Grammar", Style = TryFindResource("btnNormal") as Style };
+            btn = new Button { Name = "btnGrammar", Content = "Grammar", ToolTip = "Show grammar rules", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnGrammar_Click;
             stActions.Children.Add(btn);
-            btn = new Button { Name = "btnWordsCategoriesAct", Content = "Words Categories", Style = TryFindResource("btnNormal") as Style };
+            btn = new Button { Name = "btnWordsCategoriesAct", Content = "Words Categories", ToolTip = "Show categories", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnWordsCategoriesAct_Click;
             stActions.Children.Add(btn);
-            btn = new Button { Name = "btnWordsGroupsAct", Content = "Words Groups", Style = TryFindResource("btnNormal") as Style };
+            btn = new Button { Name = "btnWordsGroupsAct", Content = "Words Groups", ToolTip = "Show groups", Style = TryFindResource("btnNormal") as Style };
             btn.Click += btnWordsGroupsAct_Click;
             stActions.Children.Add(btn);
-            btn = new Button { Name = "btnGames", Content = "Time Converter", Style = TryFindResource("btnNormal") as Style };
+            btn = new Button { Name = "btnGames", Content = "Time Converter", ToolTip = "Show time converter", Style = TryFindResource("btnNormal") as Style };
             btn.Click += BtnTimeConverter_Click;
             stActions.Children.Add(btn);
 
             if (lRole.Content.ToString() == "admin")
             {
-                btn = new Button { Name = "btnUsersAct", Content = "Users", Style = TryFindResource("btnNormal") as Style };
+                btn = new Button { Name = "btnUsersAct", Content = "Users", ToolTip = "Show users", Style = TryFindResource("btnNormal") as Style };
                 btn.Click += btnUsersAct_Click;
                 stActions.Children.Add(btn);
-                btn = new Button { Name = "btnAuthorsAct", Content = "Authors", Style = TryFindResource("btnNormal") as Style };
+                btn = new Button { Name = "btnAuthorsAct", Content = "Authors", ToolTip = "Show authors", Style = TryFindResource("btnNormal") as Style };
                 btn.Click += btnAuthorsAct_Click;
                 stActions.Children.Add(btn);
-                btn = new Button { Name = "btnBooksCategoriesAct", Content = "Books Categories", Style = TryFindResource("btnNormal") as Style };
+                btn = new Button { Name = "btnBooksCategoriesAct", Content = "Books Categories", ToolTip = "Show categories", Style = TryFindResource("btnNormal") as Style };
                 btn.Click += btnBooksCategoriesAct_Click;
                 stActions.Children.Add(btn);
-                btn = new Button { Name = "btnVideoCategoriesAct", Content = "Video Categories", Style = TryFindResource("btnNormal") as Style };
+                btn = new Button { Name = "btnVideoCategoriesAct", Content = "Video Categories", ToolTip = "Show categories", Style = TryFindResource("btnNormal") as Style };
                 btn.Click += btnVideoCategoriesAct_Click;
                 stActions.Children.Add(btn);
             }

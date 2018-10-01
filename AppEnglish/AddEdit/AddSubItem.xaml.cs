@@ -20,6 +20,7 @@ namespace AppEnglish.AddEdit
         Slider slider;
         TimeSpan? start = null;
         bool _play = true;
+        bool _focus = false;
         int videoId;
 
         #region Constructors.
@@ -196,16 +197,27 @@ namespace AppEnglish.AddEdit
             switch (e.Key)
             {
                 case Key.D:
-                    if (slider.Value + len <= slider.Maximum)
+                    if (!_focus && slider.Value + len <= slider.Maximum)
                         slider.Value += len;
                     break;
                 case Key.A:
-                    if (slider.Value - len >= 0)
+                    if (!_focus && slider.Value - len >= 0)
                         slider.Value -= len;
                     break;
             }
         }
         #endregion
+        #region  TextBox.
+        private void txtName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            _focus = true;
+        }
+        private void txtName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            _focus = false;
+        }
+        #endregion
+
         #region Close form (OK, Cancel).
         //Add a new video.
         private void btnOK_Click(object sender, RoutedEventArgs e)

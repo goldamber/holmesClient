@@ -196,10 +196,10 @@
     <ControlTemplate x:Key="Preloader" TargetType="{x:Type ProgressBar}">
         <StackPanel>
             <Image Height="150" gif:ImageBehavior.AnimatedSource="Images\Orcas.gif" />
-            <Label Name="lLoad" Style="{StaticResource lbFormNormal}" HorizontalAlignment="Center" Content="Loading" />
+            <!--<Label Name="lLoad" Style="{StaticResource lbFormNormal}" HorizontalAlignment="Center" Content="Loading" />-->
         </StackPanel>
 
-        <ControlTemplate.Triggers>
+        <!--<ControlTemplate.Triggers>
             <EventTrigger RoutedEvent="FrameworkElement.Loaded">
                 <BeginStoryboard>
                     <Storyboard>
@@ -212,7 +212,7 @@
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>
-        </ControlTemplate.Triggers>
+        </ControlTemplate.Triggers>-->
     </ControlTemplate>
 
     <!--CheckBox-->

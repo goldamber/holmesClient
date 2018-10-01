@@ -51,7 +51,7 @@
             </GroupBox>
             <GroupBox Name="gbTitle" Header="Title" Visibility="Collapsed">
                 <StackPanel>
-                    <TextBox Name="txtName" />
+                    <TextBox Name="txtName"  AcceptsReturn="True" TextWrapping="Wrap"  GotFocus="txtName_GotFocus" LostFocus="txtName_LostFocus" />
                     <Button Name="btnAdd" Click="btnAdd_Click" HorizontalAlignment="Right">Save state</Button>
                 </StackPanel>
             </GroupBox>

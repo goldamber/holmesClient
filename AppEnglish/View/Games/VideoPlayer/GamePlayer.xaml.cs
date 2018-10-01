@@ -34,6 +34,7 @@ namespace AppEnglish.View.Games
         int _hits = 0;          //The number of valid words.
         int _fails = 0;         //The number of mistakes.
         int _score = 0;         //Current score.
+        bool _focus = false;    //Is textboxes focused?
         int level;              //Users level.
         GameMode mode = GameMode.FillGaps;
         const int MAX_UNCHANGED_LEVEL = 3;     //If users level is greater than this value, then his score will be counted depending on his level.
@@ -380,6 +381,7 @@ namespace AppEnglish.View.Games
                 (sender as TextBox).Background = Brushes.WhiteSmoke;
                 (sender as TextBox).BorderBrush = Brushes.CornflowerBlue;
                 (sender as TextBox).Foreground = Brushes.Black;
+                _focus = true;
                 (sender as TextBox).BorderThickness = new Thickness(1);
             }
         }
@@ -392,6 +394,7 @@ namespace AppEnglish.View.Games
                 (sender as TextBox).BorderBrush = Brushes.DarkRed;
                 (sender as TextBox).Foreground = Brushes.DarkRed;
                 (sender as TextBox).BorderThickness = new Thickness(2);
+                _focus = false;
                 SubtractScore();
             }
         }

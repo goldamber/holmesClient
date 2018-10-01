@@ -118,6 +118,9 @@
     <Compile Include="AddEdit\EditRole.xaml.cs">
       <DependentUpon>EditRole.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddEdit\EditSub.xaml.cs">
+      <DependentUpon>EditSub.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddEdit\EditUsername.xaml.cs">
       <DependentUpon>EditUsername.xaml</DependentUpon>
     </Compile>
@@ -207,6 +210,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddEdit\EditRole.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEdit\EditSub.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

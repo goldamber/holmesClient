@@ -33,6 +33,11 @@ namespace AppEnglish
                     cmbSort.Items.Clear();
 
                     Button btnGrid = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/Add.png")), Height = 20 }, Width = 50, Height = 50, Name = "btnAdd", Background = Brushes.LightGreen, ToolTip = "Add " + data.ToString(), HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(20) };
+                    Button ret = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, ToolTip = "Return", Width = 50, Height = 50, HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(20, 0, 20, 0) };
+                    ret.Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/ArrowBack.png")), Height = 35 };
+                    ret.Click += ButtonBack_Click;
+                    stActions.Children.Add(ret);
+
                     switch (data)
                     {
                         case DataType.Video:
@@ -119,6 +124,8 @@ namespace AppEnglish
                             break;
                     }
                     btnSort.Tag = btnSearch.Tag = data.ToString();
+                    btnSort.ToolTip = "Sort";
+                    btnSearch.ToolTip = "Search";
                     int userId = Convert.ToInt32(_proxy.GetItemsId(lUserName.Content.ToString(), ServerData.User));
                     string role = _proxy.GetItemProperty(userId, ServerData.User, PropertyData.RolesName);
                     if (!(data == DataType.User || (data == DataType.WordCategory && role != "admin") || (data == DataType.Group && role != "admin")))
@@ -195,11 +202,6 @@ namespace AppEnglish
                             break;
                         }
                     }
-
-                    Button ret = new Button { Style = TryFindResource("MetroCircleButtonStyle") as Style, Width = 50, Height = 50, HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(20, 0, 20, 0) };
-                    ret.Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Images/ArrowBack.png")), Height = 35 };
-                    ret.Click += ButtonBack_Click;
-                    stActions.Children.Add(ret);
                 });
             }));
             thd.IsBackground = true;

@@ -30,6 +30,7 @@ namespace AppEnglish
         public static int SortPosition { get; set; } = 0;       //The postion of 'Sort' comboBox.
 
         public static string GeneratedSubsPath { get; set; } = null;
+        public static string SubsText { get; set; } = null;     //Edited subtitles.
 
         #region Types that contains images. They can be updated only upon restart.
         public static List<int> EditBooks { get; set; } = new List<int>();
